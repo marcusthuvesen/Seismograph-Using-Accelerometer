@@ -177,7 +177,6 @@
 				28C90CF11F16E4F4001378A1 /* Frameworks */,
 				28C90CF21F16E4F4001378A1 /* Resources */,
 				8341A8E2DD505B465DC28AF8 /* [CP] Embed Pods Frameworks */,
-				AD375F76DD2D3AEF0BFC9634 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -196,8 +195,6 @@
 				28C90D041F16E4F5001378A1 /* Sources */,
 				28C90D051F16E4F5001378A1 /* Frameworks */,
 				28C90D061F16E4F5001378A1 /* Resources */,
-				C841BFD3088557168BF58A37 /* [CP] Embed Pods Frameworks */,
-				001A2C7E661911FB0F85F972 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -217,8 +214,6 @@
 				28C90D0F1F16E4F5001378A1 /* Sources */,
 				28C90D101F16E4F5001378A1 /* Frameworks */,
 				28C90D111F16E4F5001378A1 /* Resources */,
-				BE4486BD7EC8D786D7F3DF4D /* [CP] Embed Pods Frameworks */,
-				25FE0A840D4852BCD0009C9A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -242,6 +237,7 @@
 				TargetAttributes = {
 					28C90CF31F16E4F4001378A1 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 4CTKXD59TF;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -307,36 +303,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		001A2C7E661911FB0F85F972 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LineChartExampleTests/Pods-LineChartExampleTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		25FE0A840D4852BCD0009C9A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LineChartExampleUITests/Pods-LineChartExampleUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		395DC3E9DBE4130EBCA1EAFD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -389,51 +355,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AD375F76DD2D3AEF0BFC9634 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LineChartExample/Pods-LineChartExample-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BE4486BD7EC8D786D7F3DF4D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LineChartExampleUITests/Pods-LineChartExampleUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C841BFD3088557168BF58A37 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LineChartExampleTests/Pods-LineChartExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D712C2A50529C5A5C418D892 /* [CP] Check Pods Manifest.lock */ = {
@@ -629,7 +550,7 @@
 			baseConfigurationReference = 6BF6E3D21C5BA73C4F932CEC /* Pods-LineChartExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4CTKXD59TF;
 				INFOPLIST_FILE = LineChartExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = HelloWorld.LineChartExample;
@@ -644,7 +565,7 @@
 			baseConfigurationReference = 64FDFEA35C60F4E94ED35135 /* Pods-LineChartExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 4CTKXD59TF;
 				INFOPLIST_FILE = LineChartExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = HelloWorld.LineChartExample;
