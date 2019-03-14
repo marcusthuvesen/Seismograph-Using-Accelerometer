@@ -57,7 +57,6 @@ class ViewController: UIViewController {
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
         //here is the for loop
         for i in 0..<numbers.count {
-            
             let value = ChartDataEntry(x: Double(i), y: numbers[i]) // here we set the X and Y status in a data chart
             lineChartEntry.append(value) // here we add it to the data set
         }
@@ -70,29 +69,26 @@ class ViewController: UIViewController {
         data.addDataSet(line1) //Adds the line to the dataSet
         chtChart.data = data //finally - it adds the chart data to the chart and causes an update
         
-        //        self.lineChartView.setVisibleXRange(minXRange: CGFloat(1), maxXRange: CGFloat(50))
-        //        self.lineChartView.notifyDataSetChanged()
-        //        self.lineChartView.moveViewToX(CGFloat(i))
-        
         self.chtChart.setVisibleXRangeMinimum(1)
         self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
+       
         
         
-        
-        
-        print(currentNode)
+        // Lägg till värdena i en ny array
         batchNumbersArray.append(numbers[currentNode])
         
+        // Antal nodes (points) i grafen
         currentNode += 1
-        
-        //print("Batch: \(batchNumbersArray.count)")
+        //print(currentNode)
+        // vid var 20 Node:
         if currentNode % 20 == 0 {
-            //print("20 stycken")
-            // kalla på funktion
-            //print(numbers)
-            print(batchNumbersArray)
+            //print(batchNumbersArray)
+            calculateActivityFactor(currentNode: currentNode, activityArray: batchNumbersArray)
+            // kalla på funktion; (räkna ihop alla värden, medelvärdet (hastighet))
+            
+            // Töm arrayen
             batchNumbersArray.removeAll()
             
         }
@@ -101,6 +97,16 @@ class ViewController: UIViewController {
         
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
         
+    }
+    
+    func calculateActivityFactor(currentNode : Int, activityArray : Array<Double>) {
+        
+        // Räkna ihop alla värden i arrayen, dividera med antal nodes -> medelvärdet (hastighet)
+            let activitySum = activityArray.reduce(0) { $0 + $1 }
+        
+            let activityFactor = activitySum / Double(currentNode)
+        print("ActivityFactor: \(activityFactor)")
+        //var activitySpeed =
     }
     
     func startAccelerometer(){
@@ -146,7 +152,7 @@ class ViewController: UIViewController {
                     
                     self.averageCloseToMax = round(self.averageCloseToMax * 100) / 100
                     self.averageLabel.text = "Medel: " + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin)
-                    print("MEDELVÄRDE" + String(self.averageCloseToMax))
+                    //print("MEDELVÄRDE" + String(self.averageCloseToMax))
                 }
                 
                 self.numbers.append(self.acceleration)
@@ -186,6 +192,7 @@ class ViewController: UIViewController {
         averageLabel.text = "0"
         
     }
+    
     
 }
 
