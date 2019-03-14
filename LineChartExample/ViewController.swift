@@ -85,7 +85,7 @@ class ViewController: UIViewController {
         // vid var 20 Node:
         if currentNode % 20 == 0 {
             //print(batchNumbersArray)
-            calculateActivityFactor(currentNode: currentNode, activityArray: batchNumbersArray)
+            calculateActivityFactor(activityArray: batchNumbersArray)
             // kalla på funktion; (räkna ihop alla värden, medelvärdet (hastighet))
             
             // Töm arrayen
@@ -99,14 +99,16 @@ class ViewController: UIViewController {
         
     }
     
-    func calculateActivityFactor(currentNode : Int, activityArray : Array<Double>) {
+    // Function for users speed
+    func calculateActivityFactor(activityArray : Array<Double>) {
         
-        // Räkna ihop alla värden i arrayen, dividera med antal nodes -> medelvärdet (hastighet)
-            let activitySum = activityArray.reduce(0) { $0 + $1 }
+        // Calculate sum of array
+        let activitySum = activityArray.reduce(0) { $0 + $1 }
         
-            let activityFactor = activitySum / Double(currentNode)
+        // Get the speed of activity by dividing sum of values with nodes/.count
+        let activityFactor = activitySum / Double(activityArray.count)
+
         print("ActivityFactor: \(activityFactor)")
-        //var activitySpeed =
     }
     
     func startAccelerometer(){
