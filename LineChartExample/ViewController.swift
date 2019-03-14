@@ -62,6 +62,7 @@ class ViewController: UIViewController {
          let line1 = LineChartDataSet(values: lineChartEntry, label: "Number") //Here we convert lineChartEntry to a LineChartDataSet
 
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
+        line1.circleRadius = 2
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         chtChart.data = data //finally - it adds the chart data to the chart and causes an update
