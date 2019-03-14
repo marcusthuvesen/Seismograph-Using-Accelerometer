@@ -28,6 +28,8 @@ class ViewController: UIViewController {
     var averageCloseToMin : Double = 0
     var acceleration : Double = 0
     
+    var batchNumbersArray = [Double]()
+    
     
     @IBOutlet weak var buttonOutlet: UIButton!
     @IBOutlet weak var minValueLabel: UILabel!
@@ -35,6 +37,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var averageLabel: UILabel!
     @IBOutlet weak var startButtonOutlet: UIButton!
     @IBOutlet weak var clearButtonOutlet: UIButton!
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +80,24 @@ class ViewController: UIViewController {
         self.chtChart.moveViewToX(Double(currentNode))
         
         
+        
+        
+        print(currentNode)
+        batchNumbersArray.append(numbers[currentNode])
+        
         currentNode += 1
+        
+        //print("Batch: \(batchNumbersArray.count)")
+        if currentNode % 20 == 0 {
+            //print("20 stycken")
+            // kalla på funktion
+            //print(numbers)
+            print(batchNumbersArray)
+            batchNumbersArray.removeAll()
+            
+        }
+        
+        
         
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
         
