@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     var closeToMinNodes = 0
     var averageCloseToMax : Double = 0
     var averageCloseToMin : Double = 0
-    
+    var acceleration : Double = 0
     
     
     @IBOutlet weak var buttonOutlet: UIButton!
@@ -98,29 +98,31 @@ class ViewController: UIViewController {
                 y = round(100 * y) / 100
                 z = round(100 * z) / 100
                 //print(z)
-                if x.isZero && x.sign == .minus {
-                    x = 0.0
+                if x < 0 {
+                    x = abs(x)
                 }
                 
-                if y.isZero && y.sign == .minus {
-                    y = 0.0
+                if y < 0 {
+                   y = abs(y)
                 }
                 
-                if z.isZero && z.sign == .minus {
-                    z = 0.0
+                if z < 0 {
+                    z = abs(z)
                 }
                 
+                self.acceleration = x+y+z
                 
-                if z > self.maxValue{
-                    self.maxValue = z
+                
+                if self.acceleration > self.maxValue{
+                    self.maxValue = self.acceleration
                     //print("MAXVALUE = \(self.maxValue)")
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
-                if z < self.minValue{
-                    self.minValue = z
+              /*  if z < self.minValue{
+                    self.minValue =
                     //print("MINVALUE = \(self.minValue)")
                     self.minValueLabel.text = "Min: " + String(self.minValue)
-                }
+                }*/
                 //Average Close To Max
                 
                 if self.maxValue > 0.3 && (z + 0.5) > self.maxValue{
@@ -136,7 +138,7 @@ class ViewController: UIViewController {
                 
                 //Average Close To Min
                 
-                if self.minValue < -0.3 && (z - 0.5) < self.minValue{
+               /* if self.minValue < -0.3 && (z - 0.5) < self.minValue{
                     self.closeToMinNodes += 1
                     self.sumCloseToMinPoints += Double(z)
                     
@@ -145,11 +147,11 @@ class ViewController: UIViewController {
                     self.averageCloseToMin = round(self.averageCloseToMin * 100) / 100
                     self.averageLabel.text = "Medel: " + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin)
                     print("MEDELVÄRDE" + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin))
-                }
+                }*/
                 
                
                
-                self.numbers.append(z)
+                self.numbers.append(self.acceleration)
                 self.updateGraph()
                 
             }
