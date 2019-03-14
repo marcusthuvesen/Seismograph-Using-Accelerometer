@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -18,18 +18,18 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7r-Yg-hXX" customClass="LineChartView" customModule="Charts">
-                                <rect key="frame" x="0.0" y="20" width="375" height="532"/>
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="235.5"/>
                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SRl-9D-wBC">
-                                <rect key="frame" x="10" y="557" width="355" height="45"/>
+                                <rect key="frame" x="14" y="265" width="639" height="45"/>
                                 <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="VXB-Sa-p7H"/>
+                                    <constraint firstAttribute="height" constant="45" id="EBo-vz-1T4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <state key="normal" title="Starta">
@@ -40,36 +40,67 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xv8-z8-KDw">
-                                <rect key="frame" x="10" y="612" width="355" height="45"/>
+                                <rect key="frame" x="14" y="320" width="639" height="45"/>
                                 <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="5vK-zt-KtW"/>
+                                    <constraint firstAttribute="height" constant="45" id="gwj-u1-902"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Rensa"/>
+                                <state key="normal" title="Starta Om"/>
                                 <connections>
                                     <action selector="clearChart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H7g-wm-OOT"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="quU-VT-abJ">
+                                <rect key="frame" x="14" y="239.5" width="639" height="20.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOL-S8-bCp">
+                                        <rect key="frame" x="0.0" y="0.0" width="213" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmh-Rz-Chf">
+                                        <rect key="frame" x="213" y="0.0" width="213" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Average" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oah-p2-CO5">
+                                        <rect key="frame" x="426" y="0.0" width="213" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Xv8-z8-KDw" firstAttribute="top" secondItem="SRl-9D-wBC" secondAttribute="bottom" constant="10" id="0nO-9e-7ja"/>
-                            <constraint firstItem="V7r-Yg-hXX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="47I-QQ-Ttz"/>
-                            <constraint firstAttribute="trailing" secondItem="V7r-Yg-hXX" secondAttribute="trailing" id="9uJ-CO-Zg5"/>
-                            <constraint firstAttribute="trailing" secondItem="Xv8-z8-KDw" secondAttribute="trailing" constant="10" id="NLu-PQ-dpf"/>
-                            <constraint firstItem="V7r-Yg-hXX" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" id="VBD-Vu-j9T"/>
-                            <constraint firstItem="SRl-9D-wBC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="YzH-4t-CXG"/>
-                            <constraint firstAttribute="trailing" secondItem="SRl-9D-wBC" secondAttribute="trailing" constant="10" id="d2E-5r-xrt"/>
-                            <constraint firstItem="SRl-9D-wBC" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="bottom" constant="5" id="esn-r2-rtB"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Xv8-z8-KDw" secondAttribute="bottom" constant="10" id="i2y-Qk-aNJ"/>
-                            <constraint firstItem="Xv8-z8-KDw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="yFf-Cj-mC8"/>
+                            <constraint firstItem="quU-VT-abJ" firstAttribute="leading" secondItem="SRl-9D-wBC" secondAttribute="leading" id="4cj-8I-GSc"/>
+                            <constraint firstItem="V7r-Yg-hXX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="4y3-tJ-McC"/>
+                            <constraint firstItem="SRl-9D-wBC" firstAttribute="leading" secondItem="Xv8-z8-KDw" secondAttribute="leading" id="8mv-rg-dNe"/>
+                            <constraint firstItem="V7r-Yg-hXX" firstAttribute="centerX" secondItem="quU-VT-abJ" secondAttribute="centerX" id="L3o-Hb-TFa"/>
+                            <constraint firstAttribute="trailing" secondItem="V7r-Yg-hXX" secondAttribute="trailing" id="MfN-sp-Fh1"/>
+                            <constraint firstItem="V7r-Yg-hXX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Vsu-8R-jPQ"/>
+                            <constraint firstItem="quU-VT-abJ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-6" id="azg-Ja-Lgv"/>
+                            <constraint firstItem="SRl-9D-wBC" firstAttribute="trailing" secondItem="Xv8-z8-KDw" secondAttribute="trailing" id="f23-30-zQQ"/>
+                            <constraint firstItem="SRl-9D-wBC" firstAttribute="top" secondItem="quU-VT-abJ" secondAttribute="bottom" constant="5" id="pCE-UC-ZhF"/>
+                            <constraint firstItem="quU-VT-abJ" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="bottom" constant="4" id="pUC-1H-UMX"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Xv8-z8-KDw" secondAttribute="bottom" constant="10" id="pfh-oO-BiO"/>
+                            <constraint firstItem="quU-VT-abJ" firstAttribute="trailing" secondItem="SRl-9D-wBC" secondAttribute="trailing" id="uHa-Wx-M24"/>
+                            <constraint firstItem="Xv8-z8-KDw" firstAttribute="top" secondItem="SRl-9D-wBC" secondAttribute="bottom" constant="10" id="wvR-RX-puw"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="averageLabel" destination="Oah-p2-CO5" id="Jet-sU-qp4"/>
                         <outlet property="buttonOutlet" destination="SRl-9D-wBC" id="LYl-sv-D7f"/>
                         <outlet property="chtChart" destination="V7r-Yg-hXX" id="THu-Rl-57A"/>
+                        <outlet property="clearButtonOutlet" destination="Xv8-z8-KDw" id="33V-wz-q7v"/>
+                        <outlet property="maxValueLabel" destination="jmh-Rz-Chf" id="ixU-89-2Y9"/>
+                        <outlet property="minValueLabel" destination="SOL-S8-bCp" id="l8Z-IL-3UM"/>
+                        <outlet property="startButtonOutlet" destination="SRl-9D-wBC" id="WSa-KL-SM3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -18,14 +18,30 @@ class ViewController: UIViewController {
     var accelerationCallTimer = Timer()
     let motionManager = CMMotionManager()
     var point = 0
+    var maxValue : Double = 0
+    var minValue : Double = 0
+    var sumCloseToMaxPoints : Double = 0
+    var sumCloseToMinPoints : Double = 0
+    //var allNodes = 1
+    var closeToMaxNodes = 0
+    var closeToMinNodes = 0
+    var averageCloseToMax : Double = 0
+    var averageCloseToMin : Double = 0
+    
     
     
     @IBOutlet weak var buttonOutlet: UIButton!
+    @IBOutlet weak var minValueLabel: UILabel!
+    @IBOutlet weak var maxValueLabel: UILabel!
+    @IBOutlet weak var averageLabel: UILabel!
+    @IBOutlet weak var startButtonOutlet: UIButton!
+    @IBOutlet weak var clearButtonOutlet: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-   
+        startButtonOutlet.layer.cornerRadius = 15
+        clearButtonOutlet.layer.cornerRadius = 15
     }
    
     override func didReceiveMemoryWarning() {
@@ -34,8 +50,8 @@ class ViewController: UIViewController {
     }
 
     func updateGraph(){
+        
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
-
         //here is the for loop
         for i in 0..<numbers.count {
 
@@ -55,10 +71,11 @@ class ViewController: UIViewController {
 //        self.lineChartView.moveViewToX(CGFloat(i))
         
         self.chtChart.setVisibleXRangeMinimum(1)
-        self.chtChart.setVisibleXRangeMaximum(5)
+        self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(point))
     
+        
         point += 1
         
         chtChart.chartDescription?.text = "My awesome chart" // Here we set the description for the graph
@@ -67,7 +84,7 @@ class ViewController: UIViewController {
 
     func startAccelerometer(){
         
-        motionManager.deviceMotionUpdateInterval = 0.3
+        motionManager.deviceMotionUpdateInterval = 1/20
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
             if let motion = motion{
@@ -76,10 +93,11 @@ class ViewController: UIViewController {
                 var y = motion.userAcceleration.y
                 var z = motion.userAcceleration.z
                 
+                
                 x = round(100 * x) / 100
                 y = round(100 * y) / 100
                 z = round(100 * z) / 100
-                print(z)
+                //print(z)
                 if x.isZero && x.sign == .minus {
                     x = 0.0
                 }
@@ -92,6 +110,45 @@ class ViewController: UIViewController {
                     z = 0.0
                 }
                 
+                
+                if z > self.maxValue{
+                    self.maxValue = z
+                    //print("MAXVALUE = \(self.maxValue)")
+                    self.maxValueLabel.text = "Max: " + String(self.maxValue)
+                }
+                if z < self.minValue{
+                    self.minValue = z
+                    //print("MINVALUE = \(self.minValue)")
+                    self.minValueLabel.text = "Min: " + String(self.minValue)
+                }
+                //Average Close To Max
+                
+                if self.maxValue > 0.3 && (z + 0.5) > self.maxValue{
+                     self.closeToMaxNodes += 1
+                     self.sumCloseToMaxPoints += Double(z)
+                    
+                     self.averageCloseToMax = self.sumCloseToMaxPoints/Double(self.closeToMaxNodes)
+                    
+                     self.averageCloseToMax = round(self.averageCloseToMax * 100) / 100
+                     self.averageLabel.text = "Medel: " + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin)
+                     print("MEDELVÄRDE" + String(self.averageCloseToMax))
+                }
+                
+                //Average Close To Min
+                
+                if self.minValue < -0.3 && (z - 0.5) < self.minValue{
+                    self.closeToMinNodes += 1
+                    self.sumCloseToMinPoints += Double(z)
+                    
+                    self.averageCloseToMin = self.sumCloseToMinPoints/Double(self.closeToMinNodes)
+                    
+                    self.averageCloseToMin = round(self.averageCloseToMin * 100) / 100
+                    self.averageLabel.text = "Medel: " + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin)
+                    print("MEDELVÄRDE" + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin))
+                }
+                
+               
+               
                 self.numbers.append(z)
                 self.updateGraph()
                 
@@ -121,8 +178,17 @@ class ViewController: UIViewController {
         motionManager.stopDeviceMotionUpdates()
         numbers.removeAll()
         reloadInputViews()
-        on = false
-        buttonOutlet.setTitle("Starta", for: .normal)
+        startTimer()
+        on = true
+        buttonOutlet.setTitle("Stoppa", for: .normal)
+        maxValue = 0
+        minValue = 0
+        averageCloseToMax = 0
+        averageCloseToMin = 0
+        minValueLabel.text = "0"
+        maxValueLabel.text = "0"
+        averageLabel.text = "0"
+        
     }
     
     
