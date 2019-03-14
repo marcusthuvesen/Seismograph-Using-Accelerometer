@@ -27,7 +27,7 @@ class ViewController: UIViewController {
     var averageCloseToMax : Double = 0
     var averageCloseToMin : Double = 0
     var acceleration : Double = 0
-    
+    var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
     
     
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
         let line1 = LineChartDataSet(values: lineChartEntry, label: "Number") //Here we convert lineChartEntry to a LineChartDataSet
         
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
-        line1.circleRadius = 2
+        line1.circleRadius = 0
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         chtChart.data = data //finally - it adds the chart data to the chart and causes an update
@@ -73,17 +73,16 @@ class ViewController: UIViewController {
         self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
-       
+
         
-        
-        // Lägg till värdena i en ny array
+        // Add Values to Array
         batchNumbersArray.append(numbers[currentNode])
         
-        // Antal nodes (points) i grafen
+        // The Latest Node Number
         currentNode += 1
-        //print(currentNode)
-        // vid var 20 Node:
-        if currentNode % 20 == 0 {
+        
+        // Every Second
+        if currentNode % Int(timeInterval) == 0 {
             //print(batchNumbersArray)
             calculateActivityFactor(activityArray: batchNumbersArray)
             // kalla på funktion; (räkna ihop alla värden, medelvärdet (hastighet))
@@ -92,8 +91,6 @@ class ViewController: UIViewController {
             batchNumbersArray.removeAll()
             
         }
-        
-        
         
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
         
@@ -113,7 +110,7 @@ class ViewController: UIViewController {
     
     func startAccelerometer(){
         
-        motionManager.deviceMotionUpdateInterval = 1/20 //How many nodes per second?
+        motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
             if let motion = motion{
@@ -127,7 +124,7 @@ class ViewController: UIViewController {
                 y = abs(round(100 * y) / 100)
                 z = abs(round(100 * z) / 100)
         
-               
+               //Detects Movement in all Chanels
                 self.acceleration = x+y+z
                 
                 
@@ -138,15 +135,14 @@ class ViewController: UIViewController {
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
                 
-                if self.maxValue > 0.3 && (z + 0.5) > self.maxValue{
+                if self.maxValue > 0.4 && (self.acceleration + 0.5) > self.maxValue{
                     self.closeToMaxNodes += 1
-                    self.sumCloseToMaxPoints += Double(z)
+                    self.sumCloseToMaxPoints += Double(self.acceleration)
                     
                     self.averageCloseToMax = self.sumCloseToMaxPoints/Double(self.closeToMaxNodes)
                     
                     self.averageCloseToMax = round(self.averageCloseToMax * 100) / 100
                     self.averageLabel.text = "Medel: " + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin)
-                    //print("MEDELVÄRDE" + String(self.averageCloseToMax))
                 }
                 
                 self.numbers.append(self.acceleration)
