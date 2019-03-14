@@ -120,26 +120,18 @@ class ViewController: UIViewController {
                 var y = motion.userAcceleration.y
                 var z = motion.userAcceleration.z
                 
-                x = round(100 * x) / 100
-                y = round(100 * y) / 100
-                z = round(100 * z) / 100
+                //All positive numbers
+                x = abs(round(100 * x) / 100)
+                y = abs(round(100 * y) / 100)
+                z = abs(round(100 * z) / 100)
         
-                //Omvandlar XYZ till positiva tal
-                if x < 0 {
-                    x = abs(x)
-                }
-                if y < 0 {
-                    y = abs(y)
-                }
-                if z < 0 {
-                    z = abs(z)
-                }
-        
+               
                 self.acceleration = x+y+z
                 
                 
                 if self.acceleration > self.maxValue{
                     self.maxValue = self.acceleration
+                    self.maxValue = round(self.maxValue * 100) / 100
                     //print("MAXVALUE = \(self.maxValue)")
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
@@ -178,22 +170,24 @@ class ViewController: UIViewController {
     }
     
     @IBAction func clearChartBtn(_ sender: UIButton) {
-        motionManager.stopDeviceMotionUpdates()
-        numbers.removeAll()
-        reloadInputViews()
-        isDeviceMotionOn = true
-        buttonOutlet.setTitle("Stoppa", for: .normal)
-        maxValue = 0
-        minValue = 0
-        averageCloseToMax = 0
-        averageCloseToMin = 0
-        minValueLabel.text = "0"
-        maxValueLabel.text = "0"
-        averageLabel.text = "0"
-        
+        if motionManager.isDeviceMotionAvailable{
+            motionManager.stopDeviceMotionUpdates()
+            numbers.removeAll()
+            reloadInputViews()
+            maxValue = 0
+            minValue = 0
+            averageCloseToMax = 0
+            averageCloseToMin = 0
+            currentNode = 0
+            minValueLabel.text = "0"
+            maxValueLabel.text = "0"
+            averageLabel.text = "0"
+            buttonOutlet.setTitle("Stoppa", for: .normal)
+            motionManager.startDeviceMotionUpdates()
+            startAccelerometer()
+            isDeviceMotionOn = true
+        }
+
     }
     
-    
 }
-
-
