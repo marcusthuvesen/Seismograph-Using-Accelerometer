@@ -36,7 +36,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="btnbutton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pyo-ym-tEt"/>
+                                    <action selector="startBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pyo-ym-tEt"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xv8-z8-KDw">
@@ -49,7 +49,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Starta Om"/>
                                 <connections>
-                                    <action selector="clearChart:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H7g-wm-OOT"/>
+                                    <action selector="clearChartBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H7g-wm-OOT"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="quU-VT-abJ">
