@@ -15,19 +15,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var chtChart: LineChartView!
     var isDeviceMotionOn = false
     var numbers : [Double] = []
+    var averageArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
     var maxValue : Double = 0
     var minValue : Double = 0
-    var sumCloseToMaxPoints : Double = 0
+    var sumAverageNodes : Double = 0
     var sumCloseToMinPoints : Double = 0
-    //var allNodes = 1
-    var closeToMaxNodes = 0
+    var temporaryAverage : Double = 0
+    var averageNodes = 0
     var closeToMinNodes = 0
-    var averageCloseToMax : Double = 0
+    var averageValue : Double = 0
     var averageCloseToMin : Double = 0
     var acceleration : Double = 0
-    
+    var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
     
     
@@ -55,35 +56,43 @@ class ViewController: UIViewController {
     func updateGraph(){
         
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
+        var averageChartLine = [ChartDataEntry]()
         //here is the for loop
         for i in 0..<numbers.count {
             let value = ChartDataEntry(x: Double(i), y: numbers[i]) // here we set the X and Y status in a data chart
+            let value2 = ChartDataEntry(x: Double(i), y: averageArray[i])
             lineChartEntry.append(value) // here we add it to the data set
+            averageChartLine.append(value2)
         }
         
-        let line1 = LineChartDataSet(values: lineChartEntry, label: "Number") //Here we convert lineChartEntry to a LineChartDataSet
-        
+        let line1 = LineChartDataSet(values: lineChartEntry, label: "Current Activity") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
-        line1.circleRadius = 2
+        line1.circleRadius = 0
+        
+        let line2 = LineChartDataSet(values: averageChartLine, label: "Average")
+        line2.colors = [NSUIColor.red] //Sets the colour to blue
+        line2.circleRadius = 0
+        
+        
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
-        chtChart.data = data //finally - it adds the chart data to the chart and causes an update
+        data.addDataSet(line2)
+        chtChart.data = data //it adds the chart data to the chart and causes an update
         
         self.chtChart.setVisibleXRangeMinimum(1)
         self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
-       
+
         
-        
-        // Lägg till värdena i en ny array
+        // Add Values to Array
         batchNumbersArray.append(numbers[currentNode])
         
-        // Antal nodes (points) i grafen
+        // The Latest Node Number
         currentNode += 1
-        //print(currentNode)
-        // vid var 20 Node:
-        if currentNode % 20 == 0 {
+        
+        // Every Second
+        if currentNode % Int(timeInterval) == 0 {
             //print(batchNumbersArray)
             calculateActivityFactor(activityArray: batchNumbersArray)
             // kalla på funktion; (räkna ihop alla värden, medelvärdet (hastighet))
@@ -92,8 +101,6 @@ class ViewController: UIViewController {
             batchNumbersArray.removeAll()
             
         }
-        
-        
         
         //chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
         
@@ -116,7 +123,7 @@ class ViewController: UIViewController {
     
     func startAccelerometer(){
         
-        motionManager.deviceMotionUpdateInterval = 1/20 //How many nodes per second?
+        motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
             if let motion = motion{
@@ -130,28 +137,32 @@ class ViewController: UIViewController {
                 y = abs(round(100 * y) / 100)
                 z = abs(round(100 * z) / 100)
         
-               
+               //Detects Movement in all Chanels
                 self.acceleration = x+y+z
                 
                 
                 if self.acceleration > self.maxValue{
                     self.maxValue = self.acceleration
                     self.maxValue = round(self.maxValue * 100) / 100
-                    //print("MAXVALUE = \(self.maxValue)")
+                    
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
                 
-                if self.maxValue > 0.3 && (z + 0.5) > self.maxValue{
-                    self.closeToMaxNodes += 1
-                    self.sumCloseToMaxPoints += Double(z)
+                if self.acceleration > 0.4 {
+                    self.averageNodes += 1
+                    self.sumAverageNodes += Double(self.acceleration)
                     
-                    self.averageCloseToMax = self.sumCloseToMaxPoints/Double(self.closeToMaxNodes)
+                    self.averageValue = self.sumAverageNodes/Double(self.averageNodes)
                     
-                    self.averageCloseToMax = round(self.averageCloseToMax * 100) / 100
-                    self.averageLabel.text = "Medel: " + String(self.averageCloseToMax) + "\n" + String(self.averageCloseToMin)
-                    //print("MEDELVÄRDE" + String(self.averageCloseToMax))
+                    self.averageValue = round(self.averageValue * 100) / 100
+                    self.temporaryAverage = self.averageValue
+                    self.averageLabel.text = "Medel: " + String(self.averageValue)
+                    
                 }
-                
+                else{
+                    self.averageValue = self.temporaryAverage
+                }
+                self.averageArray.append(self.averageValue)
                 self.numbers.append(self.acceleration)
                 self.updateGraph()
                 
@@ -178,10 +189,15 @@ class ViewController: UIViewController {
         if motionManager.isDeviceMotionAvailable{
             motionManager.stopDeviceMotionUpdates()
             numbers.removeAll()
+            averageArray.removeAll()
+            averageValue = 0
+            sumAverageNodes = 0
+            averageNodes = 0
+            temporaryAverage = 0
             reloadInputViews()
             maxValue = 0
             minValue = 0
-            averageCloseToMax = 0
+            averageValue = 0
             averageCloseToMin = 0
             currentNode = 0
             minValueLabel.text = "0"
