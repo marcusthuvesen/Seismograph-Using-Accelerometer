@@ -80,7 +80,7 @@ class ViewController: UIViewController {
         chtChart.data = data //it adds the chart data to the chart and causes an update
         
         self.chtChart.setVisibleXRangeMinimum(1)
-        self.chtChart.setVisibleXRangeMaximum(200)
+        self.chtChart.setVisibleXRangeMaximum(250)
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
 
@@ -93,7 +93,7 @@ class ViewController: UIViewController {
         
         // Every Second
         if currentNode % Int(timeInterval) == 0 {
-            //print(batchNumbersArray)
+            
             calculateActivityFactor(activityArray: batchNumbersArray)
             // kalla på funktion; (räkna ihop alla värden, medelvärdet (hastighet))
             
@@ -114,8 +114,9 @@ class ViewController: UIViewController {
         
         // Get the speed of activity by dividing sum of values with nodes/.count
         let activityFactor = activitySum / Double(activityArray.count)
-
-        print("ActivityFactor: \(activityFactor)")
+        if activityFactor > 0.5{
+            print("ActivityFactor: \(activityFactor)")
+        }
     }
     
     func startAccelerometer(){
@@ -130,12 +131,12 @@ class ViewController: UIViewController {
                 var z = motion.userAcceleration.z
                 
                 //All positive numbers
-                x = abs(round(100 * x) / 100)
-                y = abs(round(100 * y) / 100)
-                z = abs(round(100 * z) / 100)
+                x = abs(x)
+                y = abs(y)
+                z = abs(z)
         
                //Detects Movement in all Chanels
-                self.acceleration = x+y+z
+                self.acceleration = round((x+y+z) * 100) / 100
                 
                 
                 if self.acceleration > self.maxValue{
@@ -145,7 +146,7 @@ class ViewController: UIViewController {
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
                 
-                if self.acceleration > 0.4 {
+                if self.acceleration > 0.5 {
                     self.averageNodes += 1
                     self.sumAverageNodes += Double(self.acceleration)
                     
@@ -157,7 +158,7 @@ class ViewController: UIViewController {
                     
                 }
                 else{
-                    self.averageValue = self.temporaryAverage
+                    self.averageValue = 0 //self.temporaryAverage
                 }
                 self.averageArray.append(self.averageValue)
                 self.numbers.append(self.acceleration)
@@ -185,27 +186,29 @@ class ViewController: UIViewController {
     @IBAction func clearChartBtn(_ sender: UIButton) {
         if motionManager.isDeviceMotionAvailable{
             motionManager.stopDeviceMotionUpdates()
-            numbers.removeAll()
-            averageArray.removeAll()
-            averageValue = 0
-            sumAverageNodes = 0
-            averageNodes = 0
-            temporaryAverage = 0
+            resetAllValues()
             reloadInputViews()
-            maxValue = 0
-            minValue = 0
-            averageValue = 0
-            averageCloseToMin = 0
-            currentNode = 0
-            minValueLabel.text = "0"
-            maxValueLabel.text = "0"
-            averageLabel.text = "0"
             buttonOutlet.setTitle("Stoppa", for: .normal)
             motionManager.startDeviceMotionUpdates()
             startAccelerometer()
             isDeviceMotionOn = true
         }
 
+    }
+    
+    func resetAllValues(){
+        numbers.removeAll()
+        averageArray.removeAll()
+        averageValue = 0
+        sumAverageNodes = 0
+        averageNodes = 0
+        temporaryAverage = 0
+        maxValue = 0
+        minValue = 0
+        currentNode = 0
+        minValueLabel.text = "0"
+        maxValueLabel.text = "0"
+        averageLabel.text = "0"
     }
     
 }
