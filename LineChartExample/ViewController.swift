@@ -95,7 +95,7 @@ class ViewController: UIViewController {
         
         
         
-        chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
+        //chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
         
     }
     
@@ -106,9 +106,12 @@ class ViewController: UIViewController {
         let activitySum = activityArray.reduce(0) { $0 + $1 }
         
         // Get the speed of activity by dividing sum of values with nodes/.count
-        let activityFactor = activitySum / Double(activityArray.count)
+        var activityFactor = activitySum / Double(activityArray.count)
 
         print("ActivityFactor: \(activityFactor)")
+        activityFactor = (activityFactor * 100).rounded() / 100
+
+        chtChart.chartDescription?.text = "ActivityFactor: \(activityFactor)"
     }
     
     func startAccelerometer(){
