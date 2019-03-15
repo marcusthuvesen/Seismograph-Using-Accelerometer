@@ -77,7 +77,7 @@ class ViewController: UIViewController {
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         data.addDataSet(line2)
-        chtChart.data = data //finally - it adds the chart data to the chart and causes an update
+        chtChart.data = data //it adds the chart data to the chart and causes an update
         
         self.chtChart.setVisibleXRangeMinimum(1)
         self.chtChart.setVisibleXRangeMaximum(200)
@@ -141,7 +141,7 @@ class ViewController: UIViewController {
                 if self.acceleration > self.maxValue{
                     self.maxValue = self.acceleration
                     self.maxValue = round(self.maxValue * 100) / 100
-                    //print("MAXVALUE = \(self.maxValue)")
+                    
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
                 
@@ -159,6 +159,7 @@ class ViewController: UIViewController {
                 else{
                     self.averageValue = self.temporaryAverage
                 }
+                print(self.averageArray)
                 self.averageArray.append(self.averageValue)
                 self.numbers.append(self.acceleration)
                 self.updateGraph()
@@ -187,8 +188,10 @@ class ViewController: UIViewController {
             motionManager.stopDeviceMotionUpdates()
             numbers.removeAll()
             averageArray.removeAll()
-            averageArray.append(0)
             averageValue = 0
+            sumAverageNodes = 0
+            averageNodes = 0
+            temporaryAverage = 0
             reloadInputViews()
             maxValue = 0
             minValue = 0
