@@ -120,7 +120,7 @@ class ViewController: UIViewController {
     
     func startAccelerometer(){
         
-        motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?
+        motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
             if let motion = motion{
@@ -159,7 +159,6 @@ class ViewController: UIViewController {
                 else{
                     self.averageValue = self.temporaryAverage
                 }
-                print(self.averageArray)
                 self.averageArray.append(self.averageValue)
                 self.numbers.append(self.acceleration)
                 self.updateGraph()
