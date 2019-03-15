@@ -168,6 +168,11 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    func activityFilter(){
+        //Filter All ActivityFactors here
+    }
+    
     @IBAction func startBtn(_ sender: Any) {
         if motionManager.isDeviceMotionAvailable{
             if isDeviceMotionOn == false{
