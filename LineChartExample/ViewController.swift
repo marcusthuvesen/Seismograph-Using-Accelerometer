@@ -121,20 +121,12 @@ class ViewController: UIViewController {
             
             if let motion = motion{
                 
-                var x = motion.userAcceleration.x
-                var y = motion.userAcceleration.y
-                var z = motion.userAcceleration.z
-                
-                //All positive numbers
-                x = abs(x)
-                y = abs(y)
-                z = abs(z)
-                
+                let x = abs(motion.userAcceleration.x)
+                let y = abs(motion.userAcceleration.y)
+                let z = abs(motion.userAcceleration.z)
                 //Detects Movement in all Chanels
                 self.acceleration = round((x+y+z) * 100) / 100
-                
-                
-                
+            
                 if self.acceleration > self.maxValue{
                     self.maxValue = self.acceleration
                     self.maxValue = round(self.maxValue * 100) / 100
@@ -142,55 +134,56 @@ class ViewController: UIViewController {
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
                 
-                let gravity = motion.gravity
-                cheatingFilter(acceleration : acceleration, motion : motion, gravity : gravity)
-                
-                //When hit hard, not normal behaviour
-                if self.acceleration > 1.9{
-                    print("Aktivitet ÖVER TVÅ")
-                    self.lastActivityCheat = true
-                }
+              
                 //Filtering for wrong direction of useracceleration
-                
+                let gravity = motion.gravity
                 OperationQueue.main.addOperation {
-                    
-                    //IF CHEATING
-                    if abs(gravity.z) > 0.87 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
-                        self.cheatingDetected(str : "FUSK1")
-                        
-                    }
-                        
-                    else if abs(gravity.x) > 0.5 && (abs(motion.userAcceleration.z) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
-                        self.cheatingDetected(str : "FUSK2")
-                        
-                    }
-                        
-                    else if abs(gravity.y) > 0.5 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.z) > 0.6) {
-                        self.cheatingDetected(str : "FUSK3")
-                    }
-                        
-                    else{
-                        //If Last activity was cheat this activityfactor won't be guilty either
-                        if self.lastActivityCheat == true{
-                            self.lastActivityCheat = false
-                        }
-                         //Activity passes as Accepted
-                        else{
-                            self.lastActivityCheat = false
-                            self.numbers.append(self.acceleration)
-                            // Every Second
-                            if self.numbers.count % Int(20) == 0 {
-                                self.updateGraph()
-                                self.numbers.removeAll()
-                            }
-                        }
-                    }
+                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+                  
                 }
             }
         }
     }
     
-    func cheatingFilter(){
+    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
+       
+        //When hit hard, not normal behaviour
+        if self.acceleration > 1.9{
+            print("Aktivitet ÖVER 1.9")
+            self.lastActivityCheat = true
+        }
+        
+        //IF CHEATING
+        if abs(gravity.z) > 0.87 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
+            self.cheatingDetected(str : "FUSK1")
+            
+        }
+            
+        else if abs(gravity.x) > 0.5 && (abs(motion.userAcceleration.z) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
+            self.cheatingDetected(str : "FUSK2")
+            
+        }
+            
+        else if abs(gravity.y) > 0.5 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.z) > 0.6) {
+            self.cheatingDetected(str : "FUSK3")
+        }
+            
+        else{
+            //If Last activity was cheat this activityfactor won't be guilty either
+            if self.lastActivityCheat == true{
+                self.lastActivityCheat = false
+            }
+                //Activity passes as Accepted
+            else{
+                self.lastActivityCheat = false
+                self.numbers.append(self.acceleration)
+                // Every Second
+                if self.numbers.count % Int(20) == 0 {
+                    self.updateGraph()
+                    self.numbers.removeAll()
+                }
+            }
+        }
         
     }
     
