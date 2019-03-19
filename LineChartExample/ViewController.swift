@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var isDeviceMotionOn = false
     var numbers : [Double] = []
     var averageArray : [Double] = [0]
+    var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
     var maxValue : Double = 0
@@ -28,8 +29,9 @@ class ViewController: UIViewController {
     var averageValue : Double = 0
     var averageCloseToMin : Double = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 20
+    var timeInterval : Double = 100
     var batchNumbersArray = [Double]()
+    var lastActivityCheat = false
     
     
     @IBOutlet weak var buttonOutlet: UIButton!
@@ -38,6 +40,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var averageLabel: UILabel!
     @IBOutlet weak var startButtonOutlet: UIButton!
     @IBOutlet weak var clearButtonOutlet: UIButton!
+    @IBOutlet weak var acceptedOrNotView: UIView!
+    
     
     
     
@@ -46,6 +50,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         startButtonOutlet.layer.cornerRadius = 15
         clearButtonOutlet.layer.cornerRadius = 15
+        acceptedOrNotView.layer.cornerRadius = acceptedOrNotView.frame.height / 2
     }
     
     override func didReceiveMemoryWarning() {
@@ -54,68 +59,58 @@ class ViewController: UIViewController {
     }
     
     func updateGraph(){
-        
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
-        var averageChartLine = [ChartDataEntry]()
+        //        var averageChartLine = [ChartDataEntry]()
+        //        var activityFactorLine = [ChartDataEntry]()
+        
+        let activityFactor = calculateActivityFactor(activityArray: numbers)
+        activityFilter(activityFactor : activityFactor)
+        activityFactorArray.append(activityFactor)
+        print("ActivityFactor \(activityFactor)")
+        // Töm arrayen
+        //batchNumbersArray.removeAll()
+        
+        
         //here is the for loop
-        for i in 0..<numbers.count {
-            let value = ChartDataEntry(x: Double(i), y: numbers[i]) // here we set the X and Y status in a data chart
-            let value2 = ChartDataEntry(x: Double(i), y: averageArray[i])
-            lineChartEntry.append(value) // here we add it to the data set
-            averageChartLine.append(value2)
+        for i in 0..<activityFactorArray.count {
+            let value = ChartDataEntry(x: Double(i), y: activityFactorArray[i]) // here we set the X and Y status in a data chart
+            
+            lineChartEntry.append(value) // here we add it to the data se
         }
         
         let line1 = LineChartDataSet(values: lineChartEntry, label: "Current Activity") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
         
-        let line2 = LineChartDataSet(values: averageChartLine, label: "Average")
-        line2.colors = [NSUIColor.red] //Sets the colour to blue
-        line2.circleRadius = 0
-        
         
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
-        data.addDataSet(line2)
-        chtChart.data = data //it adds the chart data to the chart and causes an update
         
+        chtChart.data = data //it adds the chart data to the chart and causes an update
+        currentNode += 1
         self.chtChart.setVisibleXRangeMinimum(1)
         self.chtChart.setVisibleXRangeMaximum(250)
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
-
-        
-        // Add Values to Array
-        batchNumbersArray.append(numbers[currentNode])
-        
-        // The Latest Node Number
-        currentNode += 1
-        
-        // Every Second
-        if currentNode % Int(timeInterval) == 0 {
-            
-            calculateActivityFactor(activityArray: batchNumbersArray)
-            // kalla på funktion; (räkna ihop alla värden, medelvärdet (hastighet))
-            
-            // Töm arrayen
-            batchNumbersArray.removeAll()
-            
-        }
         
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
         
     }
     
     // Function for users speed
-    func calculateActivityFactor(activityArray : Array<Double>) {
+    func calculateActivityFactor(activityArray : Array<Double>) -> Double {
         
         // Calculate sum of array
         let activitySum = activityArray.reduce(0) { $0 + $1 }
         
         // Get the speed of activity by dividing sum of values with nodes/.count
         let activityFactor = activitySum / Double(activityArray.count)
-        if activityFactor > 0.5{
-            print("ActivityFactor: \(activityFactor)")
+        if activityFactor > 0.3{
+            //print("ActivityFactor: \(activityFactor)")
+            return activityFactor
+        }
+        else{
+            return 0
         }
     }
     
@@ -134,9 +129,10 @@ class ViewController: UIViewController {
                 x = abs(x)
                 y = abs(y)
                 z = abs(z)
-        
-               //Detects Movement in all Chanels
+                
+                //Detects Movement in all Chanels
                 self.acceleration = round((x+y+z) * 100) / 100
+                
                 
                 
                 if self.acceleration > self.maxValue{
@@ -146,32 +142,75 @@ class ViewController: UIViewController {
                     self.maxValueLabel.text = "Max: " + String(self.maxValue)
                 }
                 
-                if self.acceleration > 0.5 {
-                    self.averageNodes += 1
-                    self.sumAverageNodes += Double(self.acceleration)
-                    
-                    self.averageValue = self.sumAverageNodes/Double(self.averageNodes)
-                    
-                    self.averageValue = round(self.averageValue * 100) / 100
-                    self.temporaryAverage = self.averageValue
-                    self.averageLabel.text = "Medel: " + String(self.averageValue)
-                    
-                }
-                else{
-                    self.averageValue = 0 //self.temporaryAverage
-                }
-                self.averageArray.append(self.averageValue)
-                self.numbers.append(self.acceleration)
-                self.updateGraph()
+                let gravity = motion.gravity
+                cheatingFilter(acceleration : acceleration, motion : motion, gravity : gravity)
                 
+                //When hit hard, not normal behaviour
+                if self.acceleration > 1.9{
+                    print("Aktivitet ÖVER TVÅ")
+                    self.lastActivityCheat = true
+                }
+                //Filtering for wrong direction of useracceleration
+                
+                OperationQueue.main.addOperation {
+                    
+                    //IF CHEATING
+                    if abs(gravity.z) > 0.87 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
+                        self.cheatingDetected(str : "FUSK1")
+                        
+                    }
+                        
+                    else if abs(gravity.x) > 0.5 && (abs(motion.userAcceleration.z) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
+                        self.cheatingDetected(str : "FUSK2")
+                        
+                    }
+                        
+                    else if abs(gravity.y) > 0.5 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.z) > 0.6) {
+                        self.cheatingDetected(str : "FUSK3")
+                    }
+                        
+                    else{
+                        //If Last activity was cheat this activityfactor won't be guilty either
+                        if self.lastActivityCheat == true{
+                            self.lastActivityCheat = false
+                        }
+                         //Activity passes as Accepted
+                        else{
+                            self.lastActivityCheat = false
+                            self.numbers.append(self.acceleration)
+                            // Every Second
+                            if self.numbers.count % Int(20) == 0 {
+                                self.updateGraph()
+                                self.numbers.removeAll()
+                            }
+                        }
+                    }
+                }
             }
         }
     }
     
-    
-    func activityFilter(){
-        //Filter All ActivityFactors here
+    func cheatingFilter(){
+        
     }
+    
+    
+    
+    func activityFilter(activityFactor : Double) {
+        if activityFactor > 0.5 && activityFactor < 1.7{
+            self.acceptedOrNotView.backgroundColor = .green
+        }
+        else{
+            self.acceptedOrNotView.backgroundColor = .red
+        }
+    }
+    
+    func cheatingDetected(str : String){
+        print(str)
+        self.acceptedOrNotView.backgroundColor = .red
+    }
+    
+    
     
     @IBAction func startBtn(_ sender: Any) {
         if motionManager.isDeviceMotionAvailable{
@@ -198,16 +237,12 @@ class ViewController: UIViewController {
             startAccelerometer()
             isDeviceMotionOn = true
         }
-
+        
     }
     
     func resetAllValues(){
         numbers.removeAll()
-        averageArray.removeAll()
-        averageValue = 0
-        sumAverageNodes = 0
-        averageNodes = 0
-        temporaryAverage = 0
+        activityFactorArray.removeAll()
         maxValue = 0
         minValue = 0
         currentNode = 0
