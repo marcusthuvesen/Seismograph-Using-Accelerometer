@@ -15,7 +15,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var chtChart: LineChartView!
     var isDeviceMotionOn = false
     var numbers : [Double] = []
-    var acceptedArray : [Double] = [0]
+    var limitUpperArray : [Double] = [1.7]
+    var limitLowerArray : [Double] = [0.35]
     var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
@@ -59,6 +60,8 @@ class ViewController: UIViewController {
     
     func updateGraph(){
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
+        var lineChartEntry2  = [ChartDataEntry]()
+        var lineChartEntry3  = [ChartDataEntry]()
         
         let activityFactor = calculateActivityFactor(activityArray: numbers)
         activityFilter(activityFactor : activityFactor)
@@ -68,19 +71,33 @@ class ViewController: UIViewController {
         //The for loop
         for i in 0..<activityFactorArray.count {
             let value = ChartDataEntry(x: Double(i), y: activityFactorArray[i]) // here we set the X and Y status in a data chart
-            
+            let value2 = ChartDataEntry(x: Double(i), y: limitLowerArray[0])
+            let value3 = ChartDataEntry(x: Double(i), y: limitUpperArray[0])
             lineChartEntry.append(value) // here we add it to the data se
+            lineChartEntry2.append(value2)
+            lineChartEntry3.append(value3)
         }
         
-        let line1 = LineChartDataSet(values: lineChartEntry, label: "Current Activity") //Here we convert lineChartEntry to a LineChartDataSet
+        let line1 = LineChartDataSet(values: lineChartEntry, label: "Activity Factor") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
         line1.fillColor = .black
         line1.drawFilledEnabled = true
         
+        let line2 = LineChartDataSet(values: lineChartEntry2, label: "Undre Gräns") //Here we convert lineChartEntry to a LineChartDataSet
+        line2.colors = [NSUIColor.green] //Sets the colour to blue
+        line2.circleRadius = 0
+        line2.fillColor = .red
+        line2.drawFilledEnabled = true
+        
+        let line3 = LineChartDataSet(values: lineChartEntry3, label: "Övre Gräns") //Here we convert lineChartEntry to a LineChartDataSet
+        line3.colors = [NSUIColor.green] //Sets the colour to blue
+        line3.circleRadius = 0
         
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
+        data.addDataSet(line2)
+        data.addDataSet(line3)
         
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
@@ -143,52 +160,29 @@ class ViewController: UIViewController {
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
         
         //When hit hard, not normal behaviour
-//        if self.acceleration > 1.9{
-//            print("Aktivitet ÖVER 1.9")
-//            self.lastActivityCheat = true
-//        }
-//
-        //If acceleration in wrong axis, not accepted behaviour
-        if abs(gravity.z) > 0.87 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
-            self.cheatingDetected(str : "FUSK1")
+        
+        if self.acceleration > 1.7{
+            cheatingDetected(str: "Aktivitet ÖVER 1.9")
         }
-            
-        else if abs(gravity.x) > 0.5 && (abs(motion.userAcceleration.z) > 0.6 || abs(motion.userAcceleration.y) > 0.6) {
-            self.cheatingDetected(str : "FUSK2")
-        }
-            
-        else if abs(gravity.y) > 0.5 && (abs(motion.userAcceleration.x) > 0.6 || abs(motion.userAcceleration.z) > 0.6) {
-            self.cheatingDetected(str : "FUSK3")
+        
+        if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && abs(motion.userAcceleration.z) < 0.65 && abs(motion.userAcceleration.y) < 0.6{
+            print("Godkänt i gravity")
         }
         else{
-            self.lastActivityCheat = false
+            cheatingDetected(str : "Fusk")
         }
-            
-            //Activity passes as Accepted
-        //else{
-            
-            self.numbers.append(self.acceleration)
-            // Every Second
-            if self.numbers.count % Int(20) == 0 {
-                
-                if self.lastActivityCheat == false{
-                    self.acceptedArray.append(self.acceleration)
-                
-                }
-                 self.updateGraph()
-                self.numbers.removeAll()
-                
-                
-            }
-        //}
         
-       
-       
+        self.numbers.append(self.acceleration)
+        // Every Second
+        if self.numbers.count % Int(20) == 0 {
+            self.updateGraph()
+            self.numbers.removeAll()
+        }
         
     }
     
     func activityFilter(activityFactor : Double) {
-        if activityFactor > 0.5 && activityFactor < 1.7{
+        if activityFactor > 0.35 && activityFactor < 1.7{
             self.acceptedOrNotView.backgroundColor = .green
             
         }
