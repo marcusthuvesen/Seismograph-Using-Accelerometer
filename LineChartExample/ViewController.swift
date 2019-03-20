@@ -171,9 +171,9 @@ class ViewController: UIViewController {
             accZ = calculateActivityFactor(activityArray: accelerationZArray)
             activityFactor = calculateActivityFactor(activityArray: numbers)
             print("ActivityFactor \(activityFactor)")
-            activityFactorArray.append(acceleration)
+            activityFactorArray.append(activityFactor)
             
-            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.acceleration > 0.35 && self.acceleration < 1.7{
+            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.35 && self.activityFactor < 1.7{
                 print("Godkänt")
                 self.acceptedOrNotView.backgroundColor = .green
             }
