@@ -19,8 +19,8 @@ class ViewController: UIViewController {
     var gravityYArray : [Double] = []
     var accelerationYArray : [Double] = []
     var accelerationZArray : [Double] = []
-    var limitUpperArray : [Double] = [1.7]
-    var limitLowerArray : [Double] = [0.35]
+    var limitUpperArray : [Double] = [1.4]
+    var limitLowerArray : [Double] = [0.25]
     var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
@@ -36,6 +36,11 @@ class ViewController: UIViewController {
     var accY : Double = 0
     var accZ : Double = 0
     var activityFactor : Double = 0
+    var temporaryTapDetection : Double?
+    var tapCheatDetected = false
+    let lowerLimit : Double = 0.25
+    let upperLimit : Double = 1.4
+    
     
     @IBOutlet weak var buttonOutlet: UIButton!
     @IBOutlet weak var minValueLabel: UILabel!
@@ -44,6 +49,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var startButtonOutlet: UIButton!
     @IBOutlet weak var clearButtonOutlet: UIButton!
     @IBOutlet weak var acceptedOrNotView: UIView!
+    @IBOutlet weak var leftBtnOutlet: UIButton!
+    @IBOutlet weak var rightBtnOutlet: UIButton!
     
     
     override func viewDidLoad() {
@@ -114,7 +121,7 @@ class ViewController: UIViewController {
         
         // Get the speed of activity by dividing sum of values with nodes/.count
         let activityFactor = activitySum / Double(activityArray.count)
-        if activityFactor > 0.25{
+        if activityFactor > 0.1{
             //print("ActivityFactor: \(activityFactor)")
             return activityFactor
         }
@@ -134,7 +141,7 @@ class ViewController: UIViewController {
                 let y = abs(motion.userAcceleration.y)
                 let z = abs(motion.userAcceleration.z)
                 //Detects Movement in all Chanels
-                self.acceleration = round((x+y+z) * 100) / 100
+                self.acceleration = round((x+z) * 100) / 100
                 
                 if self.acceleration > self.maxValue{
                     self.maxValue = self.acceleration
@@ -173,7 +180,18 @@ class ViewController: UIViewController {
             print("ActivityFactor \(activityFactor)")
             activityFactorArray.append(activityFactor)
             
-            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.35 && self.activityFactor < 1.7{
+            if let temporaryTapDetection = temporaryTapDetection {
+                if temporaryTapDetection > activityFactor + 0.3 && temporaryTapDetection > activityFactor - 0.3{
+                    print("Tap Cheat Detection")
+                    tapCheatDetected = true
+                }
+                else{
+                    tapCheatDetected = false
+                }
+            }
+            temporaryTapDetection = activityFactor
+            
+            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false{
                 print("Godkänt")
                 self.acceptedOrNotView.backgroundColor = .green
             }
@@ -182,13 +200,14 @@ class ViewController: UIViewController {
             }
             
             // 5 times a second
-           
             self.updateGraph()
             self.numbers.removeAll()
             self.gravityXArray.removeAll()
             self.gravityYArray.removeAll()
             self.accelerationYArray.removeAll()
             self.accelerationZArray.removeAll()
+            //Set tap detection to previous value
+            
             gravX = 0
             gravY = 0
             accY = 0
@@ -198,7 +217,7 @@ class ViewController: UIViewController {
     }
     
     func RedOrGreene(activityFactor : Double) {
-        if activityFactor > 0.35 && activityFactor < 1.7{
+        if activityFactor > lowerLimit && activityFactor < upperLimit{
             self.acceptedOrNotView.backgroundColor = .green
             
         }
@@ -213,7 +232,25 @@ class ViewController: UIViewController {
         self.acceptedOrNotView.backgroundColor = .red
     }
     
+    @IBAction func longPressLeftBtn(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began{
+            print("Vänster Godkänd")
+            leftBtnOutlet.tintColor = .green
+        }
+        if sender.state == .ended{
+            leftBtnOutlet.tintColor = .black
+        }
+    }
     
+    @IBAction func longPressRightBtn(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began{
+            print("Höger Godkänd")
+            rightBtnOutlet.tintColor = .green
+        }
+        if sender.state == .ended{
+            rightBtnOutlet.tintColor = .black
+        }
+    }
     
     @IBAction func startBtn(_ sender: Any) {
         if motionManager.isDeviceMotionAvailable{
