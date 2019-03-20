@@ -17,13 +17,27 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7r-Yg-hXX" customClass="LineChartView" customModule="Charts">
+                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7r-Yg-hXX" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="235.5"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MZF-gC-FWM">
+                                        <rect key="frame" x="619" y="8" width="40" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="bo9-km-PdM"/>
+                                            <constraint firstAttribute="height" constant="40" id="qfH-jS-BJm"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="MZF-gC-FWM" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="top" constant="8" id="Uey-Sl-SZT"/>
+                                    <constraint firstAttribute="trailing" secondItem="MZF-gC-FWM" secondAttribute="trailing" constant="8" id="YQI-7W-KZU"/>
+                                </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SRl-9D-wBC">
                                 <rect key="frame" x="14" y="265" width="639" height="45"/>
@@ -101,6 +115,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="acceptedOrNotView" destination="MZF-gC-FWM" id="K8X-1S-nYa"/>
                         <outlet property="averageLabel" destination="Oah-p2-CO5" id="Jet-sU-qp4"/>
                         <outlet property="buttonOutlet" destination="SRl-9D-wBC" id="LYl-sv-D7f"/>
                         <outlet property="chtChart" destination="V7r-Yg-hXX" id="THu-Rl-57A"/>
