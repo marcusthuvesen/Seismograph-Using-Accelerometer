@@ -26,9 +26,6 @@ class ViewController: UIViewController {
     var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
-    var maxValue : Double = 0
-    var minValue : Double = 0
-    var averageValue : Double = 0
     var acceleration : Double = 0
     var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
@@ -160,71 +157,70 @@ class ViewController: UIViewController {
                 
                 self.updateGraph()
                
-//                let gravity = motion.gravity
-//                OperationQueue.main.addOperation {
-//                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
-//
-//                }
+                let gravity = motion.gravity
+                OperationQueue.main.addOperation {
+                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+
+                }
             }
         }
     }
     
-//    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
-//
-//        //When hit hard, not normal behaviour
-//        if numbers.count < 20{
-//            gravityXArray.append(abs(gravity.x))
-//            gravityYArray.append(abs(gravity.y))
-//            accelerationZArray.append(abs(motion.userAcceleration.z))
-//            accelerationXArray.append(abs(motion.userAcceleration.x))
-//            self.numbers.append(acceleration)
-//        }
-//        else{
-//            gravX = calculateActivityFactor(activityArray: gravityXArray)
-//            gravY = calculateActivityFactor(activityArray: gravityYArray)
-//            accX = calculateActivityFactor(activityArray: accelerationXArray)
-//            accZ = calculateActivityFactor(activityArray: accelerationZArray)
-//            activityFactor = calculateActivityFactor(activityArray: numbers)
-//            if activityFactor > 0.25 {
-//                 print("ActivityFactor \(activityFactor)")
-//            }
-//            activityFactorArray.append(activityFactor)
-//
-//            if let temporaryTapDetection = temporaryTapDetection {
-//                if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
-//                    print("Tap Cheat Detection")
-//                    tapCheatDetected = true
-//                }
-//                else{
-//                    tapCheatDetected = false
-//                }
-//            }
-//            temporaryTapDetection = activityFactor
-//
-//            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
-//               // print("Godkänt")
-//                self.acceptedOrNotView.backgroundColor = .green
-//            }
-//            else{
-//                cheatingDetected(str : "Fusk")
-//            }
-//
-//            // 5 times a second
-//
-//            self.numbers.removeAll()
-//            self.gravityXArray.removeAll()
-//            self.gravityYArray.removeAll()
-////            self.accelerationYArray.removeAll()
-////            self.accelerationZArray.removeAll()
-//            //Set tap detection to previous value
-//
-//            gravX = 0
-//            gravY = 0
-//            accY = 0
-//            accZ = 0
-//        }
-//
-//    }
+    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
+
+        //When hit hard, not normal behaviour
+        if numbers.count < 20{
+            gravityXArray.append(abs(gravity.x))
+            gravityYArray.append(abs(gravity.y))
+            accelerationZArray.append(abs(motion.userAcceleration.z))
+            accelerationXArray.append(abs(motion.userAcceleration.x))
+            self.numbers.append(acceleration)
+        }
+        else{
+            gravX = calculateActivityFactor(activityArray: gravityXArray)
+            gravY = calculateActivityFactor(activityArray: gravityYArray)
+            accX = calculateActivityFactor(activityArray: accelerationXArray)
+            accZ = calculateActivityFactor(activityArray: accelerationZArray)
+            activityFactor = calculateActivityFactor(activityArray: numbers)
+            if activityFactor > 0.25 {
+                 print("ActivityFactor \(activityFactor)")
+            }
+            activityFactorArray.append(activityFactor)
+
+            if let temporaryTapDetection = temporaryTapDetection {
+                if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
+                    print("Tap Cheat Detection")
+                    tapCheatDetected = true
+                }
+                else{
+                    tapCheatDetected = false
+                }
+            }
+            temporaryTapDetection = activityFactor
+
+            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
+               // print("Godkänt")
+                self.acceptedOrNotView.backgroundColor = .green
+            }
+            else{
+                cheatingDetected(str : "Fusk")
+            }
+
+            // 5 times a second
+
+            self.numbers.removeAll()
+            self.gravityXArray.removeAll()
+            self.gravityYArray.removeAll()
+            self.accelerationYArray.removeAll()
+            self.accelerationZArray.removeAll()
+
+            gravX = 0
+            gravY = 0
+            accY = 0
+            accZ = 0
+        }
+
+    }
     
     func RedOrGreene(activityFactor : Double) {
         if activityFactor > lowerLimit && activityFactor < upperLimit{
