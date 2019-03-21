@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2003A4D22243C5B600DF92BE /* OtherStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2003A4D12243C5B600DF92BE /* OtherStoryboard.storyboard */; };
 		204BF2FB2240EF9000736A74 /* ThreeAxisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */; };
 		204BF3202242468900736A74 /* FourAxisAbsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */; };
 		28C90CF81F16E4F4001378A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C90CF71F16E4F4001378A1 /* AppDelegate.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2003A4D12243C5B600DF92BE /* OtherStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = OtherStoryboard.storyboard; sourceTree = "<group>"; };
 		204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAxisViewController.swift; sourceTree = "<group>"; };
 		204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourAxisAbsViewController.swift; sourceTree = "<group>"; };
 		28C90CF41F16E4F4001378A1 /* LineChartExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LineChartExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -135,6 +137,7 @@
 				28C90CF91F16E4F4001378A1 /* ViewController.swift */,
 				28C90CFB1F16E4F4001378A1 /* Main.storyboard */,
 				204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */,
+				2003A4D12243C5B600DF92BE /* OtherStoryboard.storyboard */,
 				204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */,
 				28C90CFE1F16E4F4001378A1 /* Assets.xcassets */,
 				28C90D001F16E4F4001378A1 /* LaunchScreen.storyboard */,
@@ -286,6 +289,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2003A4D22243C5B600DF92BE /* OtherStoryboard.storyboard in Resources */,
 				28C90D021F16E4F4001378A1 /* LaunchScreen.storyboard in Resources */,
 				28C90CFF1F16E4F4001378A1 /* Assets.xcassets in Resources */,
 				28C90CFD1F16E4F4001378A1 /* Main.storyboard in Resources */,

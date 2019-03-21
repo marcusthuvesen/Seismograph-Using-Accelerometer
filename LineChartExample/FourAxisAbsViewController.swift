@@ -13,9 +13,6 @@ import CoreMotion
 class FourAxisAbsViewController: UIViewController {
 
     @IBOutlet weak var chtChart: LineChartView!
-    @IBOutlet weak var minValueLabel: UILabel!
-    @IBOutlet weak var maxValueLabel: UILabel!
-    @IBOutlet weak var averageLabel: UILabel!
     @IBOutlet weak var startButtonOutlet: UIButton!
     @IBOutlet weak var clearButtonOutlet: UIButton!
     @IBOutlet weak var validStepsIndicator: UIView!
@@ -23,8 +20,6 @@ class FourAxisAbsViewController: UIViewController {
     var timeInterval : Double = 20
     let motionManager = CMMotionManager()
     var acceleration = 0.0
-    var maxValue = 0.0
-    var minValue = 0.0
     var isDeviceMotionOn = false
     var currentNode = 0
     var userActivitySpeed = [Double]() // användarens "medelhastighet"
@@ -44,7 +39,6 @@ class FourAxisAbsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
     }
     
@@ -229,12 +223,7 @@ class FourAxisAbsViewController: UIViewController {
         zValueArray.removeAll()
         accelerationArray.removeAll()
         tempArray.removeAll()
-        maxValue = 0
-        minValue = 0
         currentNode = 0
-        minValueLabel.text = "0"
-        maxValueLabel.text = "0"
-        averageLabel.text = "0"
         
         
     }
