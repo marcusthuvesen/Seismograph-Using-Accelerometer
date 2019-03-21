@@ -93,11 +93,13 @@ class FourAxisAbsViewController: UIViewController {
         
         self.chtChart.setVisibleXRangeMinimum(250)
         self.chtChart.setVisibleXRangeMaximum(250)
+
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         
-        
+
         tempArray.append(accelerationArray[currentNode])
+        
         currentNode += 1
 
         //currentNode += 1
