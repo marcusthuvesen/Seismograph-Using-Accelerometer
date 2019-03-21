@@ -99,6 +99,8 @@ class FourAxisAbsViewController: UIViewController {
         
         tempArray.append(accelerationArray[currentNode])
         currentNode += 1
+
+        //currentNode += 1
         
         
         
