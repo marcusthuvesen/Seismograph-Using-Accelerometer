@@ -39,7 +39,6 @@ class FourAxisAbsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
     }
     

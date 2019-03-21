@@ -26,9 +26,6 @@ class ViewController: UIViewController {
     var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
-    var maxValue : Double = 0
-    var minValue : Double = 0
-    var averageValue : Double = 0
     var acceleration : Double = 0
     var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
