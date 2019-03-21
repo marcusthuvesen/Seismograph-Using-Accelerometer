@@ -19,8 +19,10 @@ class ViewController: UIViewController {
     var gravityYArray : [Double] = []
     var accelerationYArray : [Double] = []
     var accelerationZArray : [Double] = []
-    var limitUpperArray : [Double] = [1.4]
-    var limitLowerArray : [Double] = [0.25]
+    var accelerationXArray : [Double] = []
+    var inputAccYArray : [Double] = []
+    var inputAccZArray : [Double] = []
+    var inputAccXArray : [Double] = []
     var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
@@ -28,13 +30,14 @@ class ViewController: UIViewController {
     var minValue : Double = 0
     var averageValue : Double = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 100
+    var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
     var lastActivityCheat = false
     var gravX : Double = 0
     var gravY : Double = 0
     var accY : Double = 0
     var accZ : Double = 0
+    var accX : Double = 0
     var activityFactor : Double = 0
     var temporaryTapDetection : Double?
     var tapCheatDetected = false
@@ -43,9 +46,6 @@ class ViewController: UIViewController {
     
     
     @IBOutlet weak var buttonOutlet: UIButton!
-    @IBOutlet weak var minValueLabel: UILabel!
-    @IBOutlet weak var maxValueLabel: UILabel!
-    @IBOutlet weak var averageLabel: UILabel!
     @IBOutlet weak var startButtonOutlet: UIButton!
     @IBOutlet weak var clearButtonOutlet: UIButton!
     @IBOutlet weak var acceptedOrNotView: UIView!
@@ -64,6 +64,7 @@ class ViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+       
         // Dispose of any resources that can be recreated.
     }
     
@@ -73,29 +74,26 @@ class ViewController: UIViewController {
         var lineChartEntry3  = [ChartDataEntry]()
         
         //The for loop
-        for i in 0..<activityFactorArray.count {
-            let value = ChartDataEntry(x: Double(i), y: activityFactorArray[i]) // here we set the X and Y status in a data chart
-            let value2 = ChartDataEntry(x: Double(i), y: limitLowerArray[0])
-            let value3 = ChartDataEntry(x: Double(i), y: limitUpperArray[0])
+        for i in 0..<inputAccXArray.count {
+            let value = ChartDataEntry(x: Double(i), y: inputAccXArray[i]) // here we set the X and Y status in a data chart
+            let value2 = ChartDataEntry(x: Double(i), y: inputAccYArray[i])
+            let value3 = ChartDataEntry(x: Double(i), y: inputAccZArray[i])
             lineChartEntry.append(value) // here we add it to the data se
             lineChartEntry2.append(value2)
             lineChartEntry3.append(value3)
+            
         }
-        
-        let line1 = LineChartDataSet(values: lineChartEntry, label: "Activity Factor") //Here we convert lineChartEntry to a LineChartDataSet
+        let line1 = LineChartDataSet(values: lineChartEntry, label: "AccX") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
-        line1.fillColor = .black
-        line1.drawFilledEnabled = true
         
-        let line2 = LineChartDataSet(values: lineChartEntry2, label: "Undre Gräns") //Here we convert lineChartEntry to a LineChartDataSet
-        line2.colors = [NSUIColor.red]
+        let line2 = LineChartDataSet(values: lineChartEntry2, label: "AccY") //Here we convert lineChartEntry to a LineChartDataSet
+        line2.colors = [NSUIColor.yellow]
         line2.circleRadius = 0
-        line2.fillColor = .red
-        line2.drawFilledEnabled = true
+
         
-        let line3 = LineChartDataSet(values: lineChartEntry3, label: "Övre Gräns") //Here we convert lineChartEntry to a LineChartDataSet
-        line3.colors = [NSUIColor.red]
+        let line3 = LineChartDataSet(values: lineChartEntry3, label: "AccZ") //Here we convert lineChartEntry to a LineChartDataSet
+        line3.colors = [NSUIColor.purple]
         line3.circleRadius = 0
         
         let data = LineChartData() //This is the object that will be added to the chart
@@ -105,12 +103,16 @@ class ViewController: UIViewController {
         
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
-        self.chtChart.setVisibleXRangeMinimum(250)
-        self.chtChart.setVisibleXRangeMaximum(250)
+        self.chtChart.setVisibleXRangeMinimum(200)
+        self.chtChart.setVisibleXRangeMaximum(200)
+        self.chtChart.setScaleEnabled(false)
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
-        
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
+        
+        lineChartEntry.removeAll()
+        lineChartEntry2.removeAll()
+        lineChartEntry3.removeAll()
     }
     
     // Function for users speed
@@ -140,81 +142,85 @@ class ViewController: UIViewController {
                 let x = abs(motion.userAcceleration.x)
                 let y = abs(motion.userAcceleration.y)
                 let z = abs(motion.userAcceleration.z)
+                self.inputAccXArray.append(x)
+                self.inputAccYArray.append(y)
+                self.inputAccZArray.append(z)
+    
+                if self.inputAccXArray.count > 200 {
+                    self.inputAccYArray.remove(at: 0)
+                    self.inputAccXArray.remove(at: 0)
+                    self.inputAccZArray.remove(at: 0)
+                }
                 //Detects Movement in all Chanels
                 self.acceleration = round((x+z) * 100) / 100
                 
-                if self.acceleration > self.maxValue{
-                    self.maxValue = self.acceleration
-                    self.maxValue = round(self.maxValue * 100) / 100
-                    
-                    self.maxValueLabel.text = "Max: " + String(self.maxValue)
-                }
-                
-                
-                //Filtering for wrong direction of useracceleration
-                let gravity = motion.gravity
-                OperationQueue.main.addOperation {
-                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
-                    
-                }
+                self.updateGraph()
+               
+//                let gravity = motion.gravity
+//                OperationQueue.main.addOperation {
+//                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+//
+//                }
             }
         }
     }
     
-    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
-        
-        //When hit hard, not normal behaviour
-        if numbers.count < 20{
-            gravityXArray.append(abs(gravity.x))
-            gravityYArray.append(abs(gravity.y))
-            accelerationYArray.append(abs(motion.userAcceleration.y))
-            accelerationZArray.append(abs(motion.userAcceleration.z))
-            self.numbers.append(acceleration)
-        }
-        else{
-            gravX = calculateActivityFactor(activityArray: gravityXArray)
-            gravY = calculateActivityFactor(activityArray: gravityYArray)
-            accY = calculateActivityFactor(activityArray: accelerationYArray)
-            accZ = calculateActivityFactor(activityArray: accelerationZArray)
-            activityFactor = calculateActivityFactor(activityArray: numbers)
-            print("ActivityFactor \(activityFactor)")
-            activityFactorArray.append(activityFactor)
-            
-            if let temporaryTapDetection = temporaryTapDetection {
-                if temporaryTapDetection > activityFactor + 0.3 && temporaryTapDetection > activityFactor - 0.3{
-                    print("Tap Cheat Detection")
-                    tapCheatDetected = true
-                }
-                else{
-                    tapCheatDetected = false
-                }
-            }
-            temporaryTapDetection = activityFactor
-            
-            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false{
-                print("Godkänt")
-                self.acceptedOrNotView.backgroundColor = .green
-            }
-            else{
-                cheatingDetected(str : "Fusk")
-            }
-            
-            // 5 times a second
-            self.updateGraph()
-            self.numbers.removeAll()
-            self.gravityXArray.removeAll()
-            self.gravityYArray.removeAll()
-            self.accelerationYArray.removeAll()
-            self.accelerationZArray.removeAll()
-            //Set tap detection to previous value
-            
-            gravX = 0
-            gravY = 0
-            accY = 0
-            accZ = 0
-        }
-     
-    }
+//    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
+//
+//        //When hit hard, not normal behaviour
+//        if numbers.count < 20{
+//            gravityXArray.append(abs(gravity.x))
+//            gravityYArray.append(abs(gravity.y))
+//            accelerationZArray.append(abs(motion.userAcceleration.z))
+//            accelerationXArray.append(abs(motion.userAcceleration.x))
+//            self.numbers.append(acceleration)
+//        }
+//        else{
+//            gravX = calculateActivityFactor(activityArray: gravityXArray)
+//            gravY = calculateActivityFactor(activityArray: gravityYArray)
+//            accX = calculateActivityFactor(activityArray: accelerationXArray)
+//            accZ = calculateActivityFactor(activityArray: accelerationZArray)
+//            activityFactor = calculateActivityFactor(activityArray: numbers)
+//            if activityFactor > 0.25 {
+//                 print("ActivityFactor \(activityFactor)")
+//            }
+//            activityFactorArray.append(activityFactor)
+//
+//            if let temporaryTapDetection = temporaryTapDetection {
+//                if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
+//                    print("Tap Cheat Detection")
+//                    tapCheatDetected = true
+//                }
+//                else{
+//                    tapCheatDetected = false
+//                }
+//            }
+//            temporaryTapDetection = activityFactor
+//
+//            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
+//               // print("Godkänt")
+//                self.acceptedOrNotView.backgroundColor = .green
+//            }
+//            else{
+//                cheatingDetected(str : "Fusk")
+//            }
+//
+//            // 5 times a second
+//
+//            self.numbers.removeAll()
+//            self.gravityXArray.removeAll()
+//            self.gravityYArray.removeAll()
+////            self.accelerationYArray.removeAll()
+////            self.accelerationZArray.removeAll()
+//            //Set tap detection to previous value
+//
+//            gravX = 0
+//            gravY = 0
+//            accY = 0
+//            accZ = 0
+//        }
+//
+//    }
     
     func RedOrGreene(activityFactor : Double) {
         if activityFactor > lowerLimit && activityFactor < upperLimit{
@@ -227,14 +233,16 @@ class ViewController: UIViewController {
     }
     
     func cheatingDetected(str : String){
-        print(str)
+        //print(str)
         self.lastActivityCheat = true
         self.acceptedOrNotView.backgroundColor = .red
     }
     
     @IBAction func longPressLeftBtn(_ sender: UILongPressGestureRecognizer) {
+        
+    sender.minimumPressDuration = 0.01
         if sender.state == .began{
-            print("Vänster Godkänd")
+         //   print("Vänster Godkänd")
             leftBtnOutlet.tintColor = .green
         }
         if sender.state == .ended{
@@ -243,8 +251,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func longPressRightBtn(_ sender: UILongPressGestureRecognizer) {
+        sender.minimumPressDuration = 0.01
         if sender.state == .began{
-            print("Höger Godkänd")
+            //print("Höger Godkänd")
             rightBtnOutlet.tintColor = .green
         }
         if sender.state == .ended{
@@ -287,12 +296,10 @@ class ViewController: UIViewController {
         self.gravityYArray.removeAll()
         self.accelerationYArray.removeAll()
         self.accelerationZArray.removeAll()
-        maxValue = 0
-        minValue = 0
+        self.inputAccYArray.removeAll()
+        self.inputAccXArray.removeAll()
+        self.inputAccZArray.removeAll()
         currentNode = 0
-        minValueLabel.text = "0"
-        maxValueLabel.text = "0"
-        averageLabel.text = "0"
     }
     
 }
