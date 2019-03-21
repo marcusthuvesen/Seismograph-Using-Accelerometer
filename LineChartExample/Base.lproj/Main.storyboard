@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Uqj-lX-KDd">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -136,6 +136,172 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="135.96059113300493" y="138.40000000000001"/>
+        </scene>
+        <!--Four Axis Abs View Controller-->
+        <scene sceneID="iZP-LV-bvX">
+            <objects>
+                <viewController id="OCG-nG-onL" customClass="FourAxisAbsViewController" customModule="LineChartExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NbJ-Q8-VEe"/>
+                        <viewControllerLayoutGuide type="bottom" id="9Lv-S9-42R"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5H6-sl-HCg">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="2" translatesAutoresizingMaskIntoConstraints="NO" id="ler-eC-b7y" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="118" y="0.0" width="431" height="237"/>
+                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="431" id="PnX-6R-NF4"/>
+                                    <constraint firstAttribute="height" constant="237" id="Wgj-Nr-7zH"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ls2-DA-7Gp">
+                                <rect key="frame" x="0.0" y="240" width="667" height="135"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcz-95-QeC">
+                                        <rect key="frame" x="133.5" y="8" width="400" height="45"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="m1D-IQ-JoR"/>
+                                            <constraint firstAttribute="width" constant="400" id="oNE-eq-Mku"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <state key="normal" title="Starta">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startBtn:" destination="OCG-nG-onL" eventType="touchUpInside" id="XOO-AK-r9R"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmi-0m-4To">
+                                        <rect key="frame" x="133.5" y="61" width="400" height="45"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="400" id="c3s-Jj-aFO"/>
+                                            <constraint firstAttribute="height" constant="45" id="wU5-Ta-Bnd"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Starta Om"/>
+                                        <connections>
+                                            <action selector="clearChartBtn:" destination="OCG-nG-onL" eventType="touchUpInside" id="TLf-uN-Bm1"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="135" id="DdH-cr-5TQ"/>
+                                    <constraint firstItem="bcz-95-QeC" firstAttribute="centerX" secondItem="Ls2-DA-7Gp" secondAttribute="centerX" id="HKL-FN-pnA"/>
+                                    <constraint firstItem="bcz-95-QeC" firstAttribute="top" secondItem="Ls2-DA-7Gp" secondAttribute="top" constant="8" id="olb-Jb-Tuv"/>
+                                    <constraint firstItem="jmi-0m-4To" firstAttribute="centerX" secondItem="Ls2-DA-7Gp" secondAttribute="centerX" id="rgg-cV-V4a"/>
+                                    <constraint firstItem="jmi-0m-4To" firstAttribute="top" secondItem="bcz-95-QeC" secondAttribute="bottom" constant="8" id="zzr-0C-qN7"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="ler-eC-b7y" firstAttribute="top" secondItem="NbJ-Q8-VEe" secondAttribute="bottom" id="EeK-EL-REt"/>
+                            <constraint firstAttribute="trailing" secondItem="Ls2-DA-7Gp" secondAttribute="trailing" id="Kxr-jU-x6v"/>
+                            <constraint firstItem="Ls2-DA-7Gp" firstAttribute="leading" secondItem="5H6-sl-HCg" secondAttribute="leading" id="M2E-pF-PB6"/>
+                            <constraint firstItem="9Lv-S9-42R" firstAttribute="top" secondItem="Ls2-DA-7Gp" secondAttribute="bottom" id="b03-06-GUX"/>
+                            <constraint firstItem="ler-eC-b7y" firstAttribute="centerX" secondItem="5H6-sl-HCg" secondAttribute="centerX" id="rYT-WK-UbE"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chtChart" destination="ler-eC-b7y" id="KHn-qm-FgW"/>
+                        <outlet property="clearBtnOutlet" destination="jmi-0m-4To" id="qTS-JP-z9b"/>
+                        <outlet property="startBtnOutlet" destination="bcz-95-QeC" id="Qis-VH-QYl"/>
+                        <outlet property="validStepsIndicator" destination="Ls2-DA-7Gp" id="XkY-CJ-c1O"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lZV-dW-xvB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="134.48275862068968" y="901.60000000000002"/>
+        </scene>
+        <!--Three Axis View Controller-->
+        <scene sceneID="oQK-rO-chK">
+            <objects>
+                <viewController id="Uqj-lX-KDd" customClass="ThreeAxisViewController" customModule="LineChartExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5co-r5-rLd"/>
+                        <viewControllerLayoutGuide type="bottom" id="IRA-qJ-0ao"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PRR-jj-RyH">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="2" translatesAutoresizingMaskIntoConstraints="NO" id="RjV-Fa-gyC" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="118" y="0.0" width="431" height="237"/>
+                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="431" id="042-Vu-4mh"/>
+                                    <constraint firstAttribute="height" constant="237" id="RfP-d1-6rl"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AfY-Uk-7yc">
+                                <rect key="frame" x="0.0" y="240" width="667" height="135"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cEA-VE-SDI">
+                                        <rect key="frame" x="133.5" y="8" width="400" height="45"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="400" id="3mQ-eX-4Y9"/>
+                                            <constraint firstAttribute="height" constant="45" id="RQd-AS-VED"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <state key="normal" title="Starta">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startButton:" destination="Uqj-lX-KDd" eventType="touchUpInside" id="MuV-ad-Hhs"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V9L-TH-LFH">
+                                        <rect key="frame" x="133.5" y="61" width="400" height="45"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="400" id="Ko5-jL-cPk"/>
+                                            <constraint firstAttribute="height" constant="45" id="ZUa-PF-HcL"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Starta Om"/>
+                                        <connections>
+                                            <action selector="clearChartButton:" destination="Uqj-lX-KDd" eventType="touchUpInside" id="Bdh-m0-IIW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="V9L-TH-LFH" firstAttribute="centerX" secondItem="AfY-Uk-7yc" secondAttribute="centerX" id="2cB-QV-3jr"/>
+                                    <constraint firstItem="V9L-TH-LFH" firstAttribute="top" secondItem="cEA-VE-SDI" secondAttribute="bottom" constant="8" id="6kV-Jq-SWm"/>
+                                    <constraint firstItem="cEA-VE-SDI" firstAttribute="top" secondItem="AfY-Uk-7yc" secondAttribute="top" constant="8" id="8st-gm-dqo"/>
+                                    <constraint firstAttribute="height" constant="135" id="Slr-TZ-7Mi"/>
+                                    <constraint firstItem="cEA-VE-SDI" firstAttribute="centerX" secondItem="AfY-Uk-7yc" secondAttribute="centerX" id="lxu-Ip-fgg"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="RjV-Fa-gyC" firstAttribute="centerX" secondItem="PRR-jj-RyH" secondAttribute="centerX" id="Fh0-wY-MLY"/>
+                            <constraint firstItem="RjV-Fa-gyC" firstAttribute="top" secondItem="5co-r5-rLd" secondAttribute="bottom" id="VAG-ZT-Jos"/>
+                            <constraint firstAttribute="trailing" secondItem="AfY-Uk-7yc" secondAttribute="trailing" id="W8J-fv-RR9"/>
+                            <constraint firstItem="IRA-qJ-0ao" firstAttribute="top" secondItem="AfY-Uk-7yc" secondAttribute="bottom" id="WEG-pI-l7T"/>
+                            <constraint firstItem="AfY-Uk-7yc" firstAttribute="leading" secondItem="PRR-jj-RyH" secondAttribute="leading" id="u3q-y7-6NC"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chtChart" destination="RjV-Fa-gyC" id="7tD-T0-Jdh"/>
+                        <outlet property="clearButtonOutlet" destination="V9L-TH-LFH" id="Djr-Zn-cF5"/>
+                        <outlet property="startButtonOutlet" destination="cEA-VE-SDI" id="5et-2O-KYm"/>
+                        <outlet property="validStepsIndicator" destination="AfY-Uk-7yc" id="oND-3D-cK3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6eA-FD-z1Z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="134" y="1663"/>
         </scene>
     </scenes>
     <resources>

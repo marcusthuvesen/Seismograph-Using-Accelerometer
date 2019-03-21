@@ -13,9 +13,12 @@ import CoreMotion
 class FourAxisAbsViewController: UIViewController {
 
     @IBOutlet weak var chtChart: LineChartView!
-    @IBOutlet weak var startButtonOutlet: UIButton!
-    @IBOutlet weak var clearButtonOutlet: UIButton!
+    
+    @IBOutlet weak var startBtnOutlet: UIButton!
+    @IBOutlet weak var clearBtnOutlet: UIButton!
     @IBOutlet weak var validStepsIndicator: UIView!
+    
+    
     
     var timeInterval : Double = 20
     let motionManager = CMMotionManager()
@@ -198,34 +201,36 @@ class FourAxisAbsViewController: UIViewController {
     
     
     
-    
-    @IBAction func startButton(_ sender: Any) {
+    @IBAction func startBtn(_ sender: Any) {
+        
         if motionManager.isDeviceMotionAvailable {
             
             if isDeviceMotionOn {
                 isDeviceMotionOn = false
                 motionManager.stopDeviceMotionUpdates()
-                startButtonOutlet.setTitle("START", for: .normal)
+                startBtnOutlet.setTitle("START", for: .normal)
             } else {
                 isDeviceMotionOn = true
                 startDeviceMotion()
-                startButtonOutlet.setTitle("STOP", for: .normal)
+                startBtnOutlet.setTitle("STOP", for: .normal)
             }
         }
     }
-
     
-    @IBAction func clearChartButton(_ sender: Any) {
+    @IBAction func clearChartBtn(_ sender: Any) {
+        
         if motionManager.isDeviceMotionAvailable {
             motionManager.stopDeviceMotionUpdates()
             resetAllValues()
             reloadInputViews()
-            startButtonOutlet.setTitle("Stoppa", for: .normal)
+            startBtnOutlet.setTitle("Stoppa", for: .normal)
             motionManager.startDeviceMotionUpdates()
             startDeviceMotion()
             isDeviceMotionOn = true
         }
     }
+    
+   
     
     func resetAllValues() {
         
