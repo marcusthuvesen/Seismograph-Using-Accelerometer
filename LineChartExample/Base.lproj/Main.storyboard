@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jrc-VL-kwS">
     <device id="retina4_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -136,6 +136,85 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="135.96059113300493" y="138.40000000000001"/>
+        </scene>
+        <!--Four Axis Abs View Controller-->
+        <scene sceneID="Aw5-JZ-7OG">
+            <objects>
+                <viewController id="jrc-VL-kwS" customClass="FourAxisAbsViewController" customModule="LineChartExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6xM-Gl-Fe5"/>
+                        <viewControllerLayoutGuide type="bottom" id="zKP-S7-Akz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ef3-J1-wUs">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GCY-x1-gsF">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="2" translatesAutoresizingMaskIntoConstraints="NO" id="6DF-0o-Hxu" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="52" y="0.0" width="563" height="237"/>
+                                <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="237" id="2aD-e8-yQS"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWg-tD-ET6">
+                                <rect key="frame" x="183.5" y="259" width="300" height="45"/>
+                                <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="DAh-ZR-IZR"/>
+                                    <constraint firstAttribute="height" constant="45" id="GxU-lt-CXt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Starta">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="startBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="S3F-bm-S1L"/>
+                                    <action selector="startButton:" destination="jrc-VL-kwS" eventType="touchUpInside" id="GaR-zr-Jpk"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AYR-Ql-c4V">
+                                <rect key="frame" x="183.5" y="312" width="300" height="45"/>
+                                <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Q9j-mm-Brq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Starta Om"/>
+                                <connections>
+                                    <action selector="clearChartBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qaT-5d-UTE"/>
+                                    <action selector="clearChartButton:" destination="jrc-VL-kwS" eventType="touchUpInside" id="Naz-v4-rIo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6DF-0o-Hxu" firstAttribute="centerX" secondItem="Ef3-J1-wUs" secondAttribute="centerX" id="EU3-fu-0PX"/>
+                            <constraint firstItem="AYR-Ql-c4V" firstAttribute="centerX" secondItem="Ef3-J1-wUs" secondAttribute="centerX" id="Fcr-7Z-ZLs"/>
+                            <constraint firstItem="wWg-tD-ET6" firstAttribute="centerX" secondItem="Ef3-J1-wUs" secondAttribute="centerX" id="KSu-Qs-QMk"/>
+                            <constraint firstItem="6DF-0o-Hxu" firstAttribute="leading" secondItem="Ef3-J1-wUs" secondAttribute="leadingMargin" constant="32" id="S3a-iN-fub"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="6DF-0o-Hxu" secondAttribute="trailing" constant="32" id="Ym1-1d-0eV"/>
+                            <constraint firstItem="AYR-Ql-c4V" firstAttribute="width" secondItem="wWg-tD-ET6" secondAttribute="width" id="Z62-UX-yZc"/>
+                            <constraint firstItem="AYR-Ql-c4V" firstAttribute="top" secondItem="wWg-tD-ET6" secondAttribute="bottom" constant="8" id="kue-za-ubE"/>
+                            <constraint firstItem="wWg-tD-ET6" firstAttribute="top" secondItem="6DF-0o-Hxu" secondAttribute="bottom" constant="22" id="nch-cv-kX5"/>
+                            <constraint firstItem="6DF-0o-Hxu" firstAttribute="top" secondItem="6xM-Gl-Fe5" secondAttribute="bottom" id="pRF-B9-x9C"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chtChart" destination="6DF-0o-Hxu" id="0ng-GG-Ysx"/>
+                        <outlet property="clearButtonOutlet" destination="AYR-Ql-c4V" id="vsl-cP-5z9"/>
+                        <outlet property="startButtonOutlet" destination="wWg-tD-ET6" id="ibw-sp-WbV"/>
+                        <outlet property="validStepsIndicator" destination="GCY-x1-gsF" id="jRF-QW-XVE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tX4-1f-YhX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="134.48275862068968" y="901.60000000000002"/>
         </scene>
     </scenes>
     <resources>
