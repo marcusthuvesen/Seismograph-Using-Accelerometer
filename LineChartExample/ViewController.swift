@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     var minValue : Double = 0
     var averageValue : Double = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 100
+    var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
     var lastActivityCheat = false
     var gravX : Double = 0
