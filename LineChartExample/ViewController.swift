@@ -105,7 +105,11 @@ class ViewController: UIViewController {
         currentNode += 1
         self.chtChart.setVisibleXRangeMinimum(200)
         self.chtChart.setVisibleXRangeMaximum(200)
-        self.chtChart.setScaleEnabled(false)
+        self.chtChart.leftAxis.axisMinimum = 0
+        self.chtChart.rightAxis.axisMinimum = 0
+        self.chtChart.leftAxis.axisMaximum = 2.0
+        self.chtChart.rightAxis.axisMaximum = 2.0
+
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
