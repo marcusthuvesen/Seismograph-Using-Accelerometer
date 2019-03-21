@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
         var lineChartEntry2  = [ChartDataEntry]()
         var lineChartEntry3  = [ChartDataEntry]()
-        
+        var lineChartEntry4 = [ChartDataEntry]()
         //The for loop
         for i in 0..<inputAccXArray.count {
             let value = ChartDataEntry(x: Double(i), y: inputAccXArray[i]) // here we set the X and Y status in a data chart
@@ -80,6 +80,14 @@ class ViewController: UIViewController {
             lineChartEntry3.append(value3)
             
         }
+        
+        
+        for i in 0..<activityFactorArray.count{
+            let value4 = ChartDataEntry(x: Double(i * 10), y: inputAccZArray[i])
+            lineChartEntry4.append(value4)
+        }
+        
+        
         let line1 = LineChartDataSet(values: lineChartEntry, label: "AccX") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
@@ -93,10 +101,15 @@ class ViewController: UIViewController {
         line3.colors = [NSUIColor.purple]
         line3.circleRadius = 0
         
+        let line4 = LineChartDataSet(values: lineChartEntry4, label: "ActivityFactor") //Here we convert lineChartEntry to a LineChartDataSet
+        line3.colors = [NSUIColor.purple]
+        line3.circleRadius = 0
+        
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         data.addDataSet(line2)
         data.addDataSet(line3)
+        data.addDataSet(line4)
         
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
@@ -104,15 +117,14 @@ class ViewController: UIViewController {
         self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.leftAxis.axisMinimum = 0
         self.chtChart.rightAxis.axisMinimum = 0
-        self.chtChart.leftAxis.axisMaximum = 2.0
-        self.chtChart.rightAxis.axisMaximum = 2.0
+        self.chtChart.leftAxis.axisMaximum = 2.5
+        self.chtChart.rightAxis.axisMaximum = 2.5
 
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
-        
-        
     }
+    
     
     // Function for users speed
     func calculateActivityFactor(activityArray : Array<Double>) -> Double {
@@ -203,7 +215,8 @@ class ViewController: UIViewController {
             else{
                 cheatingDetected(str : "Fusk")
             }
-
+            
+            updateGraph()
             // 5 times a second
 
             self.numbers.removeAll()

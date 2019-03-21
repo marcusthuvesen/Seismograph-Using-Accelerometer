@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		204BF2FB2240EF9000736A74 /* ThreeAxisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */; };
 		204BF3202242468900736A74 /* FourAxisAbsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */; };
+		2589C5AE2243CE7600D0A22F /* secondStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2589C5AD2243CE7600D0A22F /* secondStoryboard.storyboard */; };
 		28C90CF81F16E4F4001378A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C90CF71F16E4F4001378A1 /* AppDelegate.swift */; };
 		28C90CFA1F16E4F4001378A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C90CF91F16E4F4001378A1 /* ViewController.swift */; };
 		28C90CFD1F16E4F4001378A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28C90CFB1F16E4F4001378A1 /* Main.storyboard */; };
@@ -39,9 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2003A4D42243CC3300DF92BE /* secondStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = secondStoryboard.storyboard; path = "/Users/henrikjangefelt/Desktop/Seismograph-Using-Accelerometer/LineChartExample/secondStoryboard.storyboard"; sourceTree = "<absolute>"; };
 		204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAxisViewController.swift; sourceTree = "<group>"; };
 		204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourAxisAbsViewController.swift; sourceTree = "<group>"; };
+		2589C5AD2243CE7600D0A22F /* secondStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = secondStoryboard.storyboard; sourceTree = "<group>"; };
 		28C90CF41F16E4F4001378A1 /* LineChartExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LineChartExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28C90CF71F16E4F4001378A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28C90CF91F16E4F4001378A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -135,12 +136,12 @@
 				28C90CF71F16E4F4001378A1 /* AppDelegate.swift */,
 				28C90CF91F16E4F4001378A1 /* ViewController.swift */,
 				28C90CFB1F16E4F4001378A1 /* Main.storyboard */,
-				2003A4D42243CC3300DF92BE /* secondStoryboard.storyboard */,
 				204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */,
 				204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */,
 				28C90CFE1F16E4F4001378A1 /* Assets.xcassets */,
 				28C90D001F16E4F4001378A1 /* LaunchScreen.storyboard */,
 				28C90D031F16E4F4001378A1 /* Info.plist */,
+				2589C5AD2243CE7600D0A22F /* secondStoryboard.storyboard */,
 			);
 			path = LineChartExample;
 			sourceTree = "<group>";
@@ -245,7 +246,7 @@
 				TargetAttributes = {
 					28C90CF31F16E4F4001378A1 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = B2X526Z7Y9;
+						DevelopmentTeam = 4CTKXD59TF;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -291,6 +292,7 @@
 				28C90D021F16E4F4001378A1 /* LaunchScreen.storyboard in Resources */,
 				28C90CFF1F16E4F4001378A1 /* Assets.xcassets in Resources */,
 				28C90CFD1F16E4F4001378A1 /* Main.storyboard in Resources */,
+				2589C5AE2243CE7600D0A22F /* secondStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,7 +562,7 @@
 			baseConfigurationReference = 6BF6E3D21C5BA73C4F932CEC /* Pods-LineChartExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = B2X526Z7Y9;
+				DEVELOPMENT_TEAM = 4CTKXD59TF;
 				INFOPLIST_FILE = LineChartExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = HelloWorld.LineChartExample;
@@ -575,7 +577,7 @@
 			baseConfigurationReference = 64FDFEA35C60F4E94ED35135 /* Pods-LineChartExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = B2X526Z7Y9;
+				DEVELOPMENT_TEAM = 4CTKXD59TF;
 				INFOPLIST_FILE = LineChartExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = HelloWorld.LineChartExample;
