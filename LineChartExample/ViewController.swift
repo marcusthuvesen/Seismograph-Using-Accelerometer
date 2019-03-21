@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
         var lineChartEntry2  = [ChartDataEntry]()
         var lineChartEntry3  = [ChartDataEntry]()
-        
+        var lineChartEntry4 = [ChartDataEntry]()
         //The for loop
         for i in 0..<inputAccXArray.count {
             let value = ChartDataEntry(x: Double(i), y: inputAccXArray[i]) // here we set the X and Y status in a data chart
@@ -80,6 +80,14 @@ class ViewController: UIViewController {
             lineChartEntry3.append(value3)
             
         }
+        
+        
+        for i in 0..<activityFactorArray.count{
+            let value4 = ChartDataEntry(x: Double(i * 10), y: inputAccZArray[i])
+            lineChartEntry4.append(value4)
+        }
+        
+        
         let line1 = LineChartDataSet(values: lineChartEntry, label: "AccX") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
@@ -93,10 +101,15 @@ class ViewController: UIViewController {
         line3.colors = [NSUIColor.purple]
         line3.circleRadius = 0
         
+        let line4 = LineChartDataSet(values: lineChartEntry4, label: "ActivityFactor") //Here we convert lineChartEntry to a LineChartDataSet
+        line3.colors = [NSUIColor.purple]
+        line3.circleRadius = 0
+        
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         data.addDataSet(line2)
         data.addDataSet(line3)
+        data.addDataSet(line4)
         
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
@@ -104,15 +117,14 @@ class ViewController: UIViewController {
         self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.leftAxis.axisMinimum = 0
         self.chtChart.rightAxis.axisMinimum = 0
-        self.chtChart.leftAxis.axisMaximum = 2.0
-        self.chtChart.rightAxis.axisMaximum = 2.0
+        self.chtChart.leftAxis.axisMaximum = 2.5
+        self.chtChart.rightAxis.axisMaximum = 2.5
 
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
-        
-        
     }
+    
     
     // Function for users speed
     func calculateActivityFactor(activityArray : Array<Double>) -> Double {
@@ -155,71 +167,71 @@ class ViewController: UIViewController {
                 
                 self.updateGraph()
                
-//                let gravity = motion.gravity
-//                OperationQueue.main.addOperation {
-//                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
-//
-//                }
+                let gravity = motion.gravity
+                OperationQueue.main.addOperation {
+                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+
+                }
             }
         }
     }
     
-//    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
-//
-//        //When hit hard, not normal behaviour
-//        if numbers.count < 20{
-//            gravityXArray.append(abs(gravity.x))
-//            gravityYArray.append(abs(gravity.y))
-//            accelerationZArray.append(abs(motion.userAcceleration.z))
-//            accelerationXArray.append(abs(motion.userAcceleration.x))
-//            self.numbers.append(acceleration)
-//        }
-//        else{
-//            gravX = calculateActivityFactor(activityArray: gravityXArray)
-//            gravY = calculateActivityFactor(activityArray: gravityYArray)
-//            accX = calculateActivityFactor(activityArray: accelerationXArray)
-//            accZ = calculateActivityFactor(activityArray: accelerationZArray)
-//            activityFactor = calculateActivityFactor(activityArray: numbers)
-//            if activityFactor > 0.25 {
-//                 print("ActivityFactor \(activityFactor)")
-//            }
-//            activityFactorArray.append(activityFactor)
-//
-//            if let temporaryTapDetection = temporaryTapDetection {
-//                if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
-//                    print("Tap Cheat Detection")
-//                    tapCheatDetected = true
-//                }
-//                else{
-//                    tapCheatDetected = false
-//                }
-//            }
-//            temporaryTapDetection = activityFactor
-//
-//            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
-//               // print("Godkänt")
-//                self.acceptedOrNotView.backgroundColor = .green
-//            }
-//            else{
-//                cheatingDetected(str : "Fusk")
-//            }
-//
-//            // 5 times a second
-//
-//            self.numbers.removeAll()
-//            self.gravityXArray.removeAll()
-//            self.gravityYArray.removeAll()
-////            self.accelerationYArray.removeAll()
-////            self.accelerationZArray.removeAll()
-//            //Set tap detection to previous value
-//
-//            gravX = 0
-//            gravY = 0
-//            accY = 0
-//            accZ = 0
-//        }
-//
-//    }
+    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
+
+        //When hit hard, not normal behaviour
+        if numbers.count < 20{
+            gravityXArray.append(abs(gravity.x))
+            gravityYArray.append(abs(gravity.y))
+            accelerationZArray.append(abs(motion.userAcceleration.z))
+            accelerationXArray.append(abs(motion.userAcceleration.x))
+            self.numbers.append(acceleration)
+        }
+        else{
+            gravX = calculateActivityFactor(activityArray: gravityXArray)
+            gravY = calculateActivityFactor(activityArray: gravityYArray)
+            accX = calculateActivityFactor(activityArray: accelerationXArray)
+            accZ = calculateActivityFactor(activityArray: accelerationZArray)
+            activityFactor = calculateActivityFactor(activityArray: numbers)
+            if activityFactor > 0.25 {
+                 print("ActivityFactor \(activityFactor)")
+            }
+            activityFactorArray.append(activityFactor)
+
+            if let temporaryTapDetection = temporaryTapDetection {
+                if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
+                    print("Tap Cheat Detection")
+                    tapCheatDetected = true
+                }
+                else{
+                    tapCheatDetected = false
+                }
+            }
+            temporaryTapDetection = activityFactor
+
+            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
+               // print("Godkänt")
+                self.acceptedOrNotView.backgroundColor = .green
+            }
+            else{
+                cheatingDetected(str : "Fusk")
+            }
+            
+            updateGraph()
+            // 5 times a second
+
+            self.numbers.removeAll()
+            self.gravityXArray.removeAll()
+            self.gravityYArray.removeAll()
+            self.accelerationYArray.removeAll()
+            self.accelerationZArray.removeAll()
+
+            gravX = 0
+            gravY = 0
+            accY = 0
+            accZ = 0
+        }
+
+    }
     
     func RedOrGreene(activityFactor : Double) {
         if activityFactor > lowerLimit && activityFactor < upperLimit{
