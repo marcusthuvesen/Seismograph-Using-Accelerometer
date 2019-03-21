@@ -36,6 +36,9 @@ class FourAxisAbsViewController: UIViewController {
     
     
     
+    // TEST
+    var gravity : CMAcceleration?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,20 +111,10 @@ class FourAxisAbsViewController: UIViewController {
         
         // Every Second
         if currentNode % 5 == 0 {
-            
-            
-            
-            // kalla på funktion; (räkna ihop alla värden, medelvärdet (hastighet))
-            let averageX = calculateAverageSpeed(myArray: xValueArray)
-            let averageY = calculateAverageSpeed(myArray: yValueArray)
-            let averageZ = calculateAverageSpeed(myArray: zValueArray)
+        
             let averageActivity = calculateAverageSpeed(myArray: tempArray) // TEST??
             activityValueArray.append(averageActivity)
 
-            
-            print("average X: \(averageX)")
-            print("average Y: \(averageY)")
-            
             // Töm arrayen
             tempArray.removeAll()
         }
@@ -135,18 +128,25 @@ class FourAxisAbsViewController: UIViewController {
         motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
-            
             guard let motion = motion else {
                 return
             }
             
-            var userAccelerationX = abs(motion.userAcceleration.x)
-            var userAccelerationY = abs(motion.userAcceleration.y)
-            var userAccelerationZ = abs(motion.userAcceleration.z)
+            let userAccelerationX = abs(motion.userAcceleration.x)
+            let userAccelerationY = abs(motion.userAcceleration.y)
+            let userAccelerationZ = abs(motion.userAcceleration.z)
+            let userAccelerationXYZ = round((userAccelerationX + userAccelerationY + userAccelerationZ) * 100) / 100
 
-            var gravity = motion.gravity
-            
-            
+            self.xValueArray.append(userAccelerationX)
+            self.yValueArray.append(userAccelerationY)
+            self.zValueArray.append(userAccelerationZ)
+            self.accelerationArray.append(userAccelerationXYZ)
+
+            self.gravity = motion.gravity
+        
+            guard let gravity = self.gravity else {
+                return
+            }
             
             
             
@@ -167,19 +167,25 @@ class FourAxisAbsViewController: UIViewController {
             }
             
             
+            
+            
             // TEST UTAN userAcceleration i Z-led (kanske testa, x + z)
             //let userAccel = userAccelerationX + userAccelerationZ
             
-            let userAccelerationXYZ = round((userAccelerationX + userAccelerationY + userAccelerationZ) * 100) / 100
             
             
-            self.accelerationArray.append(userAccelerationXYZ)
-            self.xValueArray.append(userAccelerationX)
-            self.yValueArray.append(userAccelerationY)
-            self.zValueArray.append(userAccelerationZ)
+            
             self.updateGraph()
             
         }
+    }
+    
+    
+    func ifCorrectValue() {
+        
+        
+        
+        
     }
     
     
@@ -214,6 +220,7 @@ class FourAxisAbsViewController: UIViewController {
             motionManager.stopDeviceMotionUpdates()
             resetAllValues()
             reloadInputViews()
+            startButtonOutlet.setTitle("Stoppa", for: .normal)
             motionManager.startDeviceMotionUpdates()
             startDeviceMotion()
             isDeviceMotionOn = true

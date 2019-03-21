@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/henrikjangefelt/Desktop/Seismograph-Using-Accelerometer/LineChartExample/secondStoryboard.storyboard">
-   </FileRef>
-   <FileRef
       location = "group:LineChartExample.xcodeproj">
    </FileRef>
    <FileRef
