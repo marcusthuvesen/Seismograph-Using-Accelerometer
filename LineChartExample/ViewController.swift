@@ -111,9 +111,7 @@ class ViewController: UIViewController {
         self.chtChart.moveViewToX(Double(currentNode))
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
         
-        lineChartEntry.removeAll()
-        lineChartEntry2.removeAll()
-        lineChartEntry3.removeAll()
+        
     }
     
     // Function for users speed
