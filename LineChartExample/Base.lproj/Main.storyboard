@@ -122,13 +122,13 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="fsn-Yj-YEK">
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="fsn-Yj-YEK">
                     <connections>
                         <action selector="longPressLeftBtn:" destination="BYZ-38-t0r" id="LcT-Bo-5hp"/>
                         <outlet property="delegate" destination="Dlj-BQ-uG9" id="Bi8-tU-Wa4"/>
                     </connections>
                 </pongPressGestureRecognizer>
-                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="dCQ-a5-ykj">
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.0" id="dCQ-a5-ykj">
                     <connections>
                         <action selector="longPressRightBtn:" destination="BYZ-38-t0r" id="teD-d0-vxS"/>
                         <outlet property="delegate" destination="lXx-gB-8id" id="XEd-SU-QtD"/>

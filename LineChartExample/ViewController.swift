@@ -215,18 +215,18 @@ class ViewController: UIViewController {
     
     func UpdateRegenerationLine(activityFactor : Double){
         if activityFactor != 0 && activityFactor < 0.5{
-            self.regenerationSum += 0.08
+            self.regenerationSum += 0.01
         }
         else if activityFactor != 0 && activityFactor < 1{
-            self.regenerationSum += 0.1
+            self.regenerationSum += 0.02
         }
         else if activityFactor != 0 && activityFactor >= 1{
-            self.regenerationSum += 0.2
+            self.regenerationSum += 0.4
         }
         //If ActivityFactor is 0
         else{
             if self.regenerationSum > 0{
-                self.regenerationSum += -0.3
+                self.regenerationSum += -0.1
             }
             if self.regenerationSum < 0 {
                 self.regenerationSum = 0
@@ -257,7 +257,6 @@ class ViewController: UIViewController {
     
     @IBAction func longPressLeftBtn(_ sender: UILongPressGestureRecognizer) {
         
-    sender.minimumPressDuration = 0.01
         if sender.state == .began{
          //   print("Vänster Godkänd")
             leftBtnOutlet.tintColor = .green
@@ -268,7 +267,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func longPressRightBtn(_ sender: UILongPressGestureRecognizer) {
-        sender.minimumPressDuration = 0.01
+
         if sender.state == .began{
             //print("Höger Godkänd")
             rightBtnOutlet.tintColor = .green
