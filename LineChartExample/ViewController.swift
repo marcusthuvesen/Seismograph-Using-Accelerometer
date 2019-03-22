@@ -14,10 +14,13 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var chtChart: LineChartView!
     var isDeviceMotionOn = false
-    var numbers : [Double] = []
+    var regenerationSum : Double = 0
+    var regenerationArray : [Double] = []
+    var inputUsrAcceleration : Double = 0
+    var inputUsrAccelerationArray : [Double] = []
+    var accZXArray : [Double] = []
     var gravityXArray : [Double] = []
     var gravityYArray : [Double] = []
-    var accelerationYArray : [Double] = []
     var accelerationZArray : [Double] = []
     var accelerationXArray : [Double] = []
     var inputAccYArray : [Double] = []
@@ -27,7 +30,7 @@ class ViewController: UIViewController {
     let motionManager = CMMotionManager()
     var currentNode = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 20
+    var timeInterval : Double = 30
     var batchNumbersArray = [Double]()
     var lastActivityCheat = false
     var gravX : Double = 0
@@ -68,57 +71,34 @@ class ViewController: UIViewController {
     func updateGraph(){
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
         var lineChartEntry2  = [ChartDataEntry]()
-        var lineChartEntry3  = [ChartDataEntry]()
-        var lineChartEntry4 = [ChartDataEntry]()
-        //The for loop
-        for i in 0..<inputAccXArray.count {
-            let value = ChartDataEntry(x: Double(i), y: inputAccXArray[i]) // here we set the X and Y status in a data chart
-            let value2 = ChartDataEntry(x: Double(i), y: inputAccYArray[i])
-            let value3 = ChartDataEntry(x: Double(i), y: inputAccZArray[i])
+        for i in 0..<inputUsrAccelerationArray.count {
+            let value = ChartDataEntry(x: Double(i), y: inputUsrAccelerationArray[i]) // here we set the X and Y status in a data chart
+            let value2 = ChartDataEntry(x: Double(i), y: regenerationArray[i])
+            
             lineChartEntry.append(value) // here we add it to the data se
             lineChartEntry2.append(value2)
-            lineChartEntry3.append(value3)
-            
         }
         
-        
-        for i in 0..<activityFactorArray.count{
-            let value4 = ChartDataEntry(x: Double(i * 10), y: inputAccZArray[i])
-            lineChartEntry4.append(value4)
-        }
-        
-        
-        let line1 = LineChartDataSet(values: lineChartEntry, label: "AccX") //Here we convert lineChartEntry to a LineChartDataSet
+        let line1 = LineChartDataSet(values: lineChartEntry, label: "InputAcceleration - XYZ") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
         
-        let line2 = LineChartDataSet(values: lineChartEntry2, label: "AccY") //Here we convert lineChartEntry to a LineChartDataSet
-        line2.colors = [NSUIColor.yellow]
+        let line2 = LineChartDataSet(values: lineChartEntry2, label: "RegenerationConstant") //Here we convert lineChartEntry to a LineChartDataSet
+        line2.colors = [NSUIColor.green] //Sets the colour to blue
         line2.circleRadius = 0
-
-        
-        let line3 = LineChartDataSet(values: lineChartEntry3, label: "AccZ") //Here we convert lineChartEntry to a LineChartDataSet
-        line3.colors = [NSUIColor.purple]
-        line3.circleRadius = 0
-        
-        let line4 = LineChartDataSet(values: lineChartEntry4, label: "ActivityFactor") //Here we convert lineChartEntry to a LineChartDataSet
-        line3.colors = [NSUIColor.purple]
-        line3.circleRadius = 0
-        
+       
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         data.addDataSet(line2)
-        data.addDataSet(line3)
-        data.addDataSet(line4)
-        
+      
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
         self.chtChart.setVisibleXRangeMinimum(200)
         self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.leftAxis.axisMinimum = 0
         self.chtChart.rightAxis.axisMinimum = 0
-        self.chtChart.leftAxis.axisMaximum = 2.5
-        self.chtChart.rightAxis.axisMaximum = 2.5
+        self.chtChart.leftAxis.axisMaximum = 3
+        self.chtChart.rightAxis.axisMaximum = 3
 
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
@@ -154,16 +134,16 @@ class ViewController: UIViewController {
                 let y = abs(motion.userAcceleration.y)
                 let z = abs(motion.userAcceleration.z)
                 self.inputAccXArray.append(x)
-                self.inputAccYArray.append(y)
-                self.inputAccZArray.append(z)
-    
-                if self.inputAccXArray.count > 200 {
-                    self.inputAccYArray.remove(at: 0)
-                    self.inputAccXArray.remove(at: 0)
-                    self.inputAccZArray.remove(at: 0)
+                
+                if self.inputUsrAccelerationArray.count > 200 {
+                    self.inputUsrAccelerationArray.remove(at: 0)
+                    self.regenerationArray.remove(at: 0)
                 }
                 //Detects Movement in all Chanels
+                self.inputUsrAcceleration = x+y+z
+                self.inputUsrAccelerationArray.append(self.inputUsrAcceleration)
                 self.acceleration = round((x+z) * 100) / 100
+                self.regenerationArray.append(self.regenerationSum)
                 
                 self.updateGraph()
                
@@ -179,23 +159,22 @@ class ViewController: UIViewController {
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
 
         //When hit hard, not normal behaviour
-        if numbers.count < 20{
+        if accZXArray.count < 10{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
             accelerationXArray.append(abs(motion.userAcceleration.x))
-            self.numbers.append(acceleration)
+            self.accZXArray.append(acceleration)
         }
         else{
             gravX = calculateActivityFactor(activityArray: gravityXArray)
             gravY = calculateActivityFactor(activityArray: gravityYArray)
             accX = calculateActivityFactor(activityArray: accelerationXArray)
             accZ = calculateActivityFactor(activityArray: accelerationZArray)
-            activityFactor = calculateActivityFactor(activityArray: numbers)
-            if activityFactor > 0.25 {
-                 print("ActivityFactor \(activityFactor)")
-            }
-            activityFactorArray.append(activityFactor)
+            activityFactor = calculateActivityFactor(activityArray: accZXArray)
+            print("ActivityFactor \(activityFactor)")
+            
+            //activityFactorArray.append(activityFactor)
 
             if let temporaryTapDetection = temporaryTapDetection {
                 if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
@@ -207,30 +186,57 @@ class ViewController: UIViewController {
                 }
             }
             temporaryTapDetection = activityFactor
-
+           
             if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
-               // print("Godkänt")
+                //Accepted
+                
                 self.acceptedOrNotView.backgroundColor = .green
+                UpdateRegenerationLine(activityFactor: self.activityFactor)
             }
             else{
+                UpdateRegenerationLine(activityFactor: 0)
                 cheatingDetected(str : "Fusk")
             }
-            
-            updateGraph()
-            // 5 times a second
-
-            self.numbers.removeAll()
-            self.gravityXArray.removeAll()
-            self.gravityYArray.removeAll()
-            self.accelerationYArray.removeAll()
-            self.accelerationZArray.removeAll()
-
+        
+            //Reset after each batch
+            accZXArray.removeAll()
+            gravityXArray.removeAll()
+            gravityYArray.removeAll()
+            accelerationZArray.removeAll()
+            accelerationXArray.removeAll()
+            activityFactor = 0
             gravX = 0
             gravY = 0
             accY = 0
             accZ = 0
         }
 
+    }
+    
+    func UpdateRegenerationLine(activityFactor : Double){
+        if activityFactor != 0 && activityFactor < 0.5{
+            self.regenerationSum += 0.01
+        }
+        else if activityFactor != 0 && activityFactor < 1{
+            self.regenerationSum += 0.02
+        }
+        else if activityFactor != 0 && activityFactor >= 1{
+            self.regenerationSum += 0.4
+        }
+        //If ActivityFactor is 0
+        else{
+            if self.regenerationSum > 0{
+                self.regenerationSum += -0.1
+            }
+            if self.regenerationSum < 0 {
+                self.regenerationSum = 0
+            }
+            
+        }
+        print(regenerationSum)
+        
+        
+        
     }
     
     func RedOrGreene(activityFactor : Double) {
@@ -251,7 +257,6 @@ class ViewController: UIViewController {
     
     @IBAction func longPressLeftBtn(_ sender: UILongPressGestureRecognizer) {
         
-    sender.minimumPressDuration = 0.01
         if sender.state == .began{
          //   print("Vänster Godkänd")
             leftBtnOutlet.tintColor = .green
@@ -262,7 +267,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func longPressRightBtn(_ sender: UILongPressGestureRecognizer) {
-        sender.minimumPressDuration = 0.01
+
         if sender.state == .began{
             //print("Höger Godkänd")
             rightBtnOutlet.tintColor = .green
@@ -301,15 +306,13 @@ class ViewController: UIViewController {
     }
     
     func resetAllValues(){
-        numbers.removeAll()
-        activityFactorArray.removeAll()
-        self.gravityXArray.removeAll()
-        self.gravityYArray.removeAll()
-        self.accelerationYArray.removeAll()
-        self.accelerationZArray.removeAll()
-        self.inputAccYArray.removeAll()
-        self.inputAccXArray.removeAll()
-        self.inputAccZArray.removeAll()
+        gravityXArray.removeAll()
+        gravityYArray.removeAll()
+        accelerationZArray.removeAll()
+        inputUsrAccelerationArray.removeAll()
+        accZXArray.removeAll()
+        regenerationArray.removeAll()
+        regenerationSum = 0
         currentNode = 0
     }
     
