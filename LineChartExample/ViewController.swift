@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     let motionManager = CMMotionManager()
     var currentNode = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 20
+    var timeInterval : Double = 30
     var batchNumbersArray = [Double]()
     var lastActivityCheat = false
     var gravX : Double = 0
@@ -98,8 +98,8 @@ class ViewController: UIViewController {
         self.chtChart.setVisibleXRangeMaximum(200)
         self.chtChart.leftAxis.axisMinimum = 0
         self.chtChart.rightAxis.axisMinimum = 0
-        self.chtChart.leftAxis.axisMaximum = 5
-        self.chtChart.rightAxis.axisMaximum = 5
+        self.chtChart.leftAxis.axisMaximum = 3
+        self.chtChart.rightAxis.axisMaximum = 3
 
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
@@ -160,7 +160,7 @@ class ViewController: UIViewController {
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
 
         //When hit hard, not normal behaviour
-        if numbers.count < 20{
+        if numbers.count < 10{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
@@ -173,7 +173,7 @@ class ViewController: UIViewController {
             accX = calculateActivityFactor(activityArray: accelerationXArray)
             accZ = calculateActivityFactor(activityArray: accelerationZArray)
             activityFactor = calculateActivityFactor(activityArray: numbers)
-            //print("ActivityFactor \(activityFactor)")
+            print("ActivityFactor \(activityFactor)")
             
             //activityFactorArray.append(activityFactor)
 
@@ -187,7 +187,7 @@ class ViewController: UIViewController {
                 }
             }
             temporaryTapDetection = activityFactor
-
+           
             if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
                 //Accepted
                 
@@ -199,14 +199,14 @@ class ViewController: UIViewController {
                 UpdateRegenerationLine(activityFactor: self.activityFactor)
                 cheatingDetected(str : "Fusk")
             }
-            
-            //updateGraph()
-            // 5 times a second
+        
+            numbers.removeAll()
             gravityXArray.removeAll()
             gravityYArray.removeAll()
             accelerationZArray.removeAll()
             accelerationXArray.removeAll()
-
+            
+            activityFactor = 0
             gravX = 0
             gravY = 0
             accY = 0
@@ -217,18 +217,18 @@ class ViewController: UIViewController {
     
     func UpdateRegenerationLine(activityFactor : Double){
         if activityFactor != 0 && activityFactor < 0.5{
-            self.regenerationSum += 0.1
+            self.regenerationSum += 0.08
         }
         else if activityFactor != 0 && activityFactor < 1{
-            self.regenerationSum += 0.2
+            self.regenerationSum += 0.1
         }
         else if activityFactor != 0 && activityFactor >= 1{
-            self.regenerationSum += 0.4
+            self.regenerationSum += 0.2
         }
         //If ActivityFactor is 0
         else{
             if self.regenerationSum > 0{
-                self.regenerationSum += -0.2
+                self.regenerationSum += -0.3
             }
             if self.regenerationSum < 0 {
                 self.regenerationSum = 0
@@ -317,6 +317,7 @@ class ViewController: UIViewController {
         self.inputUsrAccelerationArray.removeAll()
         self.numbers.removeAll()
         self.regenerationArray.removeAll()
+        self.regenerationSum = 0
         currentNode = 0
     }
     
