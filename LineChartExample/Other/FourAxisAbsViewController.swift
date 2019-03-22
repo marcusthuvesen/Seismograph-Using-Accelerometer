@@ -39,10 +39,13 @@ class FourAxisAbsViewController: UIViewController {
     var activityFactorArray = [Double]()
     var activityValueArray = [Double]()
     
-    
+    // -------------------
     
     var axisValueArray = [Double]() // Array för tre axlarna
+    var userActivityArray = [Double]() // Array för filtrerad aktivitet
 
+    var rechargeRate = 0.0 // variabel för användarens graph (vid ökning stiger kurvan i grafen och vice versa).
+    var rechargeBaseRate = 0.1
     
     let motionManager = CMMotionManager()
     
@@ -53,15 +56,17 @@ class FourAxisAbsViewController: UIViewController {
     
     func updateGraph() {
         
-        var axisLineChartEntry = [ChartDataEntry]() // Y värdet
+        var axisLineChartEntry = [ChartDataEntry]() // X, Y & Z värdet
+        var userLineChartEntry = [ChartDataEntry]() // filtrerade aktivitets värdet
         
-        // numbers.count gemensam array för alla axlarna
-        //for i in 0..<accelerationArray.count {
+        // axisValueArray gemensam array för alla axlarna
         for i in 0..<axisValueArray.count {
 
             let axisValue = ChartDataEntry(x: Double(i), y: axisValueArray[i])
+            let userValue = ChartDataEntry(x: Double(i), y: userActivityArray[i])
             
-            axisLineChartEntry.append(axisValue)
+            axisLineChartEntry.append(axisValue) // x y z
+            userLineChartEntry.append(userValue) // aktivitet
         }
         
         // Array för
@@ -75,16 +80,13 @@ class FourAxisAbsViewController: UIViewController {
         lineAxis.colors = [NSUIColor.blue]
         lineAxis.circleRadius = 0
         
-       
-        
-        /*let lineActivity = LineChartDataSet(values: activityChartEntry, label: "user Activity")
-        lineActivity.colors = [NSUIColor.black]
-        lineActivity.circleRadius = 0*/
+        let lineActivity = LineChartDataSet(values: userLineChartEntry, label: "Filtered userActivity")
+        lineActivity.colors = [NSUIColor.red]
+        lineActivity.circleRadius = 0
         
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(lineAxis) //Adds the line to the dataSet
-        
-        //data.addDataSet(lineActivity)
+        data.addDataSet(lineActivity)
         chtChart.data = data //it adds the chart data to the chart and causes an update
         
         self.chtChart.setVisibleXRangeMinimum(250)
@@ -96,6 +98,8 @@ class FourAxisAbsViewController: UIViewController {
         //tempArray.append(accelerationArray[currentNode])
         
         currentNode += 1
+        
+        
         
         
         /*
@@ -111,12 +115,6 @@ class FourAxisAbsViewController: UIViewController {
     }
     
     
-    // ----------
-    
-    
-    // -------------
-    
-
     func startDeviceMotion() {
         
         if motionManager.isDeviceMotionAvailable {
@@ -160,39 +158,65 @@ class FourAxisAbsViewController: UIViewController {
    // Tar in användarens data och filtrerar den för att se om den är godkänd.
     func userActivityFiler(gravity : CMAcceleration, userAcceleration: CMAcceleration) {
         
-        if abs(gravity.x) > abs(gravity.y) && abs(gravity.z) > abs(gravity.y) {
+        var userIsSteping = false
+        let acceleration = userAcceleration.x + userAcceleration.y + userAcceleration.z
+        
+        //if abs(gravity.x) > abs(gravity.y) && abs(gravity.z) > abs(gravity.y) {
+        if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && userAcceleration.z < 0.65 && userAcceleration.y < 0.6 {
+
             
-            if abs(userAcceleration.x) > 0.35 && abs(userAcceleration.x) > abs(userAcceleration.z) && abs(userAcceleration.z) > abs(userAcceleration.y) {
-               
+            //if abs(userAcceleration.x) > 0.35 && abs(userAcceleration.x) > abs(userAcceleration.y) && abs(userAcceleration.z) > abs(userAcceleration.y) {
+         
                 // Godkänd aktivitet
-                updateActivityGraph()
+               userIsSteping = true
                 self.validStepsIndicator.backgroundColor = .green
                 
             } else {
+               
+            userIsSteping = false
                 self.validStepsIndicator.backgroundColor = .red
             }
-        } else {
+        /*} else {
+            userIsSteping = false
             self.validStepsIndicator.backgroundColor = .red
-        }
-        
+        }*/
+         updateActivityGraph(value: userIsSteping, acceleration: acceleration)
     }
     
     
     // Funktion för att rita ut på grafen (tar in värdet av den filtrerade aktivitete)
-    func updateActivityGraph() {
+    func updateActivityGraph(value : Bool, acceleration : Double) {
         // Ska ta in ett värde...
+        print(currentNode)
+        if currentNode % 20 == 0 {
         
+            
+            // Ha bara formeln
+    
+            if value {
+                // grafen stiger (lite långsammare)
+                if rechargeRate > 1.5 {
+                    rechargeRate = 1.5
+                } else {
+                    //rechargeRate += rechargeBaseRate * (1 + acceleration)
+                    rechargeRate += 0.1
+                    print("plus")
+                }
+        }
+        else {
+                // grafen sjunker (lite snabbare)
+                if rechargeRate <= 0  {
+                    rechargeRate = 0
+                    print("ligger på botten")
+                } else {
+                    rechargeRate -= 0.2
+                    print("sjunker")
+                }
+            }
         
-        
-        
-        
-        /*
-        if ... {
-            variable += 1
-            } else {
-            varia -= 1
-        }*/
-        
+    }
+        // appenda i array(?)
+        userActivityArray.append(rechargeRate)
     }
     
     // Returnerar om användaren fuskar
