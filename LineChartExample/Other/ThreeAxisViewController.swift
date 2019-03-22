@@ -114,10 +114,12 @@ class ThreeAxisViewController: UIViewController {
                     return
                 }
                 
-                var userAcceleration = motion.userAcceleration
                 var gravity = motion.gravity
+                
+                var userAcceleration = motion.userAcceleration
             
-               
+                let allAxisAcceleration = motion.userAcceleration.x + motion.userAcceleration.y + motion.userAcceleration.z
+
                 
                 /*var maxGravityX = 0.0
                 var minGravityX = 0.1
@@ -152,7 +154,6 @@ class ThreeAxisViewController: UIViewController {
                 
                 
                 // TEST UTAN userAcceleration i Z-led (kanske testa, x + z)
-                let userAccel = userAcceleration.x + userAcceleration.z
 
                 // lägg eventuellt till z
                 /*if abs(gravity.x) > 0.6 && abs(gravity.y) < 0.35 && abs(userAccel) > 0.35 && abs(userAccel) < 1.7 {
