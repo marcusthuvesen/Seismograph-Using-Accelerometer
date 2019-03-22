@@ -18,10 +18,9 @@ class ViewController: UIViewController {
     var regenerationArray : [Double] = []
     var inputUsrAcceleration : Double = 0
     var inputUsrAccelerationArray : [Double] = []
-    var numbers : [Double] = []
+    var accZXArray : [Double] = []
     var gravityXArray : [Double] = []
     var gravityYArray : [Double] = []
-    var accelerationYArray : [Double] = []
     var accelerationZArray : [Double] = []
     var accelerationXArray : [Double] = []
     var inputAccYArray : [Double] = []
@@ -160,19 +159,19 @@ class ViewController: UIViewController {
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
 
         //When hit hard, not normal behaviour
-        if numbers.count < 10{
+        if accZXArray.count < 10{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
             accelerationXArray.append(abs(motion.userAcceleration.x))
-            self.numbers.append(acceleration)
+            self.accZXArray.append(acceleration)
         }
         else{
             gravX = calculateActivityFactor(activityArray: gravityXArray)
             gravY = calculateActivityFactor(activityArray: gravityYArray)
             accX = calculateActivityFactor(activityArray: accelerationXArray)
             accZ = calculateActivityFactor(activityArray: accelerationZArray)
-            activityFactor = calculateActivityFactor(activityArray: numbers)
+            activityFactor = calculateActivityFactor(activityArray: accZXArray)
             print("ActivityFactor \(activityFactor)")
             
             //activityFactorArray.append(activityFactor)
@@ -195,17 +194,16 @@ class ViewController: UIViewController {
                 UpdateRegenerationLine(activityFactor: self.activityFactor)
             }
             else{
-                activityFactor = 0
-                UpdateRegenerationLine(activityFactor: self.activityFactor)
+                UpdateRegenerationLine(activityFactor: 0)
                 cheatingDetected(str : "Fusk")
             }
         
-            numbers.removeAll()
+            //Reset after each batch
+            accZXArray.removeAll()
             gravityXArray.removeAll()
             gravityYArray.removeAll()
             accelerationZArray.removeAll()
             accelerationXArray.removeAll()
-            
             activityFactor = 0
             gravX = 0
             gravY = 0
@@ -309,15 +307,13 @@ class ViewController: UIViewController {
     }
     
     func resetAllValues(){
-        numbers.removeAll()
-        self.gravityXArray.removeAll()
-        self.gravityYArray.removeAll()
-        self.accelerationYArray.removeAll()
-        self.accelerationZArray.removeAll()
-        self.inputUsrAccelerationArray.removeAll()
-        self.numbers.removeAll()
-        self.regenerationArray.removeAll()
-        self.regenerationSum = 0
+        gravityXArray.removeAll()
+        gravityYArray.removeAll()
+        accelerationZArray.removeAll()
+        inputUsrAccelerationArray.removeAll()
+        accZXArray.removeAll()
+        regenerationArray.removeAll()
+        regenerationSum = 0
         currentNode = 0
     }
     
