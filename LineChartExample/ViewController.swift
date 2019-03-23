@@ -83,7 +83,7 @@ class ViewController: UIViewController {
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
         
-        let line2 = LineChartDataSet(values: lineChartEntry2, label: "RegenerationConstant") //Here we convert lineChartEntry to a LineChartDataSet
+        let line2 = LineChartDataSet(values: lineChartEntry2, label: "RegenerationMultiplier") //Here we convert lineChartEntry to a LineChartDataSet
         line2.colors = [NSUIColor.green] //Sets the colour to blue
         line2.circleRadius = 0
        
@@ -159,7 +159,7 @@ class ViewController: UIViewController {
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
 
         //When hit hard, not normal behaviour
-        if accZXArray.count < 10{
+        if accZXArray.count < 5{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
@@ -214,22 +214,25 @@ class ViewController: UIViewController {
     }
     
     func UpdateRegenerationLine(activityFactor : Double){
+        if regenerationSum >= 1.5{
+            regenerationSum = 1.5
+        }
         if activityFactor != 0 && activityFactor < 0.5{
-            self.regenerationSum += 0.01
+            regenerationSum += 0.02
         }
         else if activityFactor != 0 && activityFactor < 1{
-            self.regenerationSum += 0.02
+            regenerationSum += 0.03
         }
         else if activityFactor != 0 && activityFactor >= 1{
-            self.regenerationSum += 0.4
+            regenerationSum += 0.5
         }
         //If ActivityFactor is 0
         else{
-            if self.regenerationSum > 0{
-                self.regenerationSum += -0.1
+            if regenerationSum > 0{
+                regenerationSum += -0.05
             }
-            if self.regenerationSum < 0 {
-                self.regenerationSum = 0
+            if regenerationSum < 0 {
+                regenerationSum = 0
             }
             
         }
