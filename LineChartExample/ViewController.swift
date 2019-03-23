@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     let motionManager = CMMotionManager()
     var currentNode = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 30
+    var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
     var lastActivityCheat = false
     var gravX : Double = 0
@@ -159,7 +159,7 @@ class ViewController: UIViewController {
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
 
         //When hit hard, not normal behaviour
-        if accZXArray.count < 5{
+        if accZXArray.count < 10{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
@@ -214,32 +214,22 @@ class ViewController: UIViewController {
     }
     
     func UpdateRegenerationLine(activityFactor : Double){
-        if regenerationSum >= 1.5{
-            regenerationSum = 1.5
+        
+        let maxActivity = 1.5
+        let additionFactor = (maxActivity - regenerationSum)/35
+        
+        if activityFactor == 0{
+            regenerationSum -= additionFactor*3
         }
-        if activityFactor != 0 && activityFactor < 0.5{
-            regenerationSum += 0.02
-        }
-        else if activityFactor != 0 && activityFactor < 1{
-            regenerationSum += 0.03
-        }
-        else if activityFactor != 0 && activityFactor >= 1{
-            regenerationSum += 0.5
-        }
-        //If ActivityFactor is 0
         else{
-            if regenerationSum > 0{
-                regenerationSum += -0.05
-            }
-            if regenerationSum < 0 {
-                regenerationSum = 0
-            }
-            
+           regenerationSum += abs(additionFactor)
         }
+        if regenerationSum <= 0{
+            regenerationSum = 0
+        }
+        
         print(regenerationSum)
-        
-        
-        
+      
     }
     
     func RedOrGreene(activityFactor : Double) {
