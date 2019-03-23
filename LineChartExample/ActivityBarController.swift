@@ -46,6 +46,7 @@ class ActivityBarController: UIViewController {
     let upperLimit : Double = 1.4
     var percentage = 0
     let defaultColor = UIColor(rgb: 0x1F2124)
+    let darkGreenColor = UIColor(rgb: 0x2c9104)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,7 +117,7 @@ class ActivityBarController: UIViewController {
             if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftThumbBtnOutlet.tintColor == .green && rightThumbBtnOutlet.tintColor == .green{
                 //Accepted
                 changeHealth()
-                self.view.backgroundColor = .green
+                self.view.backgroundColor = darkGreenColor
               
             }
             else{
@@ -181,6 +182,12 @@ class ActivityBarController: UIViewController {
                 percentage = 100
             }
             percentageLabel.text = "\(percentage)%"
+            if percentage > 50{
+                healthView.backgroundColor = .green
+            }
+            else{
+                healthView.backgroundColor = .red
+            }
         }
     }
     

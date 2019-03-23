@@ -214,10 +214,10 @@
                                         <rect key="frame" x="138" y="40" width="492" height="175"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f2h-sA-Z00">
-                                                <rect key="frame" x="0.0" y="0.0" width="10" height="175"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="175"/>
                                                 <color key="backgroundColor" red="1" green="0.24951819010000001" blue="0.1573469606" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="10" id="g6Y-Qg-AeQ"/>
+                                                    <constraint firstAttribute="width" id="g6Y-Qg-AeQ"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQH-nw-7kB">
@@ -242,7 +242,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.0" green="0.53277504280821919" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="RlM-qI-hWX" secondAttribute="bottom" constant="20" id="6Ta-ZO-hhy"/>
                                     <constraint firstItem="S6U-a1-Hg2" firstAttribute="top" secondItem="GHK-m9-JJz" secondAttribute="top" constant="30" id="810-fk-pdA"/>
