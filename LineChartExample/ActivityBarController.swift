@@ -44,6 +44,8 @@ class ActivityBarController: UIViewController {
     var tapCheatDetected = false
     let lowerLimit : Double = 0.25
     let upperLimit : Double = 1.4
+    var percentage = 0
+    let defaultColor = UIColor(rgb: 0x1F2124)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,15 +160,27 @@ class ActivityBarController: UIViewController {
     func cheatingDetected(str : String){
         //print(str)
         self.lastActivityCheat = true
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = defaultColor
     }
     
     
     func changeHealth(){
-        let parentViewWidth = healthView.bounds.width
-        
+        let parentViewWidth = healthBarView.bounds.width
+
         if healthWidth.constant < parentViewWidth{
             healthWidth.constant += CGFloat(parentViewWidth/20)
+            if healthWidth.constant > parentViewWidth{
+                healthWidth.constant = CGFloat(parentViewWidth)
+            }
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
+            let calculationVar = (healthWidth.constant / parentViewWidth) * 100
+            percentage = Int(calculationVar)
+            if percentage > 100{
+                percentage = 100
+            }
+            percentageLabel.text = "\(percentage)%"
         }
     }
     
@@ -222,6 +236,31 @@ class ActivityBarController: UIViewController {
         gravityYArray.removeAll()
         accelerationZArray.removeAll()
         accZXArray.removeAll()
+        percentage = 0
+        percentageLabel.text = "0%"
+        healthWidth.constant = 0
+        UIView.animate(withDuration: 1) {
+            self.view.layoutIfNeeded()
+        }
+        
     }
     
+}
+
+extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+    
+    convenience init(rgb: Int) {
+        self.init(
+            red: (rgb >> 16) & 0xFF,
+            green: (rgb >> 8) & 0xFF,
+            blue: rgb & 0xFF
+        )
+    }
 }
