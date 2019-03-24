@@ -30,7 +30,7 @@ class ViewController: UIViewController {
     let motionManager = CMMotionManager()
     var currentNode = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 30
+    var timeInterval : Double = 20
     var batchNumbersArray = [Double]()
     var lastActivityCheat = false
     var gravX : Double = 0
@@ -83,7 +83,7 @@ class ViewController: UIViewController {
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
         
-        let line2 = LineChartDataSet(values: lineChartEntry2, label: "RegenerationConstant") //Here we convert lineChartEntry to a LineChartDataSet
+        let line2 = LineChartDataSet(values: lineChartEntry2, label: "RegenerationMultiplier") //Here we convert lineChartEntry to a LineChartDataSet
         line2.colors = [NSUIColor.green] //Sets the colour to blue
         line2.circleRadius = 0
        
@@ -214,29 +214,22 @@ class ViewController: UIViewController {
     }
     
     func UpdateRegenerationLine(activityFactor : Double){
-        if activityFactor != 0 && activityFactor < 0.5{
-            self.regenerationSum += 0.01
+        
+        let maxActivity = 1.5
+        let additionFactor = (maxActivity - regenerationSum)/35
+        
+        if activityFactor == 0{
+            regenerationSum -= additionFactor*3
         }
-        else if activityFactor != 0 && activityFactor < 1{
-            self.regenerationSum += 0.02
-        }
-        else if activityFactor != 0 && activityFactor >= 1{
-            self.regenerationSum += 0.4
-        }
-        //If ActivityFactor is 0
         else{
-            if self.regenerationSum > 0{
-                self.regenerationSum += -0.1
-            }
-            if self.regenerationSum < 0 {
-                self.regenerationSum = 0
-            }
-            
+           regenerationSum += abs(additionFactor)
         }
+        if regenerationSum <= 0{
+            regenerationSum = 0
+        }
+        
         print(regenerationSum)
-        
-        
-        
+      
     }
     
     func RedOrGreene(activityFactor : Double) {
