@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Uqj-lX-KDd">
     <device id="retina6_1" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
@@ -302,11 +302,11 @@
                         <viewControllerLayoutGuide type="bottom" id="9Lv-S9-42R"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5H6-sl-HCg">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="2" translatesAutoresizingMaskIntoConstraints="NO" id="ler-eC-b7y" customClass="LineChartView" customModule="Charts">
-                                <rect key="frame" x="118" y="0.0" width="431" height="237"/>
+                                <rect key="frame" x="232.5" y="0.0" width="431" height="237"/>
                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="431" id="PnX-6R-NF4"/>
@@ -314,10 +314,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ls2-DA-7Gp">
-                                <rect key="frame" x="0.0" y="240" width="667" height="135"/>
+                                <rect key="frame" x="0.0" y="258" width="896" height="135"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcz-95-QeC">
-                                        <rect key="frame" x="133.5" y="8" width="400" height="45"/>
+                                        <rect key="frame" x="248" y="8" width="400" height="45"/>
                                         <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="45" id="m1D-IQ-JoR"/>
@@ -332,7 +332,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmi-0m-4To">
-                                        <rect key="frame" x="133.5" y="61" width="400" height="45"/>
+                                        <rect key="frame" x="248" y="61" width="400" height="45"/>
                                         <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="400" id="c3s-Jj-aFO"/>
@@ -385,11 +385,11 @@
                         <viewControllerLayoutGuide type="bottom" id="IRA-qJ-0ao"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="PRR-jj-RyH">
-                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="2" translatesAutoresizingMaskIntoConstraints="NO" id="RjV-Fa-gyC" customClass="LineChartView" customModule="Charts">
-                                <rect key="frame" x="118" y="0.0" width="431" height="237"/>
+                                <rect key="frame" x="232.5" y="0.0" width="431" height="237"/>
                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="431" id="042-Vu-4mh"/>
@@ -397,10 +397,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AfY-Uk-7yc">
-                                <rect key="frame" x="0.0" y="240" width="667" height="135"/>
+                                <rect key="frame" x="0.0" y="258" width="896" height="135"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cEA-VE-SDI">
-                                        <rect key="frame" x="133.5" y="8" width="400" height="45"/>
+                                        <rect key="frame" x="248" y="8" width="400" height="45"/>
                                         <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="400" id="3mQ-eX-4Y9"/>
@@ -415,7 +415,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V9L-TH-LFH">
-                                        <rect key="frame" x="133.5" y="61" width="400" height="45"/>
+                                        <rect key="frame" x="248" y="61" width="400" height="45"/>
                                         <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="400" id="Ko5-jL-cPk"/>

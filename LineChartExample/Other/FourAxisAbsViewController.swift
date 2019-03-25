@@ -19,7 +19,6 @@ class FourAxisAbsViewController: UIViewController {
     @IBOutlet weak var validStepsIndicator: UIView!
     
     
-    
     var timeInterval : Double = 20
     var acceleration = 0.0
     var isDeviceMotionOn = false
@@ -40,6 +39,8 @@ class FourAxisAbsViewController: UIViewController {
     var activityValueArray = [Double]()
     
     // -------------------
+    
+    
     
     var axisValueArray = [Double]() // Array för tre axlarna
     var userActivityArray = [Double]() // Array för filtrerad aktivitet
@@ -157,30 +158,32 @@ class FourAxisAbsViewController: UIViewController {
     
    // Tar in användarens data och filtrerar den för att se om den är godkänd.
     func userActivityFiler(gravity : CMAcceleration, userAcceleration: CMAcceleration) {
-        
-        var userIsSteping = false
+        var cheatingDetected = true
+
         let acceleration = userAcceleration.x + userAcceleration.y + userAcceleration.z
         
         //if abs(gravity.x) > abs(gravity.y) && abs(gravity.z) > abs(gravity.y) {
-        if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && userAcceleration.z < 0.65 && userAcceleration.y < 0.6 {
+        
+            
+        if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && userAcceleration.z > 0.65 && userAcceleration.y > 0.6 {
 
             
             //if abs(userAcceleration.x) > 0.35 && abs(userAcceleration.x) > abs(userAcceleration.y) && abs(userAcceleration.z) > abs(userAcceleration.y) {
          
                 // Godkänd aktivitet
-               userIsSteping = true
+               cheatingDetected = false
                 self.validStepsIndicator.backgroundColor = .green
                 
             } else {
                
-            userIsSteping = false
+            cheatingDetected = true
                 self.validStepsIndicator.backgroundColor = .red
             }
         /*} else {
             userIsSteping = false
             self.validStepsIndicator.backgroundColor = .red
         }*/
-         updateActivityGraph(value: userIsSteping, acceleration: acceleration)
+         updateActivityGraph(value: cheatingDetected, acceleration: acceleration)
     }
     
     
@@ -265,6 +268,18 @@ class FourAxisAbsViewController: UIViewController {
             startDeviceMotion()
             isDeviceMotionOn = true
         }
+    
+    
+    
+    func startPress() {
+        
+    }
+    
+    func stopPress() {
+        
+    }
+    
+    
     
     func resetAllValues() {
         
