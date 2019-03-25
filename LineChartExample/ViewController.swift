@@ -14,8 +14,10 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var chtChart: LineChartView!
     var isDeviceMotionOn = false
-    var regenerationSum : Double = 0
-    var regenerationArray : [Double] = []
+    var medRegenerationSum : Double = 0
+    var medRegenerationArray : [Double] = []
+    var slowRegenerationSum : Double = 0
+    var slowRegenerationArray : [Double] = []
     var inputUsrAcceleration : Double = 0
     var inputUsrAccelerationArray : [Double] = []
     var accZXArray : [Double] = []
@@ -23,15 +25,11 @@ class ViewController: UIViewController {
     var gravityYArray : [Double] = []
     var accelerationZArray : [Double] = []
     var accelerationXArray : [Double] = []
-    var inputAccYArray : [Double] = []
-    var inputAccZArray : [Double] = []
-    var inputAccXArray : [Double] = []
     var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var currentNode = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 20
-    var batchNumbersArray = [Double]()
+    var timeInterval : Double = 60
     var lastActivityCheat = false
     var gravX : Double = 0
     var gravY : Double = 0
@@ -71,34 +69,48 @@ class ViewController: UIViewController {
     func updateGraph(){
         var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
         var lineChartEntry2  = [ChartDataEntry]()
+        
+        var lineChartEntry3  = [ChartDataEntry]()
+        
         for i in 0..<inputUsrAccelerationArray.count {
             let value = ChartDataEntry(x: Double(i), y: inputUsrAccelerationArray[i]) // here we set the X and Y status in a data chart
-            let value2 = ChartDataEntry(x: Double(i), y: regenerationArray[i])
+            let value2 = ChartDataEntry(x: Double(i), y: medRegenerationArray[i])
+            
+            let value3 = ChartDataEntry(x: Double(i), y: slowRegenerationArray[i])
             
             lineChartEntry.append(value) // here we add it to the data se
             lineChartEntry2.append(value2)
+            lineChartEntry3.append(value3)
         }
         
         let line1 = LineChartDataSet(values: lineChartEntry, label: "InputAcceleration - XYZ") //Here we convert lineChartEntry to a LineChartDataSet
         line1.colors = [NSUIColor.blue] //Sets the colour to blue
         line1.circleRadius = 0
         
-        let line2 = LineChartDataSet(values: lineChartEntry2, label: "RegenerationMultiplier") //Here we convert lineChartEntry to a LineChartDataSet
+        let line2 = LineChartDataSet(values: lineChartEntry2, label: "Regen.Multiplier-Medium") //Here we convert lineChartEntry to a LineChartDataSet
         line2.colors = [NSUIColor.green] //Sets the colour to blue
         line2.circleRadius = 0
+        line2.lineWidth = 3
+        
+        let line3 = LineChartDataSet(values: lineChartEntry3, label: "Regen.Multiplier-Slow") //Here we convert lineChartEntry to a LineChartDataSet
+        line3.colors = [NSUIColor.purple] //Sets the colour to blue
+        line3.circleRadius = 0
+        line3.lineWidth = 3
        
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         data.addDataSet(line2)
-      
+        data.addDataSet(line3)
+        
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
-        self.chtChart.setVisibleXRangeMinimum(200)
-        self.chtChart.setVisibleXRangeMaximum(200)
+    
+        self.chtChart.setVisibleXRangeMinimum(400)
+        self.chtChart.setVisibleXRangeMaximum(400)
         self.chtChart.leftAxis.axisMinimum = 0
         self.chtChart.rightAxis.axisMinimum = 0
-        self.chtChart.leftAxis.axisMaximum = 3
-        self.chtChart.rightAxis.axisMaximum = 3
+        self.chtChart.leftAxis.axisMaximum = 2
+        self.chtChart.rightAxis.axisMaximum = 2
 
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
@@ -133,17 +145,18 @@ class ViewController: UIViewController {
                 let x = abs(motion.userAcceleration.x)
                 let y = abs(motion.userAcceleration.y)
                 let z = abs(motion.userAcceleration.z)
-                self.inputAccXArray.append(x)
                 
-                if self.inputUsrAccelerationArray.count > 200 {
+                if self.inputUsrAccelerationArray.count > 400 {
                     self.inputUsrAccelerationArray.remove(at: 0)
-                    self.regenerationArray.remove(at: 0)
+                    self.medRegenerationArray.remove(at: 0)
+                    self.slowRegenerationArray.remove(at: 0)
                 }
                 //Detects Movement in all Chanels
                 self.inputUsrAcceleration = x+y+z
                 self.inputUsrAccelerationArray.append(self.inputUsrAcceleration)
                 self.acceleration = round((x+z) * 100) / 100
-                self.regenerationArray.append(self.regenerationSum)
+                self.medRegenerationArray.append(self.medRegenerationSum)
+                self.slowRegenerationArray.append(self.slowRegenerationSum)
                 
                 self.updateGraph()
                
@@ -216,20 +229,28 @@ class ViewController: UIViewController {
     func UpdateRegenerationLine(activityFactor : Double){
         
         let maxActivity = 1.5
-        let additionFactor = (maxActivity - regenerationSum)/35
+        
+        
+        //Green Line
+        let additionFactorMedLine = (maxActivity - medRegenerationSum)/35
+        //Purple Line
+        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
         
         if activityFactor == 0{
-            regenerationSum -= additionFactor*3
+            medRegenerationSum -= additionFactorMedLine*3
+            slowRegenerationSum -= additionFactorSlowLine*2
         }
         else{
-           regenerationSum += abs(additionFactor)
+           medRegenerationSum += abs(additionFactorMedLine)
+           slowRegenerationSum += abs(additionFactorSlowLine)
         }
-        if regenerationSum <= 0{
-            regenerationSum = 0
+        if medRegenerationSum <= 0{
+            medRegenerationSum = 0
         }
-        
-        print(regenerationSum)
-      
+        if slowRegenerationSum <= 0{
+            slowRegenerationSum = 0
+        }
+   
     }
     
     func RedOrGreene(activityFactor : Double) {
@@ -272,18 +293,23 @@ class ViewController: UIViewController {
     
     @IBAction func startBtn(_ sender: Any) {
         if motionManager.isDeviceMotionAvailable{
-            if isDeviceMotionOn == false{
-                isDeviceMotionOn = true
-                startAccelerometer()
-                buttonOutlet.setTitle("Stoppa", for: .normal)
-            }
-            else{
-                isDeviceMotionOn = false
-                motionManager.stopDeviceMotionUpdates()
-                buttonOutlet.setTitle("Starta", for: .normal)
-            }
+            isDeviceMotionOn = !isDeviceMotionOn
+            isDeviceMotionOn ? deviceMotionTurnOn() : deviceMotionTurnOff()
+            
         }
     }
+    
+    func deviceMotionTurnOn(){
+        startAccelerometer()
+        buttonOutlet.setTitle("Stoppa", for: .normal)
+    }
+    
+    func deviceMotionTurnOff(){
+        motionManager.stopDeviceMotionUpdates()
+        buttonOutlet.setTitle("Starta", for: .normal)
+    }
+    
+    
     
     @IBAction func clearChartBtn(_ sender: UIButton) {
         if motionManager.isDeviceMotionAvailable{
@@ -304,8 +330,10 @@ class ViewController: UIViewController {
         accelerationZArray.removeAll()
         inputUsrAccelerationArray.removeAll()
         accZXArray.removeAll()
-        regenerationArray.removeAll()
-        regenerationSum = 0
+        medRegenerationArray.removeAll()
+        medRegenerationSum = 0
+        slowRegenerationArray.removeAll()
+        slowRegenerationSum = 0
         currentNode = 0
     }
     
