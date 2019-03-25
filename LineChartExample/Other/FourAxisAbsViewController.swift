@@ -121,11 +121,13 @@ class FourAxisAbsViewController: UIViewController {
     func userActivityFiler(gravity : CMAcceleration, userAcceleration: CMAcceleration) -> Bool {
         
         let acceleration = userAcceleration.x + userAcceleration.y + userAcceleration.z
-    
+        
         // Kolla efter godkänd rörelse (kanske ignorera userAcceleration Z och Y)
-        if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && gravity.z < 0.0 && userAcceleration.x > 0.65 || userAcceleration.z > 0.65 && userAcceleration.y < 0.6 {
+        
+        if abs(gravity.x) > 0.85 && abs(userAcceleration.x) > 0.06 {
+
             
-            
+            print("OKEY")
             //if abs(userAcceleration.x) > 0.35 && abs(userAcceleration.x) > abs(userAcceleration.y) && abs(userAcceleration.z) > abs(userAcceleration.y) {
             
             // Godkänd aktivitet
@@ -133,7 +135,9 @@ class FourAxisAbsViewController: UIViewController {
             self.validStepsIndicator.backgroundColor = .green
             
         } else {
-            
+            print("NOT OKEy")
+            print("grav x\(abs(gravity.x))")
+            print("user x\(abs(userAcceleration.x))")
             cheatingDetected = true
             self.validStepsIndicator.backgroundColor = .red
         }
@@ -162,7 +166,7 @@ class FourAxisAbsViewController: UIViewController {
             if cheatingDetected {
                 value = -averageActivity * 3
             } else {
-                value = averageActivity
+                value = rechargeBaseRate * (1 + averageActivity)
             }
             //---------------------------
             
@@ -181,15 +185,15 @@ class FourAxisAbsViewController: UIViewController {
     func calculateAverageSpeed(myArray : Array<Double>) -> Double {
         
         let arraySum = myArray.reduce(0) { $0 + $1 }
-        //return arraySum / Double(myArray.count)
+        return arraySum / Double(myArray.count)
         
         //---------TEST-------(Returnera först om det är över en viss hastighet)
-        let averageSpeed = arraySum / Double(myArray.count)
+        /*let averageSpeed = arraySum / Double(myArray.count)
         if averageSpeed > 0.1 {
             return averageSpeed
         } else {
             return 0
-        }
+        }*/
     }
     
     
