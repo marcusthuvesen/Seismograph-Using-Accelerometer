@@ -13,14 +13,12 @@ import CoreMotion
 class FourAxisAbsViewController: UIViewController {
 
     @IBOutlet weak var chtChart: LineChartView!
-    
     @IBOutlet weak var startBtnOutlet: UIButton!
     @IBOutlet weak var clearBtnOutlet: UIButton!
     @IBOutlet weak var validStepsIndicator: UIView!
     
-    
     var timeInterval : Double = 20
-    var acceleration = 0.0
+    //var acceleration = 0.0
     var isDeviceMotionOn = false
     var currentNode = 0
     var userActivitySpeed = [Double]() // användarens "medelhastighet"
@@ -66,14 +64,7 @@ class FourAxisAbsViewController: UIViewController {
             axisLineChartEntry.append(axisValue) // x y z
             userLineChartEntry.append(userValue) // användarens aktivitet
         }
-        
-        // Array för
-       /* for i in 0..<activityFactorArray.count {
-            
-            let activityValue = ChartDataEntry(x: Double(i), y: activityValueArray[i])
-            activityChartEntry.append(activityValue)
-        }*/
-        
+      
         let lineAxis = LineChartDataSet(values: axisLineChartEntry, label: "userAcceleration (X+Y+Z)")
         lineAxis.colors = [NSUIColor.blue]
         lineAxis.circleRadius = 0
@@ -100,34 +91,7 @@ class FourAxisAbsViewController: UIViewController {
         
     }
     
-    
-    // Räknar ut medelhastigheten under viss tid för användaren
-    func calculateAverageSpeed(myArray : Array<Double>) -> Double {
-        
-        let arraySum = myArray.reduce(0) { $0 + $1 }
-        return arraySum / Double(myArray.count)
-        
-        // TEST
-        if arraySum > 0.1 {
-            return arraySum
-        } else {
-            return 0
-        }
-    }
-    
-    
-    func fetchUserData() {
-        
-        if currentNode % 10 == 0 {
-            tempArray = axisValueArray
-            let averageActivity = calculateAverageSpeed(myArray: tempArray) // TEST??
-            userActivityArray.append(averageActivity)
-            
-            // Töm arrayen
-            tempArray.removeAll()
-        }
-    }
-    
+    // Påbörja hämtning av användar data
     func startDeviceMotion() {
         
         if CMMotionManager.sharedMotion.isDeviceMotionAvailable {
@@ -142,10 +106,10 @@ class FourAxisAbsViewController: UIViewController {
                 let gravity = motion.gravity
                 let userAcceleration = motion.userAcceleration
                 
-                // Skicka värdet av gravity & userAcceleration till funktionen
+                // Skicka värdet av gravity & userAcceleration till funktionen (kolla om aktiviteten är godkänd)
                 self.userActivityFiler(gravity: gravity, userAcceleration: userAcceleration)
 
-                
+                print(self.cheatingDetected)
                 // lägg i userActivityFilter???
                 let allAxisAcceleration = abs(motion.userAcceleration.x + motion.userAcceleration.y + motion.userAcceleration.z)
                 
@@ -160,53 +124,78 @@ class FourAxisAbsViewController: UIViewController {
         }
     }
     
-   // Tar in användarens data och filtrerar den för att se om den är godkänd.
+    // Tar in användarens data och filtrerar den för att se om den är godkänd.
     func userActivityFiler(gravity : CMAcceleration, userAcceleration: CMAcceleration) -> Bool {
         
         let acceleration = userAcceleration.x + userAcceleration.y + userAcceleration.z
-       
-            
+        
+        
         if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && userAcceleration.z > 0.65 && userAcceleration.y > 0.6 {
-
+            
             
             //if abs(userAcceleration.x) > 0.35 && abs(userAcceleration.x) > abs(userAcceleration.y) && abs(userAcceleration.z) > abs(userAcceleration.y) {
-         
-                // Godkänd aktivitet
-                cheatingDetected = false
-                self.validStepsIndicator.backgroundColor = .green
-                
-            } else {
-               
+            
+            // Godkänd aktivitet
+            cheatingDetected = false
+            self.validStepsIndicator.backgroundColor = .green
+            
+        } else {
+            
             cheatingDetected = true
-                self.validStepsIndicator.backgroundColor = .red
-            }
-        /*} else {
-            userIsSteping = false
             self.validStepsIndicator.backgroundColor = .red
-        }*/
+        }
+        /*} else {
+         userIsSteping = false
+         self.validStepsIndicator.backgroundColor = .red
+         }*/
         return cheatingDetected
+        print(cheatingDetected)
+        
+    }
+
+    
+    func fetchUserData() {
+        
+        if currentNode % 10 == 0 {
+            tempArray = axisValueArray
+            let averageActivity = calculateAverageSpeed(myArray: tempArray) // TEST??
+            userActivityArray.append(averageActivity)
+            
+            // Töm arrayen
+            tempArray.removeAll()
+        }
+        if currentNode <= 10 {
+            userActivityArray.append(0.0)
+        }
+    }
+    
+    // Räknar ut medelhastigheten under viss tid för användaren
+    func calculateAverageSpeed(myArray : Array<Double>) -> Double {
+        
+        let arraySum = myArray.reduce(0) { $0 + $1 }
+        return arraySum / Double(myArray.count)
+        
+        // TEST
+        /*if arraySum > 0.1 {
+            return arraySum
+        } else {
+            return 0
+        }*/
+    }
+    
+    
+    
+    func updateActivity(myArray : Array<Double>) {
+        
+        
         
     }
     
     
+    
+    
     // Funktion för att rita ut på grafen (tar in värdet av den filtrerade aktivitete)
     func updateActivityGraph(value : Bool, acceleration : Double) {
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         
         // Ska ta in ett värde...
         
@@ -244,10 +233,10 @@ class FourAxisAbsViewController: UIViewController {
     }
     
     // Returnerar om användaren fuskar
-    func isCheatingHappening() -> Bool {
+    /*func isCheatingHappening() -> Bool {
         
         return true
-    }
+    }*/
     
     
     
