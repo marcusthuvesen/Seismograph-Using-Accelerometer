@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var chtChart: LineChartView!
     var isDeviceMotionOn = false
+    var fastRegenerationSum : Double = 0
+    var fastRegenerationArray : [Double] = []
     var medRegenerationSum : Double = 0
     var medRegenerationArray : [Double] = []
     var slowRegenerationSum : Double = 0
@@ -67,20 +69,21 @@ class ViewController: UIViewController {
     }
     
     func updateGraph(){
-        var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
+        var lineChartEntry  = [ChartDataEntry]() //this is the Array that will be displayed on the graph.
         var lineChartEntry2  = [ChartDataEntry]()
-        
         var lineChartEntry3  = [ChartDataEntry]()
+        var lineChartEntry4  = [ChartDataEntry]()
         
         for i in 0..<inputUsrAccelerationArray.count {
             let value = ChartDataEntry(x: Double(i), y: inputUsrAccelerationArray[i]) // here we set the X and Y status in a data chart
             let value2 = ChartDataEntry(x: Double(i), y: medRegenerationArray[i])
-            
             let value3 = ChartDataEntry(x: Double(i), y: slowRegenerationArray[i])
+            let value4 = ChartDataEntry(x: Double(i), y: fastRegenerationArray[i])
             
             lineChartEntry.append(value) // here we add it to the data se
             lineChartEntry2.append(value2)
             lineChartEntry3.append(value3)
+            lineChartEntry4.append(value4)
         }
         
         let line1 = LineChartDataSet(values: lineChartEntry, label: "InputAcceleration - XYZ") //Here we convert lineChartEntry to a LineChartDataSet
@@ -96,11 +99,17 @@ class ViewController: UIViewController {
         line3.colors = [NSUIColor.purple] //Sets the colour to blue
         line3.circleRadius = 0
         line3.lineWidth = 3
+        
+        let line4 = LineChartDataSet(values: lineChartEntry4, label: "Regen.Multiplier-Fast") //Here we convert lineChartEntry to a LineChartDataSet
+        line4.colors = [NSUIColor.darkGray] //Sets the colour to blue
+        line4.circleRadius = 0
+        line4.lineWidth = 3
        
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(line1) //Adds the line to the dataSet
         data.addDataSet(line2)
         data.addDataSet(line3)
+        data.addDataSet(line4)
         
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
@@ -150,6 +159,7 @@ class ViewController: UIViewController {
                     self.inputUsrAccelerationArray.remove(at: 0)
                     self.medRegenerationArray.remove(at: 0)
                     self.slowRegenerationArray.remove(at: 0)
+                    self.fastRegenerationArray.remove(at: 0)
                 }
                 //Detects Movement in all Chanels
                 self.inputUsrAcceleration = x+y+z
@@ -157,7 +167,7 @@ class ViewController: UIViewController {
                 self.acceleration = round((x+z) * 100) / 100
                 self.medRegenerationArray.append(self.medRegenerationSum)
                 self.slowRegenerationArray.append(self.slowRegenerationSum)
-                
+                self.fastRegenerationArray.append(self.fastRegenerationSum)
                 self.updateGraph()
                
                 let gravity = motion.gravity
@@ -230,19 +240,21 @@ class ViewController: UIViewController {
         
         let maxActivity = 1.5
         
-        
         //Green Line
-        let additionFactorMedLine = (maxActivity - medRegenerationSum)/35
+        let additionFactorMedLine = (maxActivity - medRegenerationSum)/40
         //Purple Line
         let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
-        
+        //DarkGray
+        let additionFactorFastLine = (maxActivity - fastRegenerationSum)/15
         if activityFactor == 0{
             medRegenerationSum -= additionFactorMedLine*3
             slowRegenerationSum -= additionFactorSlowLine*2
+            fastRegenerationSum -= additionFactorFastLine*3
         }
         else{
            medRegenerationSum += abs(additionFactorMedLine)
            slowRegenerationSum += abs(additionFactorSlowLine)
+           fastRegenerationSum += abs(additionFactorFastLine)
         }
         if medRegenerationSum <= 0{
             medRegenerationSum = 0
@@ -250,7 +262,10 @@ class ViewController: UIViewController {
         if slowRegenerationSum <= 0{
             slowRegenerationSum = 0
         }
-   
+        if fastRegenerationSum <= 0{
+            fastRegenerationSum = 0
+        }
+        
     }
     
     func RedOrGreene(activityFactor : Double) {
@@ -308,9 +323,7 @@ class ViewController: UIViewController {
         motionManager.stopDeviceMotionUpdates()
         buttonOutlet.setTitle("Starta", for: .normal)
     }
-    
-    
-    
+   
     @IBAction func clearChartBtn(_ sender: UIButton) {
         if motionManager.isDeviceMotionAvailable{
             motionManager.stopDeviceMotionUpdates()
@@ -334,6 +347,8 @@ class ViewController: UIViewController {
         medRegenerationSum = 0
         slowRegenerationArray.removeAll()
         slowRegenerationSum = 0
+        fastRegenerationArray.removeAll()
+        fastRegenerationSum = 0
         currentNode = 0
     }
     
