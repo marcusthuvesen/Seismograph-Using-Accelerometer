@@ -17,25 +17,19 @@ class FourAxisAbsViewController: UIViewController {
     @IBOutlet weak var clearBtnOutlet: UIButton!
     @IBOutlet weak var validStepsIndicator: UIView!
     
-    var timeInterval : Double = 20
-    //var acceleration = 0.0
-    var isDeviceMotionOn = false
-    var currentNode = 0
-    var userActivitySpeed = [Double]() // användarens "medelhastighet"
+    var timeInterval : Double = 20 // Updaterings interval/frekvens
+    var isDeviceMotionOn = false // variabel för Start och Stopp
+    
+    var currentNode = 0 // Start node
 
-    
-    
-    
     // Array för att spara värden till användarens medelhastighet
-    var activityFactorArray = [Double]()
+    var activityFactorArray = [Double]() // kan nog slängas
     
     // -------------------
     
     var cheatingDetected = true
     
-    
-    
-    
+
     var tempArray = [Double]() // tillfällig array att förvara värden i
 
     var axisValueArray = [Double]() // Array för tre axlarna
@@ -44,6 +38,7 @@ class FourAxisAbsViewController: UIViewController {
     var rechargeRate = 0.0 // variabel för användarens graph (vid ökning stiger kurvan i grafen och vice versa).
     var rechargeBaseRate = 0.1
     
+    var value = 0.0  // Starta på 0, uppdatera var 10s och kolla nytt värde
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +73,7 @@ class FourAxisAbsViewController: UIViewController {
         data.addDataSet(lineActivity)
         chtChart.data = data //it adds the chart data to the chart and causes an update
 
-        currentNode += 1 // nedanför innan
+        currentNode += 1 // (nedanför innan)
         
         self.chtChart.setVisibleXRangeMinimum(250)
         self.chtChart.setVisibleXRangeMaximum(250)
@@ -106,31 +101,29 @@ class FourAxisAbsViewController: UIViewController {
                 let gravity = motion.gravity
                 let userAcceleration = motion.userAcceleration
                 
-                // Skicka värdet av gravity & userAcceleration till funktionen (kolla om aktiviteten är godkänd)
+                // Skicka datan till filter för att kolla om aktiviteten är godkänd
                 self.userActivityFiler(gravity: gravity, userAcceleration: userAcceleration)
 
-                print(self.cheatingDetected)
-                // lägg i userActivityFilter???
+                //print(self.cheatingDetected)
+
                 let allAxisAcceleration = abs(motion.userAcceleration.x + motion.userAcceleration.y + motion.userAcceleration.z)
                 
                 self.axisValueArray.append(allAxisAcceleration)
-                self.fetchUserData()
-            
+                self.updateActivity()
+        
                 
-                // TEST UTAN userAcceleration i Z-led (kanske testa, x + z)
-                //let userAccel = userAccelerationX + userAccelerationZ
                 self.updateGraph()
             }
         }
     }
     
-    // Tar in användarens data och filtrerar den för att se om den är godkänd.
+    // Filtrerar användarens input (rörelser) för att se om dem är godkända.
     func userActivityFiler(gravity : CMAcceleration, userAcceleration: CMAcceleration) -> Bool {
         
         let acceleration = userAcceleration.x + userAcceleration.y + userAcceleration.z
-        
-        
-        if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && userAcceleration.z > 0.65 && userAcceleration.y > 0.6 {
+    
+        // Kolla efter godkänd rörelse (kanske ignorera userAcceleration Z och Y)
+        if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && gravity.z < 0.0 && userAcceleration.x > 0.65 || userAcceleration.z > 0.65 && userAcceleration.y < 0.6 {
             
             
             //if abs(userAcceleration.x) > 0.35 && abs(userAcceleration.x) > abs(userAcceleration.y) && abs(userAcceleration.z) > abs(userAcceleration.y) {
@@ -148,104 +141,65 @@ class FourAxisAbsViewController: UIViewController {
          userIsSteping = false
          self.validStepsIndicator.backgroundColor = .red
          }*/
+        //print(cheatingDetected)
         return cheatingDetected
-        print(cheatingDetected)
-        
     }
 
     
-    func fetchUserData() {
+    func updateActivity() {
         
+        
+        userActivityArray.append(value)
+        
+        // var tionde nod
         if currentNode % 10 == 0 {
-            tempArray = axisValueArray
-            let averageActivity = calculateAverageSpeed(myArray: tempArray) // TEST??
-            userActivityArray.append(averageActivity)
             
-            // Töm arrayen
+            tempArray = axisValueArray
+            let averageActivity = calculateAverageSpeed(myArray: tempArray)
+            //value = averageActivity
+            
+            //----------TEST--------------
+            if cheatingDetected {
+                value = -averageActivity * 3
+            } else {
+                value = averageActivity
+            }
+            //---------------------------
+            
             tempArray.removeAll()
+
+            
         }
-        if currentNode <= 10 {
-            userActivityArray.append(0.0)
-        }
+        
+        // lägger till value oavsett.....
+        userActivityArray.append(value)
+
+        
     }
     
     // Räknar ut medelhastigheten under viss tid för användaren
     func calculateAverageSpeed(myArray : Array<Double>) -> Double {
         
         let arraySum = myArray.reduce(0) { $0 + $1 }
-        return arraySum / Double(myArray.count)
+        //return arraySum / Double(myArray.count)
         
-        // TEST
-        /*if arraySum > 0.1 {
-            return arraySum
+        //---------TEST-------(Returnera först om det är över en viss hastighet)
+        let averageSpeed = arraySum / Double(myArray.count)
+        if averageSpeed > 0.1 {
+            return averageSpeed
         } else {
             return 0
-        }*/
-    }
-    
-    
-    
-    func updateActivity(myArray : Array<Double>) {
-        
-        
-        
-    }
-    
-    
-    
-    
-    // Funktion för att rita ut på grafen (tar in värdet av den filtrerade aktivitete)
-    func updateActivityGraph(value : Bool, acceleration : Double) {
-        
-        // Ska ta in ett värde...
-        
-        /*
-        if currentNode % 20 == 0 {
-        
-            
-            // Ha bara formeln
-    
-            // Inte så här.....
-            if value {
-                // grafen stiger (lite långsammare)
-                if rechargeRate > 1.5 {
-                    rechargeRate = 1.5
-                } else {
-                    //rechargeRate += rechargeBaseRate * (1 + acceleration)
-                    rechargeRate += 0.1
-                    print("plus")
-                }
         }
-        else {
-                // grafen sjunker (lite snabbare)
-                if rechargeRate <= 0  {
-                    rechargeRate = 0
-                    print("ligger på botten")
-                } else {
-                    rechargeRate -= 0.2
-                    print("sjunker")
-                }
-            }
-        
-    }
-        // appenda i array(?)
-        userActivityArray.append(rechargeRate)*/
     }
     
-    // Returnerar om användaren fuskar
-    /*func isCheatingHappening() -> Bool {
-        
-        return true
-    }*/
     
-    
+  
     
     
     
     
   
     // START OCH CLEAR BUTTONS
-    
     @IBAction func startBtn(_ sender: Any) {
         isDeviceMotionOn = !isDeviceMotionOn
         isDeviceMotionOn ? startPress() : stopPress()
