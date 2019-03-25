@@ -25,19 +25,18 @@ class FourAxisAbsViewController: UIViewController {
     var currentNode = 0
     var userActivitySpeed = [Double]() // användarens "medelhastighet"
 
-    //var accelerationArray = [Double]()
     
-    
-
-    // TEST
-    //var gravity : CMAcceleration?
     
     
     // Array för att spara värden till användarens medelhastighet
     var activityFactorArray = [Double]()
-    var activityValueArray = [Double]()
     
     // -------------------
+    
+    var cheatingDetected = true
+    
+    
+    
     
     var tempArray = [Double]() // tillfällig array att förvara värden i
 
@@ -99,17 +98,6 @@ class FourAxisAbsViewController: UIViewController {
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         
-        
-        // Every Second
-        if currentNode % 5 == 0 {
-        
-            tempArray = axisValueArray
-            let averageActivity = calculateAverageSpeed(myArray: tempArray) // TEST??
-            activityValueArray.append(averageActivity)
-
-            // Töm arrayen
-            tempArray.removeAll()
-        }
     }
     
     
@@ -128,11 +116,22 @@ class FourAxisAbsViewController: UIViewController {
     }
     
     
+    func fetchUserData() {
+        
+        if currentNode % 10 == 0 {
+            tempArray = axisValueArray
+            let averageActivity = calculateAverageSpeed(myArray: tempArray) // TEST??
+            userActivityArray.append(averageActivity)
+            
+            // Töm arrayen
+            tempArray.removeAll()
+        }
+    }
     
     func startDeviceMotion() {
         
         if CMMotionManager.sharedMotion.isDeviceMotionAvailable {
-
+            
             CMMotionManager.sharedMotion.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
             CMMotionManager.sharedMotion.startDeviceMotionUpdates(to: .main) { (motion, error) in
                 
@@ -147,22 +146,12 @@ class FourAxisAbsViewController: UIViewController {
                 self.userActivityFiler(gravity: gravity, userAcceleration: userAcceleration)
 
                 
-                // TEST (skicka till activityFactorn först)
-                
-                
-                
                 // lägg i userActivityFilter???
                 let allAxisAcceleration = abs(motion.userAcceleration.x + motion.userAcceleration.y + motion.userAcceleration.z)
                 
                 self.axisValueArray.append(allAxisAcceleration)
-                
-                //self.accelerationArray.append(userAccelerationXYZ)
-
-                //self.gravity = motion.gravity
+                self.fetchUserData()
             
-                /*guard let gravity = self.gravity else {
-                    return
-                }*/
                 
                 // TEST UTAN userAcceleration i Z-led (kanske testa, x + z)
                 //let userAccel = userAccelerationX + userAccelerationZ
@@ -171,24 +160,11 @@ class FourAxisAbsViewController: UIViewController {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
    // Tar in användarens data och filtrerar den för att se om den är godkänd.
-    func userActivityFiler(gravity : CMAcceleration, userAcceleration: CMAcceleration) {
-        var cheatingDetected = true
-
+    func userActivityFiler(gravity : CMAcceleration, userAcceleration: CMAcceleration) -> Bool {
+        
         let acceleration = userAcceleration.x + userAcceleration.y + userAcceleration.z
-        
-        //if abs(gravity.x) > abs(gravity.y) && abs(gravity.z) > abs(gravity.y) {
-        
+       
             
         if abs(gravity.x) > 0.5 && abs(gravity.y) < 0.25 && userAcceleration.z > 0.65 && userAcceleration.y > 0.6 {
 
@@ -196,7 +172,7 @@ class FourAxisAbsViewController: UIViewController {
             //if abs(userAcceleration.x) > 0.35 && abs(userAcceleration.x) > abs(userAcceleration.y) && abs(userAcceleration.z) > abs(userAcceleration.y) {
          
                 // Godkänd aktivitet
-               cheatingDetected = false
+                cheatingDetected = false
                 self.validStepsIndicator.backgroundColor = .green
                 
             } else {
@@ -208,14 +184,33 @@ class FourAxisAbsViewController: UIViewController {
             userIsSteping = false
             self.validStepsIndicator.backgroundColor = .red
         }*/
-         updateActivityGraph(value: cheatingDetected, acceleration: acceleration)
+        return cheatingDetected
+        
     }
     
     
     // Funktion för att rita ut på grafen (tar in värdet av den filtrerade aktivitete)
     func updateActivityGraph(value : Bool, acceleration : Double) {
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // Ska ta in ett värde...
-        print(currentNode)
+        
+        /*
         if currentNode % 20 == 0 {
         
             
@@ -245,7 +240,7 @@ class FourAxisAbsViewController: UIViewController {
         
     }
         // appenda i array(?)
-        userActivityArray.append(rechargeRate)
+        userActivityArray.append(rechargeRate)*/
     }
     
     // Returnerar om användaren fuskar
@@ -260,6 +255,7 @@ class FourAxisAbsViewController: UIViewController {
     
     
   
+    // START OCH CLEAR BUTTONS
     
     @IBAction func startBtn(_ sender: Any) {
         isDeviceMotionOn = !isDeviceMotionOn
@@ -289,9 +285,9 @@ class FourAxisAbsViewController: UIViewController {
     
     func resetAllValues() {
         axisValueArray.removeAll()
-        currentNode = 0
-        //accelerationArray.removeAll()
         tempArray.removeAll()
+        userActivityArray.removeAll()
+        currentNode = 0
     }
     
 }
