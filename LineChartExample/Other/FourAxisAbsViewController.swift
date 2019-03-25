@@ -25,8 +25,7 @@ class FourAxisAbsViewController: UIViewController {
     var currentNode = 0
     var userActivitySpeed = [Double]() // användarens "medelhastighet"
 
-    var accelerationArray = [Double]()
-    var tempArray = [Double]()
+    //var accelerationArray = [Double]()
     
     
 
@@ -40,15 +39,14 @@ class FourAxisAbsViewController: UIViewController {
     
     // -------------------
     
-    
-    
+    var tempArray = [Double]() // tillfällig array att förvara värden i
+
     var axisValueArray = [Double]() // Array för tre axlarna
     var userActivityArray = [Double]() // Array för filtrerad aktivitet
 
     var rechargeRate = 0.0 // variabel för användarens graph (vid ökning stiger kurvan i grafen och vice versa).
     var rechargeBaseRate = 0.1
     
-    let motionManager = CMMotionManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,14 +58,14 @@ class FourAxisAbsViewController: UIViewController {
         var axisLineChartEntry = [ChartDataEntry]() // X, Y & Z värdet
         var userLineChartEntry = [ChartDataEntry]() // filtrerade aktivitets värdet
         
-        // axisValueArray gemensam array för alla axlarna
+        // axisValueArray gemensam array för alla axlarna (X, Y, Z)
         for i in 0..<axisValueArray.count {
 
             let axisValue = ChartDataEntry(x: Double(i), y: axisValueArray[i])
             let userValue = ChartDataEntry(x: Double(i), y: userActivityArray[i])
             
             axisLineChartEntry.append(axisValue) // x y z
-            userLineChartEntry.append(userValue) // aktivitet
+            userLineChartEntry.append(userValue) // användarens aktivitet
         }
         
         // Array för
@@ -85,43 +83,58 @@ class FourAxisAbsViewController: UIViewController {
         lineActivity.colors = [NSUIColor.red]
         lineActivity.circleRadius = 0
         
-        let data = LineChartData() //This is the object that will be added to the chart
+        let data = LineChartData() // Object that will be added to the chart
         data.addDataSet(lineAxis) //Adds the line to the dataSet
         data.addDataSet(lineActivity)
         chtChart.data = data //it adds the chart data to the chart and causes an update
+
+        currentNode += 1 // nedanför innan
         
         self.chtChart.setVisibleXRangeMinimum(250)
         self.chtChart.setVisibleXRangeMaximum(250)
+        
+        self.chtChart.leftAxis.axisMinimum = 0 // var grafen börjar, på vilken punkt
+        self.chtChart.rightAxis.axisMinimum = 0
+        
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         
-
-        //tempArray.append(accelerationArray[currentNode])
         
-        currentNode += 1
-        
-        
-        
-        
-        /*
         // Every Second
         if currentNode % 5 == 0 {
         
+            tempArray = axisValueArray
             let averageActivity = calculateAverageSpeed(myArray: tempArray) // TEST??
             activityValueArray.append(averageActivity)
 
             // Töm arrayen
             tempArray.removeAll()
-        }*/
+        }
     }
+    
+    
+    // Räknar ut medelhastigheten under viss tid för användaren
+    func calculateAverageSpeed(myArray : Array<Double>) -> Double {
+        
+        let arraySum = myArray.reduce(0) { $0 + $1 }
+        return arraySum / Double(myArray.count)
+        
+        // TEST
+        if arraySum > 0.1 {
+            return arraySum
+        } else {
+            return 0
+        }
+    }
+    
     
     
     func startDeviceMotion() {
         
-        if motionManager.isDeviceMotionAvailable {
-        
-            motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
-            motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
+        if CMMotionManager.sharedMotion.isDeviceMotionAvailable {
+
+            CMMotionManager.sharedMotion.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
+            CMMotionManager.sharedMotion.startDeviceMotionUpdates(to: .main) { (motion, error) in
                 
                 guard let motion = motion else {
                     return
@@ -130,8 +143,11 @@ class FourAxisAbsViewController: UIViewController {
                 let gravity = motion.gravity
                 let userAcceleration = motion.userAcceleration
                 
-                // Skicka värdet av gravity, etc. till funktionen
+                // Skicka värdet av gravity & userAcceleration till funktionen
                 self.userActivityFiler(gravity: gravity, userAcceleration: userAcceleration)
+
+                
+                // TEST (skicka till activityFactorn först)
                 
                 
                 
@@ -154,6 +170,15 @@ class FourAxisAbsViewController: UIViewController {
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
    // Tar in användarens data och filtrerar den för att se om den är godkänd.
@@ -196,6 +221,7 @@ class FourAxisAbsViewController: UIViewController {
             
             // Ha bara formeln
     
+            // Inte så här.....
             if value {
                 // grafen stiger (lite långsammare)
                 if rechargeRate > 1.5 {
@@ -225,7 +251,6 @@ class FourAxisAbsViewController: UIViewController {
     // Returnerar om användaren fuskar
     func isCheatingHappening() -> Bool {
         
-        
         return true
     }
     
@@ -234,59 +259,38 @@ class FourAxisAbsViewController: UIViewController {
     
     
     
-    
-    // Räknar ut medelhastigheten under viss tid för användaren
-    /*func calculateAverageSpeed(myArray : Array<Double>) -> Double {
-        
-        let arraySum = myArray.reduce(0) { $0 + $1 }
-        return arraySum / Double(myArray.count)
-        
-    }*/
-    
-    
+  
     
     @IBAction func startBtn(_ sender: Any) {
-        
-            if isDeviceMotionOn {
-                isDeviceMotionOn = false
-                motionManager.stopDeviceMotionUpdates()
-                startBtnOutlet.setTitle("START", for: .normal)
-            } else {
-                isDeviceMotionOn = true
-                startDeviceMotion()
-                startBtnOutlet.setTitle("STOP", for: .normal)
-            }
+        isDeviceMotionOn = !isDeviceMotionOn
+        isDeviceMotionOn ? startPress() : stopPress()
         }
-    
-    @IBAction func clearChartBtn(_ sender: Any) {
-        
-            motionManager.stopDeviceMotionUpdates()
-            resetAllValues()
-            reloadInputViews()
-            startBtnOutlet.setTitle("Stoppa", for: .normal)
-            motionManager.startDeviceMotionUpdates()
-            startDeviceMotion()
-            isDeviceMotionOn = true
-        }
-    
-    
     
     func startPress() {
-        
+        startDeviceMotion()
+        startBtnOutlet.setTitle("STOP", for: .normal)
     }
     
     func stopPress() {
-        
+        CMMotionManager.sharedMotion.stopDeviceMotionUpdates()
+        startBtnOutlet.setTitle("START", for: .normal)
     }
     
     
+    @IBAction func clearChartBtn(_ sender: Any) {
+        
+            CMMotionManager.sharedMotion.stopDeviceMotionUpdates()
+            resetAllValues()
+            reloadInputViews()
+            CMMotionManager.sharedMotion.startDeviceMotionUpdates()
+            startDeviceMotion()
+            isDeviceMotionOn = true
+    }
     
     func resetAllValues() {
-        
         axisValueArray.removeAll()
         currentNode = 0
-        
-        accelerationArray.removeAll()
+        //accelerationArray.removeAll()
         tempArray.removeAll()
     }
     
