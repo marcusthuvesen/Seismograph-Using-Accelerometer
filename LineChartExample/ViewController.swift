@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     let motionManager = CMMotionManager()
     var currentNode = 0
     var acceleration : Double = 0
-    var timeInterval : Double = 60
+    var timeInterval : Double = 50
     var lastActivityCheat = false
     var gravX : Double = 0
     var gravY : Double = 0
@@ -181,7 +181,6 @@ class ViewController: UIViewController {
     
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
 
-        //When hit hard, not normal behaviour
         if accZXArray.count < 10{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
@@ -197,7 +196,6 @@ class ViewController: UIViewController {
             activityFactor = calculateActivityFactor(activityArray: accZXArray)
             print("ActivityFactor \(activityFactor)")
             
-            //activityFactorArray.append(activityFactor)
 
             if let temporaryTapDetection = temporaryTapDetection {
                 if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{

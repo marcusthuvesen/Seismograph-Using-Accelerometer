@@ -25,7 +25,7 @@
                                 <rect key="frame" x="162" y="0.0" width="572" height="295"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MZF-gC-FWM">
-                                        <rect key="frame" x="517" y="25" width="30" height="30"/>
+                                        <rect key="frame" x="512" y="20" width="30" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="bo9-km-PdM"/>
@@ -35,8 +35,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.26051741839999998" green="0.2605243921" blue="0.260520637" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstItem="MZF-gC-FWM" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="top" constant="25" id="D8J-GX-weF"/>
-                                    <constraint firstAttribute="trailing" secondItem="MZF-gC-FWM" secondAttribute="trailing" constant="25" id="sK7-uZ-vMN"/>
+                                    <constraint firstItem="MZF-gC-FWM" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="top" constant="20" id="D8J-GX-weF"/>
+                                    <constraint firstAttribute="trailing" secondItem="MZF-gC-FWM" secondAttribute="trailing" constant="30" id="sK7-uZ-vMN"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SRl-9D-wBC">
