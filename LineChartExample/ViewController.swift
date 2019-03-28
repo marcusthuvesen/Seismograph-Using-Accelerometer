@@ -194,7 +194,7 @@ class ViewController: UIViewController {
             //print("ActivityFactor \(activityFactor)")
             
             if let temporaryTapDetection = temporaryTapDetection {
-                if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
+                if temporaryTapDetection > activityFactor + 0.8 || temporaryTapDetection < activityFactor - 0.8{
                     print("Tap Cheat Detection")
                     tapCheatDetected = true
                 }
@@ -204,7 +204,26 @@ class ViewController: UIViewController {
             }
             temporaryTapDetection = activityFactor
             
-            if self.gravX > 0.9 && gravY < 0.25 && gravity.z < 0 && accZ < 0.5 && accY < 0.6 && activityFactor > 0.25 && activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
+            if self.gravX < 0.8 {
+                print("Ogiltlig X")
+            }
+            if self.gravY > 0.25 {
+                print("ogiltlig y")
+            }
+            if gravity.z > 0.3 {
+                print("ogiltlig z")
+            }
+            if accZ > 0.8 {
+                print("Accel z ogl")
+            }
+            if accY > 0.8 {
+                print("accY ogiltlig")
+            }
+            if activityFactor < 0.15 || activityFactor > 1.5 {
+                print(activityFactor)
+            }
+            // Filter
+            if self.gravX > 0.8 && gravY < 0.25 && gravity.z < 0.3 && accZ < 0.8 && accY < 0.8 && activityFactor > 0.1 && activityFactor < 1.7 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
                 //Accepted
                 self.acceptedOrNotView.backgroundColor = .green
                 UpdateRegenerationLine(activityFactor: activityFactor)
@@ -233,16 +252,16 @@ class ViewController: UIViewController {
         let maxActivity = 1.5
         
         //Green Line
-        let additionFactorMedLine = (maxActivity - medRegenerationSum)/5 //40
+        let additionFactorMedLine = (maxActivity - medRegenerationSum)/40
         //Purple Line
-        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/5 //80
+        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
         //DarkGray
-        let additionFactorFastLine = (maxActivity - fastRegenerationSum)/5//15
+        let additionFactorFastLine = (maxActivity - fastRegenerationSum)/15
         if activityFactor == 0{
             
-            slowRegenerationSum -= slowRegenerationSum*0.3
-            medRegenerationSum -= medRegenerationSum*0.2
-            fastRegenerationSum -= fastRegenerationSum*0.1
+            slowRegenerationSum -= slowRegenerationSum*0.07
+            medRegenerationSum -= medRegenerationSum*0.15
+            fastRegenerationSum -= fastRegenerationSum*0.2
             
         }
         else{
