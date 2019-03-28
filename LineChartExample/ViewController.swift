@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     private let motionManager = CMMotionManager()
     private var currentNode = 0
     private var acceleration : Double = 0
-    private var timeInterval : Double = 30
+    private var timeInterval : Double = 50
     private var lastActivityCheat = false
     private var gravX : Double = 0
     private var gravY : Double = 0
@@ -64,11 +64,11 @@ class ViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-       
+        
         // Dispose of any resources that can be recreated.
     }
     
-   private func updateGraph(){
+    private func updateGraph(){
         var inputLineEntry  = [ChartDataEntry]() //this is the Array that will be displayed on the graph.
         var medLineEntry  = [ChartDataEntry]()
         var slowLineEntry  = [ChartDataEntry]()
@@ -91,7 +91,7 @@ class ViewController: UIViewController {
         inputLine.circleRadius = 0
         
         let medLine = LineChartDataSet(values: medLineEntry, label: "Regen.Multiplier-Medium") //Here we convert lineChartEntry to a LineChartDataSet
-        medLine.colors = [NSUIColor.green] //Sets the colour to blue
+        medLine.colors = [NSUIColor.green] //Sets the colorur to blue
         medLine.circleRadius = 0
         medLine.lineWidth = 3
         
@@ -104,7 +104,7 @@ class ViewController: UIViewController {
         fastLine.colors = [NSUIColor.darkGray] //Sets the colour to blue
         fastLine.circleRadius = 0
         fastLine.lineWidth = 3
-       
+        
         let data = LineChartData() //This is the object that will be added to the chart
         data.addDataSet(inputLine) //Adds the line to the dataSet
         data.addDataSet(medLine)
@@ -113,19 +113,18 @@ class ViewController: UIViewController {
         
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
-    
-        self.chtChart.setVisibleXRangeMinimum(300)
-        self.chtChart.setVisibleXRangeMaximum(300)
+        
+        self.chtChart.setVisibleXRangeMinimum(400)
+        self.chtChart.setVisibleXRangeMaximum(400)
         self.chtChart.leftAxis.axisMinimum = 0
         self.chtChart.rightAxis.axisMinimum = 0
         self.chtChart.leftAxis.axisMaximum = 2
         self.chtChart.rightAxis.axisMaximum = 2
-
+        
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
     }
-    
     
     // Function for users speed
     private func calculateActivityFactor(activityArray : Array<Double>) -> Double {
@@ -145,7 +144,6 @@ class ViewController: UIViewController {
     }
     
     private func startAccelerometer(){
-        
         motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
@@ -155,7 +153,7 @@ class ViewController: UIViewController {
                 let y = abs(motion.userAcceleration.y)
                 let z = abs(motion.userAcceleration.z)
                 
-                if self.inputUsrAccelerationArray.count > 300 {
+                if self.inputUsrAccelerationArray.count > 400 {
                     self.inputUsrAccelerationArray.remove(at: 0)
                     self.medRegenerationArray.remove(at: 0)
                     self.slowRegenerationArray.remove(at: 0)
@@ -164,12 +162,12 @@ class ViewController: UIViewController {
                 //Detects Movement in all Chanels
                 self.inputUsrAcceleration = x+y+z
                 self.inputUsrAccelerationArray.append(self.inputUsrAcceleration)
-                self.acceleration = x+y
+                self.acceleration = x+z
                 self.medRegenerationArray.append(self.medRegenerationSum)
                 self.slowRegenerationArray.append(self.slowRegenerationSum)
                 self.fastRegenerationArray.append(self.fastRegenerationSum)
                 self.updateGraph()
-               
+                
                 let gravity = motion.gravity
                 OperationQueue.main.addOperation {
                     self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
@@ -179,8 +177,8 @@ class ViewController: UIViewController {
     }
     
     private func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
-
-        if accZXArray.count < 10{
+        
+        if accZXArray.count < 5{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
@@ -193,10 +191,8 @@ class ViewController: UIViewController {
             accX = calculateActivityFactor(activityArray: accelerationXArray)
             accZ = calculateActivityFactor(activityArray: accelerationZArray)
             activityFactor = calculateActivityFactor(activityArray: accZXArray)
-            print("ActivityFactor \(activityFactor)")
+            //print("ActivityFactor \(activityFactor)")
             
-            //activityFactorArray.append(activityFactor)
-
             if let temporaryTapDetection = temporaryTapDetection {
                 if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
                     print("Tap Cheat Detection")
@@ -207,10 +203,9 @@ class ViewController: UIViewController {
                 }
             }
             temporaryTapDetection = activityFactor
-           
+            
             if self.gravX > 0.9 && gravY < 0.25 && gravity.z < 0 && accZ < 0.5 && accY < 0.6 && activityFactor > 0.25 && activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
                 //Accepted
-                
                 self.acceptedOrNotView.backgroundColor = .green
                 UpdateRegenerationLine(activityFactor: activityFactor)
             }
@@ -218,7 +213,7 @@ class ViewController: UIViewController {
                 UpdateRegenerationLine(activityFactor: 0)
                 cheatingDetected(str : "Fusk")
             }
-        
+            
             //Reset after each batch
             accZXArray.removeAll()
             gravityXArray.removeAll()
@@ -231,39 +226,37 @@ class ViewController: UIViewController {
             accY = 0
             accZ = 0
         }
-
     }
     
-   private func UpdateRegenerationLine(activityFactor : Double){
+    private func UpdateRegenerationLine(activityFactor : Double){
         
         let maxActivity = 1.5
         
         //Green Line
-        let additionFactorMedLine = (maxActivity - medRegenerationSum)/40
+        let additionFactorMedLine = (maxActivity - medRegenerationSum)/5 //40
         //Purple Line
-        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
+        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/5 //80
         //DarkGray
-        let additionFactorFastLine = (maxActivity - fastRegenerationSum)/15
+        let additionFactorFastLine = (maxActivity - fastRegenerationSum)/5//15
         if activityFactor == 0{
-            medRegenerationSum -= additionFactorMedLine*3
-            slowRegenerationSum -= additionFactorSlowLine*2
-            fastRegenerationSum -= additionFactorFastLine*3
+
+        slowRegenerationSum -= slowRegenerationSum*0.3
+        medRegenerationSum -= medRegenerationSum*0.2
+        fastRegenerationSum -= fastRegenerationSum*0.1
+
         }
         else{
-           medRegenerationSum += abs(additionFactorMedLine)
-           slowRegenerationSum += abs(additionFactorSlowLine)
-           fastRegenerationSum += abs(additionFactorFastLine)
+            medRegenerationSum += abs(additionFactorMedLine)
+            slowRegenerationSum += abs(additionFactorSlowLine)
+            fastRegenerationSum += abs(additionFactorFastLine)
         }
-        if medRegenerationSum <= 0{
-            medRegenerationSum = 0
-        }
-        if slowRegenerationSum <= 0{
-            slowRegenerationSum = 0
-        }
-        if fastRegenerationSum <= 0{
-            fastRegenerationSum = 0
-        }
+        if medRegenerationSum <= 0{medRegenerationSum = 0}
+        if slowRegenerationSum <= 0{slowRegenerationSum = 0}
+        if fastRegenerationSum <= 0{fastRegenerationSum = 0}
         
+        if medRegenerationSum > maxActivity{medRegenerationSum = maxActivity}
+        if slowRegenerationSum > maxActivity{slowRegenerationSum = maxActivity}
+        if fastRegenerationSum > maxActivity{fastRegenerationSum = maxActivity}
     }
     
     private func RedOrGreene(activityFactor : Double) {
@@ -293,7 +286,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func longPressRightBtn(_ sender: UILongPressGestureRecognizer) {
-
+        
         if sender.state == .began{
             rightBtnOutlet.tintColor = .green
         }
@@ -318,7 +311,7 @@ class ViewController: UIViewController {
         motionManager.stopDeviceMotionUpdates()
         buttonOutlet.setTitle("Starta", for: .normal)
     }
-   
+    
     @IBAction func clearChartBtn(_ sender: UIButton) {
         if motionManager.isDeviceMotionAvailable{
             motionManager.stopDeviceMotionUpdates()
