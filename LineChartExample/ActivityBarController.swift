@@ -31,7 +31,7 @@ class ActivityBarController: UIViewController {
     var activityFactorArray : [Double] = [0]
     let motionManager = CMMotionManager()
     var acceleration : Double = 0
-    var timeInterval : Double = 30
+    var timeInterval : Double = 100
     var batchNumbersArray = [Double]()
     var lastActivityCheat = false
     var gravX : Double = 0
@@ -58,11 +58,8 @@ class ActivityBarController: UIViewController {
         leftThumbBtnOutlet.tintColor = .white
         rightThumbBtnOutlet.tintColor = .white
     }
-    
-    
-    
+   
     func startAccelerometer(){
-        
         motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
@@ -86,7 +83,7 @@ class ActivityBarController: UIViewController {
     func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
         
         //When hit hard, not normal behaviour
-        if accZXArray.count < 5{
+        if accZXArray.count < 10{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
@@ -114,11 +111,10 @@ class ActivityBarController: UIViewController {
             }
             temporaryTapDetection = activityFactor
             
-            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftThumbBtnOutlet.tintColor == .green && rightThumbBtnOutlet.tintColor == .green{
+            if self.gravX > 0.9 && gravY < 0.25 && gravity.z < 0 && accZ < 0.5 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftThumbBtnOutlet.tintColor == .green && rightThumbBtnOutlet.tintColor == .green{
                 //Accepted
                 changeHealth()
                 self.view.backgroundColor = darkGreenColor
-              
             }
             else{
               
@@ -137,9 +133,7 @@ class ActivityBarController: UIViewController {
             accY = 0
             accZ = 0
         }
-        
     }
-    
     
     // Function for users speed
     func calculateActivityFactor(activityArray : Array<Double>) -> Double {
@@ -164,12 +158,11 @@ class ActivityBarController: UIViewController {
         self.view.backgroundColor = defaultColor
     }
     
-    
     func changeHealth(){
         let parentViewWidth = healthBarView.bounds.width
 
         if healthWidth.constant < parentViewWidth{
-            healthWidth.constant += CGFloat(parentViewWidth/160)
+            healthWidth.constant += CGFloat(parentViewWidth/100)
             if healthWidth.constant > parentViewWidth{
                 healthWidth.constant = CGFloat(parentViewWidth)
             }

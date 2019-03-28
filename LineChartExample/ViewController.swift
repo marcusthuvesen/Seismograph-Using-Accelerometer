@@ -13,34 +13,36 @@ import CoreMotion
 class ViewController: UIViewController {
     
     @IBOutlet weak var chtChart: LineChartView!
-    var isDeviceMotionOn = false
-    var medRegenerationSum : Double = 0
-    var medRegenerationArray : [Double] = []
-    var slowRegenerationSum : Double = 0
-    var slowRegenerationArray : [Double] = []
-    var inputUsrAcceleration : Double = 0
-    var inputUsrAccelerationArray : [Double] = []
-    var accZXArray : [Double] = []
-    var gravityXArray : [Double] = []
-    var gravityYArray : [Double] = []
-    var accelerationZArray : [Double] = []
-    var accelerationXArray : [Double] = []
-    var activityFactorArray : [Double] = [0]
-    let motionManager = CMMotionManager()
-    var currentNode = 0
-    var acceleration : Double = 0
-    var timeInterval : Double = 60
-    var lastActivityCheat = false
-    var gravX : Double = 0
-    var gravY : Double = 0
-    var accY : Double = 0
-    var accZ : Double = 0
-    var accX : Double = 0
-    var activityFactor : Double = 0
-    var temporaryTapDetection : Double?
-    var tapCheatDetected = false
-    let lowerLimit : Double = 0.25
-    let upperLimit : Double = 1.4
+    private var isDeviceMotionOn = false
+    private var fastRegenerationSum : Double = 0
+    private var fastRegenerationArray : [Double] = []
+    private var medRegenerationSum : Double = 0
+    private var medRegenerationArray : [Double] = []
+    private var slowRegenerationSum : Double = 0
+    private var slowRegenerationArray : [Double] = []
+    private var inputUsrAcceleration : Double = 0
+    private var inputUsrAccelerationArray : [Double] = []
+    private var accZXArray : [Double] = []
+    private var gravityXArray : [Double] = []
+    private var gravityYArray : [Double] = []
+    private var accelerationZArray : [Double] = []
+    private var accelerationXArray : [Double] = []
+    private var activityFactorArray : [Double] = [0]
+    private let motionManager = CMMotionManager()
+    private var currentNode = 0
+    private var acceleration : Double = 0
+    private var timeInterval : Double = 50
+    private var lastActivityCheat = false
+    private var gravX : Double = 0
+    private var gravY : Double = 0
+    private var accY : Double = 0
+    private var accZ : Double = 0
+    private var accX : Double = 0
+    private var activityFactor : Double = 0
+    private var temporaryTapDetection : Double?
+    private var tapCheatDetected = false
+    private let lowerLimit : Double = 0.25
+    private let upperLimit : Double = 1.4
     
     
     @IBOutlet weak var buttonOutlet: UIButton!
@@ -62,64 +64,70 @@ class ViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-       
+        
         // Dispose of any resources that can be recreated.
     }
     
-    func updateGraph(){
-        var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
-        var lineChartEntry2  = [ChartDataEntry]()
-        
-        var lineChartEntry3  = [ChartDataEntry]()
+    private func updateGraph(){
+        var inputLineEntry  = [ChartDataEntry]() //this is the Array that will be displayed on the graph.
+        var medLineEntry  = [ChartDataEntry]()
+        var slowLineEntry  = [ChartDataEntry]()
+        var fastLineEntry  = [ChartDataEntry]()
         
         for i in 0..<inputUsrAccelerationArray.count {
-            let value = ChartDataEntry(x: Double(i), y: inputUsrAccelerationArray[i]) // here we set the X and Y status in a data chart
-            let value2 = ChartDataEntry(x: Double(i), y: medRegenerationArray[i])
+            let inputValue = ChartDataEntry(x: Double(i), y: inputUsrAccelerationArray[i]) // here we set the X and Y status in a data chart
+            let medValue = ChartDataEntry(x: Double(i), y: medRegenerationArray[i])
+            let slowValue = ChartDataEntry(x: Double(i), y: slowRegenerationArray[i])
+            let fastValue = ChartDataEntry(x: Double(i), y: fastRegenerationArray[i])
             
-            let value3 = ChartDataEntry(x: Double(i), y: slowRegenerationArray[i])
-            
-            lineChartEntry.append(value) // here we add it to the data se
-            lineChartEntry2.append(value2)
-            lineChartEntry3.append(value3)
+            inputLineEntry.append(inputValue) // here we add it to the data se
+            medLineEntry.append(medValue)
+            slowLineEntry.append(slowValue)
+            fastLineEntry.append(fastValue)
         }
         
-        let line1 = LineChartDataSet(values: lineChartEntry, label: "InputAcceleration - XYZ") //Here we convert lineChartEntry to a LineChartDataSet
-        line1.colors = [NSUIColor.blue] //Sets the colour to blue
-        line1.circleRadius = 0
+        let inputLine = LineChartDataSet(values: inputLineEntry, label: "InputAcceleration - XYZ") //Here we convert lineChartEntry to a LineChartDataSet
+        inputLine.colors = [NSUIColor.blue] //Sets the colour to blue
+        inputLine.circleRadius = 0
         
-        let line2 = LineChartDataSet(values: lineChartEntry2, label: "Regen.Multiplier-Medium") //Here we convert lineChartEntry to a LineChartDataSet
-        line2.colors = [NSUIColor.green] //Sets the colour to blue
-        line2.circleRadius = 0
-        line2.lineWidth = 3
+        let medLine = LineChartDataSet(values: medLineEntry, label: "Regen.Multiplier-Medium") //Here we convert lineChartEntry to a LineChartDataSet
+        medLine.colors = [NSUIColor.green] //Sets the colorur to blue
+        medLine.circleRadius = 0
+        medLine.lineWidth = 3
         
-        let line3 = LineChartDataSet(values: lineChartEntry3, label: "Regen.Multiplier-Slow") //Here we convert lineChartEntry to a LineChartDataSet
-        line3.colors = [NSUIColor.purple] //Sets the colour to blue
-        line3.circleRadius = 0
-        line3.lineWidth = 3
-       
+        let slowLine = LineChartDataSet(values: slowLineEntry, label: "Regen.Multiplier-Slow") //Here we convert lineChartEntry to a LineChartDataSet
+        slowLine.colors = [NSUIColor.purple] //Sets the colour to blue
+        slowLine.circleRadius = 0
+        slowLine.lineWidth = 3
+        
+        let fastLine = LineChartDataSet(values: fastLineEntry, label: "Regen.Multiplier-Fast") //Here we convert lineChartEntry to a LineChartDataSet
+        fastLine.colors = [NSUIColor.darkGray] //Sets the colour to blue
+        fastLine.circleRadius = 0
+        fastLine.lineWidth = 3
+        
         let data = LineChartData() //This is the object that will be added to the chart
-        data.addDataSet(line1) //Adds the line to the dataSet
-        data.addDataSet(line2)
-        data.addDataSet(line3)
+        data.addDataSet(inputLine) //Adds the line to the dataSet
+        data.addDataSet(medLine)
+        data.addDataSet(slowLine)
+        data.addDataSet(fastLine)
         
         chtChart.data = data //it adds the chart data to the chart and causes an update
         currentNode += 1
-    
+        
         self.chtChart.setVisibleXRangeMinimum(400)
         self.chtChart.setVisibleXRangeMaximum(400)
         self.chtChart.leftAxis.axisMinimum = 0
         self.chtChart.rightAxis.axisMinimum = 0
         self.chtChart.leftAxis.axisMaximum = 2
         self.chtChart.rightAxis.axisMaximum = 2
-
+        
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
         chtChart.chartDescription?.text = "Seismograph" // Here we set the description for the graph
     }
     
-    
     // Function for users speed
-    func calculateActivityFactor(activityArray : Array<Double>) -> Double {
+    private func calculateActivityFactor(activityArray : Array<Double>) -> Double {
         
         // Calculate sum of array
         let activitySum = activityArray.reduce(0) { $0 + $1 }
@@ -135,8 +143,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func startAccelerometer(){
-        
+    private func startAccelerometer(){
         motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
@@ -150,29 +157,28 @@ class ViewController: UIViewController {
                     self.inputUsrAccelerationArray.remove(at: 0)
                     self.medRegenerationArray.remove(at: 0)
                     self.slowRegenerationArray.remove(at: 0)
+                    self.fastRegenerationArray.remove(at: 0)
                 }
                 //Detects Movement in all Chanels
                 self.inputUsrAcceleration = x+y+z
                 self.inputUsrAccelerationArray.append(self.inputUsrAcceleration)
-                self.acceleration = round((x+z) * 100) / 100
+                self.acceleration = x+z
                 self.medRegenerationArray.append(self.medRegenerationSum)
                 self.slowRegenerationArray.append(self.slowRegenerationSum)
-                
+                self.fastRegenerationArray.append(self.fastRegenerationSum)
                 self.updateGraph()
-               
+                
                 let gravity = motion.gravity
                 OperationQueue.main.addOperation {
                     self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
-
                 }
             }
         }
     }
     
-    func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
-
-        //When hit hard, not normal behaviour
-        if accZXArray.count < 10{
+    private func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
+        
+        if accZXArray.count < 5{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
             accelerationZArray.append(abs(motion.userAcceleration.z))
@@ -185,10 +191,8 @@ class ViewController: UIViewController {
             accX = calculateActivityFactor(activityArray: accelerationXArray)
             accZ = calculateActivityFactor(activityArray: accelerationZArray)
             activityFactor = calculateActivityFactor(activityArray: accZXArray)
-            print("ActivityFactor \(activityFactor)")
+            //print("ActivityFactor \(activityFactor)")
             
-            //activityFactorArray.append(activityFactor)
-
             if let temporaryTapDetection = temporaryTapDetection {
                 if temporaryTapDetection > activityFactor + 0.3 || temporaryTapDetection < activityFactor - 0.3{
                     print("Tap Cheat Detection")
@@ -199,18 +203,17 @@ class ViewController: UIViewController {
                 }
             }
             temporaryTapDetection = activityFactor
-           
-            if self.gravX > 0.5 && gravY < 0.25 && accZ < 0.65 && accY < 0.6 && self.activityFactor > 0.25 && self.activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
+            
+            if self.gravX > 0.9 && gravY < 0.25 && gravity.z < 0 && accZ < 0.5 && accY < 0.6 && activityFactor > 0.25 && activityFactor < 1.4 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
                 //Accepted
-                
                 self.acceptedOrNotView.backgroundColor = .green
-                UpdateRegenerationLine(activityFactor: self.activityFactor)
+                UpdateRegenerationLine(activityFactor: activityFactor)
             }
             else{
                 UpdateRegenerationLine(activityFactor: 0)
                 cheatingDetected(str : "Fusk")
             }
-        
+            
             //Reset after each batch
             accZXArray.removeAll()
             gravityXArray.removeAll()
@@ -223,37 +226,40 @@ class ViewController: UIViewController {
             accY = 0
             accZ = 0
         }
-
     }
     
-    func UpdateRegenerationLine(activityFactor : Double){
+    private func UpdateRegenerationLine(activityFactor : Double){
         
         let maxActivity = 1.5
         
-        
         //Green Line
-        let additionFactorMedLine = (maxActivity - medRegenerationSum)/35
+        let additionFactorMedLine = (maxActivity - medRegenerationSum)/5 //40
         //Purple Line
-        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
-        
+        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/5 //80
+        //DarkGray
+        let additionFactorFastLine = (maxActivity - fastRegenerationSum)/5//15
         if activityFactor == 0{
-            medRegenerationSum -= additionFactorMedLine*3
-            slowRegenerationSum -= additionFactorSlowLine*2
+            
+            slowRegenerationSum -= slowRegenerationSum*0.3
+            medRegenerationSum -= medRegenerationSum*0.2
+            fastRegenerationSum -= fastRegenerationSum*0.1
+            
         }
         else{
-           medRegenerationSum += abs(additionFactorMedLine)
-           slowRegenerationSum += abs(additionFactorSlowLine)
+            medRegenerationSum += abs(additionFactorMedLine)
+            slowRegenerationSum += abs(additionFactorSlowLine)
+            fastRegenerationSum += abs(additionFactorFastLine)
         }
-        if medRegenerationSum <= 0{
-            medRegenerationSum = 0
-        }
-        if slowRegenerationSum <= 0{
-            slowRegenerationSum = 0
-        }
-   
+        if medRegenerationSum <= 0{medRegenerationSum = 0}
+        if slowRegenerationSum <= 0{slowRegenerationSum = 0}
+        if fastRegenerationSum <= 0{fastRegenerationSum = 0}
+        
+        if medRegenerationSum > maxActivity{medRegenerationSum = maxActivity}
+        if slowRegenerationSum > maxActivity{slowRegenerationSum = maxActivity}
+        if fastRegenerationSum > maxActivity{fastRegenerationSum = maxActivity}
     }
     
-    func RedOrGreene(activityFactor : Double) {
+    private func RedOrGreene(activityFactor : Double) {
         if activityFactor > lowerLimit && activityFactor < upperLimit{
             self.acceptedOrNotView.backgroundColor = .green
             
@@ -263,7 +269,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func cheatingDetected(str : String){
+    private func cheatingDetected(str : String){
         //print(str)
         self.lastActivityCheat = true
         self.acceptedOrNotView.backgroundColor = .red
@@ -272,7 +278,6 @@ class ViewController: UIViewController {
     @IBAction func longPressLeftBtn(_ sender: UILongPressGestureRecognizer) {
         
         if sender.state == .began{
-         //   print("Vänster Godkänd")
             leftBtnOutlet.tintColor = .green
         }
         if sender.state == .ended{
@@ -281,9 +286,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func longPressRightBtn(_ sender: UILongPressGestureRecognizer) {
-
+        
         if sender.state == .began{
-            //print("Höger Godkänd")
             rightBtnOutlet.tintColor = .green
         }
         if sender.state == .ended{
@@ -295,21 +299,18 @@ class ViewController: UIViewController {
         if motionManager.isDeviceMotionAvailable{
             isDeviceMotionOn = !isDeviceMotionOn
             isDeviceMotionOn ? deviceMotionTurnOn() : deviceMotionTurnOff()
-            
         }
     }
     
-    func deviceMotionTurnOn(){
+    private func deviceMotionTurnOn(){
         startAccelerometer()
         buttonOutlet.setTitle("Stoppa", for: .normal)
     }
     
-    func deviceMotionTurnOff(){
+    private func deviceMotionTurnOff(){
         motionManager.stopDeviceMotionUpdates()
         buttonOutlet.setTitle("Starta", for: .normal)
     }
-    
-    
     
     @IBAction func clearChartBtn(_ sender: UIButton) {
         if motionManager.isDeviceMotionAvailable{
@@ -324,7 +325,7 @@ class ViewController: UIViewController {
         
     }
     
-    func resetAllValues(){
+    private func resetAllValues(){
         gravityXArray.removeAll()
         gravityYArray.removeAll()
         accelerationZArray.removeAll()
@@ -334,6 +335,8 @@ class ViewController: UIViewController {
         medRegenerationSum = 0
         slowRegenerationArray.removeAll()
         slowRegenerationSum = 0
+        fastRegenerationArray.removeAll()
+        fastRegenerationSum = 0
         currentNode = 0
     }
     
