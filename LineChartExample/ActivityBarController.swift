@@ -169,7 +169,7 @@ class ActivityBarController: UIViewController {
         let parentViewWidth = healthBarView.bounds.width
 
         if healthWidth.constant < parentViewWidth{
-            healthWidth.constant += CGFloat(parentViewWidth/20)
+            healthWidth.constant += CGFloat(parentViewWidth/160)
             if healthWidth.constant > parentViewWidth{
                 healthWidth.constant = CGFloat(parentViewWidth)
             }
