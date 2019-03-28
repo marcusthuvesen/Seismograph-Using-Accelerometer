@@ -239,11 +239,11 @@ class ViewController: UIViewController {
         //DarkGray
         let additionFactorFastLine = (maxActivity - fastRegenerationSum)/5//15
         if activityFactor == 0{
-
-        slowRegenerationSum -= slowRegenerationSum*0.3
-        medRegenerationSum -= medRegenerationSum*0.2
-        fastRegenerationSum -= fastRegenerationSum*0.1
-
+            
+            slowRegenerationSum -= slowRegenerationSum*0.3
+            medRegenerationSum -= medRegenerationSum*0.2
+            fastRegenerationSum -= fastRegenerationSum*0.1
+            
         }
         else{
             medRegenerationSum += abs(additionFactorMedLine)
