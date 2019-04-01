@@ -258,11 +258,9 @@ class ViewController: UIViewController {
         //DarkGray
         let additionFactorFastLine = (maxActivity - fastRegenerationSum)/15
         if activityFactor == 0{
-            
             slowRegenerationSum -= slowRegenerationSum*0.07
             medRegenerationSum -= medRegenerationSum*0.15
             fastRegenerationSum -= fastRegenerationSum*0.2
-            
         }
         else{
             medRegenerationSum += abs(additionFactorMedLine)
@@ -276,6 +274,10 @@ class ViewController: UIViewController {
         if medRegenerationSum > maxActivity{medRegenerationSum = maxActivity}
         if slowRegenerationSum > maxActivity{slowRegenerationSum = maxActivity}
         if fastRegenerationSum > maxActivity{fastRegenerationSum = maxActivity}
+        
+        print(medRegenerationSum)
+        print(slowRegenerationSum)
+        print(fastRegenerationSum)
     }
     
     private func RedOrGreene(activityFactor : Double) {
