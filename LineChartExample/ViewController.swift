@@ -182,10 +182,10 @@ class ViewController: UIViewController {
                         self.stampFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
                     }
                     else if self.sendToJumpFilter{
-                        self.stampFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+                        self.jumpFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
                     }
                     else if self.sendToSquatFilter{
-                        self.stampFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+                        //self.stampFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
                     }
                     
                 }
