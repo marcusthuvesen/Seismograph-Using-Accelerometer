@@ -107,22 +107,34 @@
                                         <state key="normal" title="Stamp">
                                             <color key="titleColor" red="0.85882352939999995" green="0.89019607840000003" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="stampBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="he8-wK-eJj"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yyd-XT-oCx">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yyd-XT-oCx">
                                         <rect key="frame" x="0.0" y="29" width="258" height="30"/>
                                         <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="FR0-aR-Kvg"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <state key="normal" title="Jump">
                                             <color key="titleColor" red="0.85882352939999995" green="0.89019607840000003" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="jumpBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sVo-VN-f53"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DJ-ch-QZX">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DJ-ch-QZX">
                                         <rect key="frame" x="0.0" y="59" width="258" height="32"/>
                                         <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <state key="normal" title="Squat">
                                             <color key="titleColor" red="0.85882352939999995" green="0.89019607840000003" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="squatBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hpm-f6-aY9"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -152,8 +164,11 @@
                         <outlet property="buttonOutlet" destination="SRl-9D-wBC" id="LYl-sv-D7f"/>
                         <outlet property="chtChart" destination="V7r-Yg-hXX" id="THu-Rl-57A"/>
                         <outlet property="clearButtonOutlet" destination="Xv8-z8-KDw" id="33V-wz-q7v"/>
+                        <outlet property="jumpOutlet" destination="yyd-XT-oCx" id="S37-gM-e2G"/>
                         <outlet property="leftBtnOutlet" destination="Dlj-BQ-uG9" id="ObQ-Er-vAr"/>
                         <outlet property="rightBtnOutlet" destination="lXx-gB-8id" id="DuF-Zg-Jsx"/>
+                        <outlet property="squatOutlet" destination="4DJ-ch-QZX" id="5MP-qK-wOs"/>
+                        <outlet property="stampOutlet" destination="pb8-Dd-366" id="Siv-59-acz"/>
                         <outlet property="startButtonOutlet" destination="SRl-9D-wBC" id="WSa-KL-SM3"/>
                     </connections>
                 </viewController>

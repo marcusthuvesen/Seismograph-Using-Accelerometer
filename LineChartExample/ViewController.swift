@@ -43,7 +43,12 @@ class ViewController: UIViewController {
     private var tapCheatDetected = false
     private let lowerLimit : Double = 0.25
     private let upperLimit : Double = 1.4
-    
+    private var sendToJumpFilter = false
+    private var sendToStampFilter = false
+    private var sendToSquatFilter = false
+    private var jumpIsClicked = false
+    private var stampIsClicked = false
+    private var squatIsClicked = false
     
     @IBOutlet weak var buttonOutlet: UIButton!
     @IBOutlet weak var startButtonOutlet: UIButton!
@@ -51,6 +56,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var acceptedOrNotView: UIView!
     @IBOutlet weak var leftBtnOutlet: UIButton!
     @IBOutlet weak var rightBtnOutlet: UIButton!
+    @IBOutlet weak var stampOutlet: UIButton!
+    @IBOutlet weak var jumpOutlet: UIButton!
+    @IBOutlet weak var squatOutlet: UIButton!
     
     
     override func viewDidLoad() {
@@ -170,14 +178,23 @@ class ViewController: UIViewController {
                 
                 let gravity = motion.gravity
                 OperationQueue.main.addOperation {
-                    self.cheatingFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+                    if self.sendToStampFilter{
+                        self.stampFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+                    }
+                    else if self.sendToJumpFilter{
+                        self.stampFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+                    }
+                    else if self.sendToSquatFilter{
+                        self.stampFilter(gravity : gravity, acceleration : self.acceleration, motion : motion)
+                    }
+                    
                 }
             }
         }
     }
     
-    private func cheatingFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
-        
+    private func stampFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
+        print("StampFilter")
         if accZXArray.count < 5{
             gravityXArray.append(abs(gravity.x))
             gravityYArray.append(abs(gravity.y))
@@ -247,6 +264,76 @@ class ViewController: UIViewController {
         }
     }
     
+    private func jumpFilter(gravity : CMAcceleration, acceleration : Double, motion : CMDeviceMotion){
+        print("JumpFilter")
+        if accZXArray.count < 5{
+            gravityXArray.append(abs(gravity.x))
+            gravityYArray.append(abs(gravity.y))
+            accelerationZArray.append(abs(motion.userAcceleration.z))
+            accelerationXArray.append(abs(motion.userAcceleration.x))
+            self.accZXArray.append(acceleration)
+        }
+        else{
+            gravX = calculateActivityFactor(activityArray: gravityXArray)
+            gravY = calculateActivityFactor(activityArray: gravityYArray)
+            accX = calculateActivityFactor(activityArray: accelerationXArray)
+            accZ = calculateActivityFactor(activityArray: accelerationZArray)
+            activityFactor = calculateActivityFactor(activityArray: accZXArray)
+            //print("ActivityFactor \(activityFactor)")
+            
+            if let temporaryTapDetection = temporaryTapDetection {
+                if temporaryTapDetection > activityFactor + 0.8 || temporaryTapDetection < activityFactor - 0.8{
+                    print("Tap Cheat Detection")
+                    tapCheatDetected = true
+                }
+                else{
+                    tapCheatDetected = false
+                }
+            }
+            temporaryTapDetection = activityFactor
+            
+            if self.gravX < 0.8 {
+                print("Ogiltlig X")
+            }
+            if self.gravY > 0.25 {
+                print("ogiltlig y")
+            }
+            if gravity.z > 0.3 {
+                print("ogiltlig z")
+            }
+            if accZ > 0.8 {
+                print("Accel z ogl")
+            }
+            if accY > 0.8 {
+                print("accY ogiltlig")
+            }
+            if activityFactor < 0.15 || activityFactor > 1.5 {
+                print(activityFactor)
+            }
+            // Filter
+            if self.gravX > 0.8 && gravY < 0.25 && gravity.z < 0.3 && accZ < 0.8 && accY < 0.8 && activityFactor > 0.1 && activityFactor < 1.7 && tapCheatDetected == false && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
+                //Accepted
+                self.acceptedOrNotView.backgroundColor = .green
+                UpdateRegenerationLine(activityFactor: activityFactor)
+            }
+            else{
+                UpdateRegenerationLine(activityFactor: 0)
+                cheatingDetected(str : "Fusk")
+            }
+            
+            //Reset after each batch
+            accZXArray.removeAll()
+            gravityXArray.removeAll()
+            gravityYArray.removeAll()
+            accelerationZArray.removeAll()
+            accelerationXArray.removeAll()
+            activityFactor = 0
+            gravX = 0
+            gravY = 0
+            accY = 0
+            accZ = 0
+        }
+    }
     private func UpdateRegenerationLine(activityFactor : Double){
         
         let maxActivity = 1.5
@@ -321,6 +408,80 @@ class ViewController: UIViewController {
             isDeviceMotionOn = !isDeviceMotionOn
             isDeviceMotionOn ? deviceMotionTurnOn() : deviceMotionTurnOff()
         }
+    }
+    
+    @IBAction func stampBtn(_ sender: UIButton) {
+      
+        if stampIsClicked{
+            setStampToFalse()
+        }
+        else{
+            setStampToTrue()
+            setJumpToFalse()
+            setSquatToFalse()
+        }
+    }
+   
+    @IBAction func jumpBtn(_ sender: UIButton) {
+        
+        if jumpIsClicked{
+           setJumpToFalse()
+        }
+        else{
+            setJumpToTrue()
+            setStampToFalse()
+            setSquatToFalse()
+        }
+    }
+   
+    @IBAction func squatBtn(_ sender: UIButton) {
+
+        if squatIsClicked{
+            setSquatToFalse()
+        }
+        else{
+            setSquatToTrue()
+            setStampToFalse()
+            setJumpToFalse()
+        }
+    }
+    
+    /*------------------------------------------------------------------------*/
+    
+    private func setStampToFalse(){
+        stampIsClicked = false
+        stampOutlet.setTitleColor(.white, for: .normal)
+        sendToStampFilter = false
+    }
+    private func setStampToTrue(){
+        stampIsClicked = true
+        stampOutlet.setTitleColor(.gray, for: .normal)
+        sendToStampFilter = true
+    }
+    
+    
+    private func setJumpToFalse(){
+        jumpIsClicked = false
+        jumpOutlet.setTitleColor(.white, for: .normal)
+        sendToJumpFilter = false
+    }
+    
+    private func setJumpToTrue(){
+        jumpIsClicked = true
+        jumpOutlet.setTitleColor(.gray, for: .normal)
+        sendToJumpFilter = true
+    }
+    
+    private func setSquatToFalse(){
+        squatIsClicked = false
+        squatOutlet.setTitleColor(.white, for: .normal)
+        sendToSquatFilter = false
+    }
+    
+    private func setSquatToTrue(){
+        squatIsClicked = true
+        squatOutlet.setTitleColor(.gray, for: .normal)
+        sendToSquatFilter = true
     }
     
     private func deviceMotionTurnOn(){
