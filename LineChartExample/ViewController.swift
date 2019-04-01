@@ -268,7 +268,7 @@ class ViewController: UIViewController {
         print("JumpFilter")
         if accZXArray.count < 5{
             gravityXArray.append(abs(gravity.x))
-            gravityYArray.append(abs(gravity.y))
+            gravityYArray.append(abs(gravity.z))
             accelerationZArray.append(abs(motion.userAcceleration.z))
             accelerationXArray.append(abs(motion.userAcceleration.x))
             self.accZXArray.append(acceleration)
@@ -281,16 +281,16 @@ class ViewController: UIViewController {
             activityFactor = calculateActivityFactor(activityArray: accZXArray)
             //print("ActivityFactor \(activityFactor)")
             
-            if let temporaryTapDetection = temporaryTapDetection {
-                if temporaryTapDetection > activityFactor + 0.8 || temporaryTapDetection < activityFactor - 0.8{
-                    print("Tap Cheat Detection")
-                    tapCheatDetected = true
-                }
-                else{
-                    tapCheatDetected = false
-                }
-            }
-            temporaryTapDetection = activityFactor
+//            if let temporaryTapDetection = temporaryTapDetection {
+//                if temporaryTapDetection > activityFactor + 0.8 || temporaryTapDetection < activityFactor - 0.8{
+//                    print("Tap Cheat Detection")
+//                    tapCheatDetected = true
+//                }
+//                else{
+//                    tapCheatDetected = false
+//                }
+//            }
+//            temporaryTapDetection = activityFactor
             
             if self.gravX < 0.8 {
                 print("Ogiltlig X")
