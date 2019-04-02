@@ -11,6 +11,8 @@
 		204BF2FB2240EF9000736A74 /* ThreeAxisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */; };
 		204BF3202242468900736A74 /* FourAxisAbsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */; };
 		2589C5B02246432F00D0A22F /* ActivityBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2589C5AF2246432E00D0A22F /* ActivityBarController.swift */; };
+		25F8F2962253940E0091516B /* stampFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F8F2952253940E0091516B /* stampFilter.swift */; };
+		25F8F298225394630091516B /* jumpFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F8F297225394630091516B /* jumpFilter.swift */; };
 		28C90CF81F16E4F4001378A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C90CF71F16E4F4001378A1 /* AppDelegate.swift */; };
 		28C90CFA1F16E4F4001378A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C90CF91F16E4F4001378A1 /* ViewController.swift */; };
 		28C90CFD1F16E4F4001378A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28C90CFB1F16E4F4001378A1 /* Main.storyboard */; };
@@ -45,6 +47,8 @@
 		204BF2FA2240EF8F00736A74 /* ThreeAxisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeAxisViewController.swift; sourceTree = "<group>"; };
 		204BF31F2242468900736A74 /* FourAxisAbsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FourAxisAbsViewController.swift; sourceTree = "<group>"; };
 		2589C5AF2246432E00D0A22F /* ActivityBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityBarController.swift; sourceTree = "<group>"; };
+		25F8F2952253940E0091516B /* stampFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = stampFilter.swift; sourceTree = "<group>"; };
+		25F8F297225394630091516B /* jumpFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = jumpFilter.swift; sourceTree = "<group>"; };
 		28C90CF41F16E4F4001378A1 /* LineChartExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LineChartExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		28C90CF71F16E4F4001378A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28C90CF91F16E4F4001378A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +152,8 @@
 				28C90CF71F16E4F4001378A1 /* AppDelegate.swift */,
 				28C90CF91F16E4F4001378A1 /* ViewController.swift */,
 				2589C5AF2246432E00D0A22F /* ActivityBarController.swift */,
+				25F8F2952253940E0091516B /* stampFilter.swift */,
+				25F8F297225394630091516B /* jumpFilter.swift */,
 				28C90CFB1F16E4F4001378A1 /* Main.storyboard */,
 				2003A4D72243DD0E00DF92BE /* Other */,
 				28C90CFE1F16E4F4001378A1 /* Assets.xcassets */,
@@ -407,6 +413,8 @@
 				2589C5B02246432F00D0A22F /* ActivityBarController.swift in Sources */,
 				28C90CF81F16E4F4001378A1 /* AppDelegate.swift in Sources */,
 				2003A4E52248CC1000DF92BE /* CMMotionManager+shared.swift in Sources */,
+				25F8F298225394630091516B /* jumpFilter.swift in Sources */,
+				25F8F2962253940E0091516B /* stampFilter.swift in Sources */,
 				204BF2FB2240EF9000736A74 /* ThreeAxisViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
