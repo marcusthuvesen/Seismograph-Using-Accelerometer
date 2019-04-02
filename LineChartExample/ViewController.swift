@@ -233,23 +233,29 @@ class ViewController: UIViewController {
     
 
      func UpdateRegenerationLine(activityFactor : Double){
+        var additionFactorMedLine = 0.0
+        var additionFactorSlowLine = 0.0
+        var additionFactorFastLine = 0.0
         
         let maxActivity = 1.5
-        
-//        //Green Line
-//        let additionFactorMedLine = (maxActivity - medRegenerationSum)/40
-//        //Purple Line
-//        let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
-//        //DarkGray
-//        let additionFactorFastLine = (maxActivity - fastRegenerationSum)/15
-//
-        
+        //Stamp
+        if sendToStampFilter{
             //Green Line
-            let additionFactorMedLine = (maxActivity - medRegenerationSum)/40
+            additionFactorMedLine = (maxActivity - medRegenerationSum)/40
             //Purple Line
-            let additionFactorSlowLine = (maxActivity - slowRegenerationSum)/20
+            additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
             //DarkGray
-            let additionFactorFastLine = (maxActivity - fastRegenerationSum)/10
+            additionFactorFastLine = (maxActivity - fastRegenerationSum)/15
+        }
+        else{
+            //Green Line
+            additionFactorMedLine = (maxActivity - medRegenerationSum)/20
+            //Purple Line
+            additionFactorSlowLine = (maxActivity - slowRegenerationSum)/30
+            //DarkGray
+            additionFactorFastLine = (maxActivity - fastRegenerationSum)/7
+            
+        }
         
         if activityFactor == 0{
             if sendToStampFilter{

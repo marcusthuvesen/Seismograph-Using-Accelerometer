@@ -42,16 +42,6 @@ extension ViewController{
                 firstHighValue = true
             }
             
-            //            jumpFilterCounter += 1
-            //            if jumpFilterCounter % 5 == 0{
-            //                print("erasing")
-            //                jumpFilterCounter = 0
-            //                firstHighValue = false
-            //                firstLowValue = false
-            //                secondHighValue = false
-            //                secondLowValue = false
-            //            }
-            
             if firstLowValue && firstHighValue && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
                 print("Hopp")
                 firstHighValue = false
