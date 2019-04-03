@@ -13,54 +13,58 @@ import CoreMotion
 class ViewController: UIViewController {
     
     @IBOutlet weak var chtChart: LineChartView!
-     var isDeviceMotionOn = false
-     var fastRegenerationSum : Double = 0
-     var fastRegenerationArray : [Double] = []
-     var medRegenerationSum : Double = 0
-     var medRegenerationArray : [Double] = []
-     var slowRegenerationSum : Double = 0
-     var slowRegenerationArray : [Double] = []
-     var inputUsrAcceleration : Double = 0
-     var inputUsrAccelerationArray : [Double] = []
-     var accYXArray : [Double] = []
-     var accXArray : [Double] = []
-     var gravityXArray : [Double] = []
-     var gravityYArray : [Double] = []
-     var gravityZArray : [Double] = []
-     var accelerationZArray : [Double] = []
-     var accelerationXArray : [Double] = []
-     var activityFactorArray : [Double] = [0]
-     var activityFactorArrayX : [Double] = [0]
-     let motionManager = CMMotionManager()
-     var currentNode = 0
-     var acceleration : Double = 0
-     var timeInterval : Double = 20
-     var lastActivityCheat = false
-     var gravX : Double = 0
-     var gravY : Double = 0
-     var gravZ : Double = 0
-     var accY : Double = 0
-     var accZ : Double = 0
-     var accX : Double = 0
-     var activityFactor : Double = 0
-     var activityFactorX : Double = 0
-     var temporaryTapDetection : Double?
-     var tapCheatDetected = false
-     let lowerLimit : Double = 0.25
-     let upperLimit : Double = 1.4
-     var sendToJumpFilter = false
-     var sendToStampFilter = false
-     var sendToSquatFilter = false
-     var jumpIsClicked = false
-     var stampIsClicked = false
-     var squatIsClicked = false
-     var firstLowValue = false
-     var secondLowValue = false
-     var firstHighValue = false
-     var secondHighValue = false
-     var jumpFilterCounter = 0
-     var jumpFilterMemoryBool = false
-    
+    var isDeviceMotionOn = false
+    var fastRegenerationSum : Double = 0
+    var fastRegenerationArray : [Double] = []
+    var medRegenerationSum : Double = 0
+    var medRegenerationArray : [Double] = []
+    var slowRegenerationSum : Double = 0
+    var slowRegenerationArray : [Double] = []
+    var inputUsrAcceleration : Double = 0
+    var inputUsrAccelerationArray : [Double] = []
+    var accYXArray : [Double] = []
+    var accXArray : [Double] = []
+    var gravityXArray : [Double] = []
+    var gravityYArray : [Double] = []
+    var gravityZArray : [Double] = []
+    var accelerationZArray : [Double] = []
+    var accelerationXArray : [Double] = []
+    var activityFactorArray : [Double] = [0]
+    var activityFactorArrayX : [Double] = [0]
+    let motionManager = CMMotionManager()
+    var currentNode = 0
+    var acceleration : Double = 0
+    var timeInterval : Double = 20
+    var lastActivityCheat = false
+    var gravX : Double = 0
+    var gravY : Double = 0
+    var gravZ : Double = 0
+    var accY : Double = 0
+    var accZ : Double = 0
+    var accX : Double = 0
+    var activityFactor : Double = 0
+    var activityFactorX : Double = 0
+    var temporaryTapDetection : Double?
+    var tapCheatDetected = false
+    let lowerLimit : Double = 0.25
+    let upperLimit : Double = 1.4
+    var sendToJumpFilter = false
+    var sendToStampFilter = false
+    var sendToSquatFilter = false
+    var jumpIsClicked = false
+    var stampIsClicked = false
+    var squatIsClicked = false
+    var firstLowValue = false
+    var firstHighValue = false
+    var jumpFilterCounter = 0
+    var filterExceedMaxCounter = 0
+    var jumpFilterMemoryBool = false
+    var maxActivitySlowValue = 1.5
+    var maxActivityMedValue = 1.5
+    var maxActivityFastValue = 1.5
+    var additionFactorMedLine = 0.0
+    var additionFactorSlowLine = 0.0
+    var additionFactorFastLine = 0.0
     
     @IBOutlet weak var buttonOutlet: UIButton!
     @IBOutlet weak var startButtonOutlet: UIButton!
@@ -71,15 +75,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var stampOutlet: UIButton!
     @IBOutlet weak var jumpOutlet: UIButton!
     @IBOutlet weak var squatOutlet: UIButton!
+    @IBOutlet weak var selectActivityStack: UIStackView!
+    @IBOutlet weak var inputTypeOutlet: UIButton!
+    @IBOutlet weak var nextVCOutlet: UIButton!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        startButtonOutlet.layer.cornerRadius = 15
-        clearButtonOutlet.layer.cornerRadius = 15
+        startButtonOutlet.layer.cornerRadius = startButtonOutlet.frame.height / 2
+        clearButtonOutlet.layer.cornerRadius = clearButtonOutlet.frame.height / 2
         acceptedOrNotView.layer.cornerRadius = acceptedOrNotView.frame.height / 2
-        
+        inputTypeOutlet.layer.cornerRadius = inputTypeOutlet.frame.height / 2
+        nextVCOutlet.layer.cornerRadius = nextVCOutlet.frame.height / 2
+        selectActivityStack.layer.cornerRadius = 15
     }
     
     override func didReceiveMemoryWarning() {
@@ -88,7 +97,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-     func updateGraph(){
+    func updateGraph(){
         var inputLineEntry  = [ChartDataEntry]() //this is the Array that will be displayed on the graph.
         var medLineEntry  = [ChartDataEntry]()
         var slowLineEntry  = [ChartDataEntry]()
@@ -137,14 +146,14 @@ class ViewController: UIViewController {
         self.chtChart.setVisibleXRangeMinimum(200)
         self.chtChart.setVisibleXRangeMaximum(200)
         if sendToJumpFilter{
-            self.chtChart.leftAxis.axisMinimum = -2
-            self.chtChart.rightAxis.axisMinimum = -2
+            self.chtChart.leftAxis.axisMinimum = -1.6
+            self.chtChart.rightAxis.axisMinimum = -1.6
         }else{
             self.chtChart.leftAxis.axisMinimum = 0
             self.chtChart.rightAxis.axisMinimum = 0
         }
-        self.chtChart.leftAxis.axisMaximum = 2
-        self.chtChart.rightAxis.axisMaximum = 2
+        self.chtChart.leftAxis.axisMaximum = 2.6
+        self.chtChart.rightAxis.axisMaximum = 2.6
         
         self.chtChart.notifyDataSetChanged()
         self.chtChart.moveViewToX(Double(currentNode))
@@ -152,7 +161,7 @@ class ViewController: UIViewController {
     }
     
     
-     func calculateActivityFactor(activityArray : Array<Double>) -> Double {
+    func calculateActivityFactor(activityArray : Array<Double>) -> Double {
         
         // Calculate sum of array
         let activitySum = activityArray.reduce(0) { $0 + $1 }
@@ -168,7 +177,7 @@ class ViewController: UIViewController {
         }
     }
     
-     func calculateActivityFactorX(activityArrayX : Array<Double>) -> Double {
+    func calculateActivityFactorX(activityArrayX : Array<Double>) -> Double {
         
         // Calculate sum of array
         let activitySumX = activityArrayX.reduce(0) { $0 + $1 }
@@ -179,7 +188,7 @@ class ViewController: UIViewController {
         return activityFactorX
     }
     
-     func startAccelerometer(){
+    func startAccelerometer(){
         motionManager.deviceMotionUpdateInterval = 1/self.timeInterval //How many nodes per second?(Hertz)
         motionManager.startDeviceMotionUpdates(to: .main) { (motion, error) in
             
@@ -231,33 +240,53 @@ class ViewController: UIViewController {
         }
     }
     
-
-     func UpdateRegenerationLine(activityFactor : Double){
-        var additionFactorMedLine = 0.0
-        var additionFactorSlowLine = 0.0
-        var additionFactorFastLine = 0.0
+    
+    func UpdateRegenerationLine(activityFactor : Double){
         
-        let maxActivity = 1.5
+        
         //Stamp
         if sendToStampFilter{
             //Green Line
-            additionFactorMedLine = (maxActivity - medRegenerationSum)/40
+            additionFactorMedLine = (maxActivityMedValue - medRegenerationSum)/40
             //Purple Line
-            additionFactorSlowLine = (maxActivity - slowRegenerationSum)/80
+            additionFactorSlowLine = (maxActivitySlowValue - slowRegenerationSum)/80
             //DarkGray
-            additionFactorFastLine = (maxActivity - fastRegenerationSum)/15
+            additionFactorFastLine = (maxActivityFastValue - fastRegenerationSum)/15
         }
+            
         else{
             //Green Line
-            additionFactorMedLine = (maxActivity - medRegenerationSum)/20
+            additionFactorMedLine = (maxActivityMedValue - medRegenerationSum)/20
             //Purple Line
-            additionFactorSlowLine = (maxActivity - slowRegenerationSum)/30
+            additionFactorSlowLine = (maxActivitySlowValue - slowRegenerationSum)/30
             //DarkGray
-            additionFactorFastLine = (maxActivity - fastRegenerationSum)/7
+            additionFactorFastLine = (maxActivityFastValue - fastRegenerationSum)/10
             
+            if fastRegenerationSum > 1.48{
+                filterExceedMaxCounter += 1
+            }
+          
+            if activityFactor > 0 && filterExceedMaxCounter > 10{
+//                if slowRegenerationSum > 1.48{
+//                    print("Du har låst upp högre maxvärde!")
+//                    maxActivitySlowValue = 2
+//                }
+//                if medRegenerationSum > 1.48{
+//                    print("Du har låst upp högre maxvärde!")
+//                    maxActivityMedValue = 2
+//                }
+                if fastRegenerationSum > 1.48{
+                    
+                    print("Du har låst upp högre maxvärde!")
+                    maxActivityFastValue = 2.5
+                    additionFactorFastLine = activityFactor/10
+                }
+            }
+           
         }
         
         if activityFactor == 0{
+            filterExceedMaxCounter = 0
             if sendToStampFilter{
                 slowRegenerationSum -= slowRegenerationSum*0.07
                 medRegenerationSum -= medRegenerationSum*0.15
@@ -278,16 +307,16 @@ class ViewController: UIViewController {
         if slowRegenerationSum <= 0{slowRegenerationSum = 0}
         if fastRegenerationSum <= 0{fastRegenerationSum = 0}
         
-        if medRegenerationSum > maxActivity{medRegenerationSum = maxActivity}
-        if slowRegenerationSum > maxActivity{slowRegenerationSum = maxActivity}
-        if fastRegenerationSum > maxActivity{fastRegenerationSum = maxActivity}
+        if medRegenerationSum > maxActivityMedValue{medRegenerationSum = maxActivityMedValue}
+        if slowRegenerationSum > maxActivitySlowValue{slowRegenerationSum = maxActivitySlowValue}
+        if fastRegenerationSum > maxActivityFastValue{fastRegenerationSum = maxActivityFastValue}
         
         print(medRegenerationSum)
         print(slowRegenerationSum)
         print(fastRegenerationSum)
     }
     
-     func RedOrGreene(activityFactor : Double) {
+    func RedOrGreene(activityFactor : Double) {
         if activityFactor > lowerLimit && activityFactor < upperLimit{
             self.acceptedOrNotView.backgroundColor = .green
             
@@ -297,8 +326,7 @@ class ViewController: UIViewController {
         }
     }
     
-     func cheatingDetected(str : String){
-        //print(str)
+    func cheatingDetected(str : String){
         self.lastActivityCheat = true
         self.acceptedOrNotView.backgroundColor = .red
     }
@@ -368,48 +396,48 @@ class ViewController: UIViewController {
     
     /*------------------------------------------------------------------------*/
     
-     func setStampToFalse(){
+    func setStampToFalse(){
         stampIsClicked = false
         stampOutlet.setTitleColor(.white, for: .normal)
         sendToStampFilter = false
     }
-     func setStampToTrue(){
+    func setStampToTrue(){
         stampIsClicked = true
         stampOutlet.setTitleColor(.gray, for: .normal)
         sendToStampFilter = true
     }
     
     
-     func setJumpToFalse(){
+    func setJumpToFalse(){
         jumpIsClicked = false
         jumpOutlet.setTitleColor(.white, for: .normal)
         sendToJumpFilter = false
     }
     
-     func setJumpToTrue(){
+    func setJumpToTrue(){
         jumpIsClicked = true
         jumpOutlet.setTitleColor(.gray, for: .normal)
         sendToJumpFilter = true
     }
     
-     func setSquatToFalse(){
+    func setSquatToFalse(){
         squatIsClicked = false
         squatOutlet.setTitleColor(.white, for: .normal)
         sendToSquatFilter = false
     }
     
-     func setSquatToTrue(){
+    func setSquatToTrue(){
         squatIsClicked = true
         squatOutlet.setTitleColor(.gray, for: .normal)
         sendToSquatFilter = true
     }
     
-     func deviceMotionTurnOn(){
+    func deviceMotionTurnOn(){
         startAccelerometer()
         buttonOutlet.setTitle("Stoppa", for: .normal)
     }
     
-     func deviceMotionTurnOff(){
+    func deviceMotionTurnOff(){
         motionManager.stopDeviceMotionUpdates()
         buttonOutlet.setTitle("Starta", for: .normal)
     }
@@ -427,7 +455,7 @@ class ViewController: UIViewController {
         
     }
     
-     func resetAllValues(){
+    func resetAllValues(){
         gravityXArray.removeAll()
         gravityYArray.removeAll()
         accelerationZArray.removeAll()

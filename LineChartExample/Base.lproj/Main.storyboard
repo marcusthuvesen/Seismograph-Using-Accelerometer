@@ -39,21 +39,44 @@
                                     <constraint firstAttribute="trailing" secondItem="MZF-gC-FWM" secondAttribute="trailing" constant="30" id="sK7-uZ-vMN"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SRl-9D-wBC">
-                                <rect key="frame" x="84" y="325" width="225" height="50"/>
-                                <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fjI-pu-4tR">
+                                <rect key="frame" x="84" y="287" width="225" height="88"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SRl-9D-wBC">
+                                        <rect key="frame" x="0.0" y="0.0" width="225" height="40"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="225" id="6Cn-uF-ffk"/>
+                                            <constraint firstAttribute="height" constant="40" id="Q4B-Vp-KGz"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <state key="normal" title="Starta">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pyo-ym-tEt"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xv8-z8-KDw">
+                                        <rect key="frame" x="0.0" y="48" width="225" height="40"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="225" id="IM7-XA-pxl"/>
+                                            <constraint firstAttribute="height" constant="40" id="aTy-gM-Jkc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Starta Om"/>
+                                        <connections>
+                                            <action selector="clearChartBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H7g-wm-OOT"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="225" id="6Cn-uF-ffk"/>
-                                    <constraint firstAttribute="height" constant="50" id="Q4B-Vp-KGz"/>
+                                    <constraint firstAttribute="width" constant="225" id="P6q-1X-bcz"/>
+                                    <constraint firstAttribute="height" constant="88" id="YCn-Mh-fDa"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <state key="normal" title="Starta">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="startBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pyo-ym-tEt"/>
-                                </connections>
-                            </button>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dlj-BQ-uG9">
                                 <rect key="frame" x="64" y="30" width="90" height="180"/>
                                 <gestureRecognizers/>
@@ -78,20 +101,6 @@
                                 <state key="normal" image="Fingerprint_PNG"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="dCQ-a5-ykj" appends="YES" id="ysu-q8-3rW"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xv8-z8-KDw">
-                                <rect key="frame" x="587" y="325" width="225" height="50"/>
-                                <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="225" id="IM7-XA-pxl"/>
-                                    <constraint firstAttribute="height" constant="50" id="aTy-gM-Jkc"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" title="Starta Om"/>
-                                <connections>
-                                    <action selector="clearChartBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H7g-wm-OOT"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bXO-LU-nh9">
@@ -138,25 +147,62 @@
                                     </button>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="1Ox-l6-OXx">
+                                <rect key="frame" x="587" y="287" width="225" height="88"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5zp-TQ-KkO">
+                                        <rect key="frame" x="0.0" y="0.0" width="225" height="40"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Hl5-f6-4YO"/>
+                                            <constraint firstAttribute="width" constant="225" id="LvR-4i-X6Z"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Camera Input XYZ"/>
+                                        <connections>
+                                            <action selector="clearChartBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iUn-gj-cXe"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJ7-dF-l6c">
+                                        <rect key="frame" x="0.0" y="48" width="225" height="40"/>
+                                        <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="kPq-yz-yqO"/>
+                                            <constraint firstAttribute="width" constant="225" id="lwI-QO-BVU"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="StapelVy"/>
+                                        <connections>
+                                            <action selector="clearChartBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dnj-rv-ujT"/>
+                                            <segue destination="NS4-cK-PP3" kind="presentation" id="I1y-Bv-St2"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="88" id="XAG-GB-9jT"/>
+                                    <constraint firstAttribute="width" constant="225" id="l2C-RR-b8Y"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Dlj-BQ-uG9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="6af-2t-9IY"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Xv8-z8-KDw" secondAttribute="trailing" constant="20" id="7li-xS-4J2"/>
-                            <constraint firstItem="Xv8-z8-KDw" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="bottom" constant="40" id="9Oj-fr-iya"/>
                             <constraint firstItem="bXO-LU-nh9" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="bottom" constant="2" id="DmL-LF-17O"/>
-                            <constraint firstItem="bXO-LU-nh9" firstAttribute="leading" secondItem="SRl-9D-wBC" secondAttribute="trailing" constant="10" id="LVe-wl-L4x"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lXx-gB-8id" secondAttribute="trailing" id="LYz-IX-4BC"/>
-                            <constraint firstItem="SRl-9D-wBC" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="NU4-O7-EMX"/>
-                            <constraint firstItem="SRl-9D-wBC" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="bottom" constant="40" id="Szq-wi-35r"/>
+                            <constraint firstItem="fjI-pu-4tR" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="bottom" constant="2" id="Rov-qg-t3l"/>
                             <constraint firstItem="lXx-gB-8id" firstAttribute="leading" secondItem="V7r-Yg-hXX" secondAttribute="trailing" constant="8" id="UMw-84-eIP"/>
                             <constraint firstItem="Dlj-BQ-uG9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="c3U-fZ-Fr9"/>
+                            <constraint firstItem="bXO-LU-nh9" firstAttribute="leading" secondItem="fjI-pu-4tR" secondAttribute="trailing" constant="10" id="e2x-x1-MsI"/>
                             <constraint firstItem="V7r-Yg-hXX" firstAttribute="leading" secondItem="Dlj-BQ-uG9" secondAttribute="trailing" constant="8" id="i9X-6M-qvI"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bXO-LU-nh9" secondAttribute="bottom" constant="15" id="ktf-C8-gKy"/>
-                            <constraint firstItem="Xv8-z8-KDw" firstAttribute="leading" secondItem="bXO-LU-nh9" secondAttribute="trailing" constant="10" id="scr-w8-ZyU"/>
+                            <constraint firstItem="1Ox-l6-OXx" firstAttribute="leading" secondItem="bXO-LU-nh9" secondAttribute="trailing" constant="10" id="pSC-7K-Od1"/>
+                            <constraint firstItem="fjI-pu-4tR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="riX-Qo-DiN"/>
                             <constraint firstItem="V7r-Yg-hXX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="uUn-g1-VuY"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="SRl-9D-wBC" secondAttribute="bottom" constant="18" id="w6W-T1-fJs"/>
                             <constraint firstItem="lXx-gB-8id" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="30" id="xKD-r2-YYh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="1Ox-l6-OXx" secondAttribute="trailing" constant="20" id="yK2-9p-rlU"/>
+                            <constraint firstItem="1Ox-l6-OXx" firstAttribute="top" secondItem="V7r-Yg-hXX" secondAttribute="bottom" constant="2" id="z7z-fl-Rra"/>
                         </constraints>
                     </view>
                     <connections>
@@ -164,9 +210,12 @@
                         <outlet property="buttonOutlet" destination="SRl-9D-wBC" id="LYl-sv-D7f"/>
                         <outlet property="chtChart" destination="V7r-Yg-hXX" id="THu-Rl-57A"/>
                         <outlet property="clearButtonOutlet" destination="Xv8-z8-KDw" id="33V-wz-q7v"/>
+                        <outlet property="inputTypeOutlet" destination="5zp-TQ-KkO" id="SqO-MU-Bdh"/>
                         <outlet property="jumpOutlet" destination="yyd-XT-oCx" id="S37-gM-e2G"/>
                         <outlet property="leftBtnOutlet" destination="Dlj-BQ-uG9" id="ObQ-Er-vAr"/>
+                        <outlet property="nextVCOutlet" destination="SJ7-dF-l6c" id="KVg-KG-PdG"/>
                         <outlet property="rightBtnOutlet" destination="lXx-gB-8id" id="DuF-Zg-Jsx"/>
+                        <outlet property="selectActivityStack" destination="bXO-LU-nh9" id="8Gg-IU-vwv"/>
                         <outlet property="squatOutlet" destination="4DJ-ch-QZX" id="5MP-qK-wOs"/>
                         <outlet property="stampOutlet" destination="pb8-Dd-366" id="Siv-59-acz"/>
                         <outlet property="startButtonOutlet" destination="SRl-9D-wBC" id="WSa-KL-SM3"/>
@@ -186,7 +235,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="135.38230884557723" y="138.40000000000001"/>
+            <point key="canvasLocation" x="135.26785714285714" y="137.68115942028987"/>
         </scene>
         <!--Activity Bar Controller-->
         <scene sceneID="R8t-ze-dST">
@@ -203,38 +252,51 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GHK-m9-JJz">
                                 <rect key="frame" x="64" y="0.0" width="768" height="393"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R1B-hS-3WA">
-                                        <rect key="frame" x="458" y="313" width="290" height="60"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="U4L-25-E6c">
+                                        <rect key="frame" x="15" y="328" width="738" height="45"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQZ-fy-inf">
+                                                <rect key="frame" x="0.0" y="0.0" width="238" height="45"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="DiagramVy">
+                                                    <color key="titleColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="startBtn:" destination="NS4-cK-PP3" eventType="touchUpInside" id="ILk-0M-FDd"/>
+                                                    <segue destination="BYZ-38-t0r" kind="presentation" id="Bfb-FG-tGl"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RlM-qI-hWX">
+                                                <rect key="frame" x="250" y="0.0" width="238" height="45"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Starta">
+                                                    <color key="titleColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="startBtn:" destination="NS4-cK-PP3" eventType="touchUpInside" id="U5O-3e-z5Z"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R1B-hS-3WA">
+                                                <rect key="frame" x="500" y="0.0" width="238" height="45"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Starta Om">
+                                                    <color key="titleColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="restartBtn:" destination="NS4-cK-PP3" eventType="touchUpInside" id="MYa-4X-D9X"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="60" id="T7N-5r-bbv"/>
-                                            <constraint firstAttribute="width" constant="290" id="ohI-QO-7LE"/>
+                                            <constraint firstAttribute="height" constant="45" id="913-eL-SDC"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Starta Om">
-                                            <color key="titleColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="restartBtn:" destination="NS4-cK-PP3" eventType="touchUpInside" id="MYa-4X-D9X"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RlM-qI-hWX">
-                                        <rect key="frame" x="20" y="313" width="290" height="60"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="290" id="LyD-dh-eCF"/>
-                                            <constraint firstAttribute="height" constant="60" id="gLg-P8-c8l"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="22"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Starta">
-                                            <color key="titleColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="startBtn:" destination="NS4-cK-PP3" eventType="touchUpInside" id="U5O-3e-z5Z"/>
-                                        </connections>
-                                    </button>
+                                    </stackView>
                                     <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S6U-a1-Hg2">
                                         <rect key="frame" x="670" y="30" width="90" height="200"/>
                                         <gestureRecognizers/>
@@ -292,19 +354,33 @@
                                             <constraint firstItem="f2h-sA-Z00" firstAttribute="leading" secondItem="HWe-L1-VZH" secondAttribute="leading" id="vlC-EC-y5K"/>
                                         </constraints>
                                     </view>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="JsK-mx-fVT">
+                                        <rect key="frame" x="15" y="263" width="738" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="oeb-ie-yLJ"/>
+                                        </constraints>
+                                        <segments>
+                                            <segment title="Stamp"/>
+                                            <segment title="Jump"/>
+                                            <segment title="Squat"/>
+                                        </segments>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </segmentedControl>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.53277504280821919" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="RlM-qI-hWX" secondAttribute="bottom" constant="20" id="6Ta-ZO-hhy"/>
+                                    <constraint firstItem="JsK-mx-fVT" firstAttribute="leading" secondItem="GHK-m9-JJz" secondAttribute="leading" constant="15" id="1gH-QW-EPU"/>
                                     <constraint firstItem="S6U-a1-Hg2" firstAttribute="top" secondItem="GHK-m9-JJz" secondAttribute="top" constant="30" id="810-fk-pdA"/>
                                     <constraint firstItem="RE7-aF-8mS" firstAttribute="top" secondItem="GHK-m9-JJz" secondAttribute="top" constant="30" id="C4E-8h-HXS"/>
+                                    <constraint firstAttribute="bottom" secondItem="U4L-25-E6c" secondAttribute="bottom" constant="20" id="FWC-87-O96"/>
                                     <constraint firstItem="RE7-aF-8mS" firstAttribute="leading" secondItem="GHK-m9-JJz" secondAttribute="leading" constant="8" id="GE6-kv-Nlf"/>
                                     <constraint firstAttribute="trailing" secondItem="S6U-a1-Hg2" secondAttribute="trailing" constant="8" id="GWw-Ai-JJ8"/>
                                     <constraint firstItem="HWe-L1-VZH" firstAttribute="top" secondItem="GHK-m9-JJz" secondAttribute="top" constant="40" id="MhR-cJ-yNJ"/>
-                                    <constraint firstAttribute="trailing" secondItem="R1B-hS-3WA" secondAttribute="trailing" constant="20" id="Vew-RU-Pjy"/>
+                                    <constraint firstAttribute="trailing" secondItem="U4L-25-E6c" secondAttribute="trailing" constant="15" id="O2W-PC-VHH"/>
+                                    <constraint firstAttribute="trailing" secondItem="JsK-mx-fVT" secondAttribute="trailing" constant="15" id="VZ7-74-zee"/>
+                                    <constraint firstItem="U4L-25-E6c" firstAttribute="leading" secondItem="GHK-m9-JJz" secondAttribute="leading" constant="15" id="YFk-qQ-JfW"/>
                                     <constraint firstItem="S6U-a1-Hg2" firstAttribute="leading" secondItem="HWe-L1-VZH" secondAttribute="trailing" constant="40" id="Yyb-Qz-LER"/>
-                                    <constraint firstAttribute="bottom" secondItem="R1B-hS-3WA" secondAttribute="bottom" constant="20" id="bbe-ae-OhH"/>
-                                    <constraint firstItem="RlM-qI-hWX" firstAttribute="leading" secondItem="GHK-m9-JJz" secondAttribute="leading" constant="20" id="syE-e6-SEn"/>
+                                    <constraint firstItem="U4L-25-E6c" firstAttribute="top" secondItem="JsK-mx-fVT" secondAttribute="bottom" constant="20" id="mgO-RM-TeF"/>
                                     <constraint firstItem="HWe-L1-VZH" firstAttribute="leading" secondItem="RE7-aF-8mS" secondAttribute="trailing" constant="40" id="uwu-Hs-AIY"/>
                                 </constraints>
                             </view>
@@ -323,6 +399,7 @@
                         <outlet property="healthWidth" destination="g6Y-Qg-AeQ" id="ROt-mH-2xA"/>
                         <outlet property="leftThumbBtnOutlet" destination="RE7-aF-8mS" id="qeP-P5-zLs"/>
                         <outlet property="percentageLabel" destination="tQH-nw-7kB" id="oxm-eF-lUt"/>
+                        <outlet property="previousVCOutlet" destination="dQZ-fy-inf" id="nsK-pi-za5"/>
                         <outlet property="restartBtnOutlet" destination="R1B-hS-3WA" id="dkJ-QA-dyU"/>
                         <outlet property="rightThumbBtnOutlet" destination="S6U-a1-Hg2" id="GFL-5S-eng"/>
                         <outlet property="startBtnOutlet" destination="RlM-qI-hWX" id="Cx0-kv-H2l"/>
@@ -342,7 +419,7 @@
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="946" y="138"/>
+            <point key="canvasLocation" x="945.53571428571422" y="137.68115942028987"/>
         </scene>
         <!--Four Axis Abs View Controller-->
         <scene sceneID="iZP-LV-bvX">

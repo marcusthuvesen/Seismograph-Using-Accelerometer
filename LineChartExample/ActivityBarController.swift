@@ -19,6 +19,8 @@ class ActivityBarController: UIViewController {
     @IBOutlet weak var healthView: UIView!
     @IBOutlet weak var healthWidth: NSLayoutConstraint!
     @IBOutlet weak var percentageLabel: UILabel!
+    @IBOutlet weak var previousVCOutlet: UIButton!
+    
     
     
     var isDeviceMotionOn = false
@@ -55,6 +57,7 @@ class ActivityBarController: UIViewController {
         healthView.layer.cornerRadius = 15
         startBtnOutlet.layer.cornerRadius = startBtnOutlet.frame.height / 2
         restartBtnOutlet.layer.cornerRadius = restartBtnOutlet.frame.height / 2
+        previousVCOutlet.layer.cornerRadius = previousVCOutlet.frame.height / 2
         leftThumbBtnOutlet.tintColor = .white
         rightThumbBtnOutlet.tintColor = .white
     }

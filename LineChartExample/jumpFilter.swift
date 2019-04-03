@@ -28,42 +28,46 @@ extension ViewController{
             accZ = calculateActivityFactor(activityArray: accelerationZArray)
             activityFactorX = calculateActivityFactorX(activityArrayX: accXArray)
             
-            
-            
+            //User Goes accelerates down
             if activityFactorX < -0.2 && activityFactorX > -2.5 && firstHighValue != true{
                 print(activityFactorX)
                 print("LowValue")
                 firstLowValue = true
             }
-                
+            //Measures the high Value of the user
             else if activityFactorX > 0.2 && firstLowValue == true{
                 print(activityFactorX)
                 print("HighValue")
                 firstHighValue = true
             }
-            
+            //Register as Jump only if User accelerates down before up
             if firstLowValue && firstHighValue && leftBtnOutlet.tintColor == .green && rightBtnOutlet.tintColor == .green{
                 print("Hopp")
                 firstHighValue = false
                 firstLowValue = false
                 self.acceptedOrNotView.backgroundColor = .green
-                UpdateRegenerationLine(activityFactor: 0.5)
+                UpdateRegenerationLine(activityFactor: 1.5)
                 jumpFilterMemoryBool = true
                 jumpFilterCounter = 0
+             
             }
-                
+            //Memory in the line so the value doesn't drop between reps
             else if jumpFilterCounter < 3 && jumpFilterMemoryBool{
                 jumpFilterCounter += 1
                 self.acceptedOrNotView.backgroundColor = .green
+                
+                //Can exceed maxValue
+               
                 UpdateRegenerationLine(activityFactor: 1.5)
-                
             }
-                //If value over 0 keep the value for a while so the line doesn't drop while in beetween reps
-                
+            
+            //No activity
             else{
                 UpdateRegenerationLine(activityFactor: 0)
                 jumpFilterMemoryBool = false
                 cheatingDetected(str : "Fusk")
+                filterExceedMaxCounter = 0
+                additionFactorFastLine = (maxActivityFastValue - fastRegenerationSum)/7
             }
             
             //Reset after each batch

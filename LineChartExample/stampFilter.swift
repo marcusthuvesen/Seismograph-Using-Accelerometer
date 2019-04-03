@@ -46,7 +46,7 @@ extension ViewController{
             if self.gravY > 0.25 {
                 print("ogiltlig y")
             }
-            if gravity.z > 0.3 {
+            if gravZ > 0.3 {
                 print("ogiltlig z")
             }
             if accZ > 0.8 {
